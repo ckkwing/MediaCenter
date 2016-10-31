@@ -1,0 +1,39 @@
+﻿<CustomControl:BasicWindow x:Class="MediaCenter.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cal="http://www.codeplex.com/CompositeWPF"
+        xmlns:prism="http://www.codeplex.com/prism"
+        xmlns:inf="clr-namespace:MediaCenter.Infrastructure;assembly=MediaCenter.Infrastructure"
+        xmlns:local="clr-namespace:MediaCenter"
+        xmlns:CustomControl="clr-namespace:MediaCenter.Theme.CustomControl;assembly=MediaCenter.Theme"
+        WindowStartupLocation="CenterScreen"
+        Title="Shell" Width="900" Height="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <ContentControl prism:RegionManager.RegionName="{x:Static inf:RegionNames.HeaderRegion}" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="70*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <ContentControl prism:RegionManager.RegionName="{x:Static inf:RegionNames.NavigationRegion}" />
+            </Grid>
+            <GridSplitter Width="1" />
+            <Grid Grid.Column="1">
+                <ContentControl x:Name="mainRegion" cal:RegionManager.RegionName="{x:Static inf:RegionNames.MainRegion}" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2">
+
+        </Grid>
+    </Grid>
+</CustomControl:BasicWindow>

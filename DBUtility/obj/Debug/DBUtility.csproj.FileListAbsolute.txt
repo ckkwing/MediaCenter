@@ -1,0 +1,17 @@
+D:\Github\MediaCenter\DBUtility\bin\Debug\DBUtility.dll.config
+D:\Github\MediaCenter\DBUtility\bin\Debug\DBUtility.dll
+D:\Github\MediaCenter\DBUtility\bin\Debug\DBUtility.pdb
+D:\Github\MediaCenter\DBUtility\bin\Debug\EntityFramework.dll
+D:\Github\MediaCenter\DBUtility\bin\Debug\EntityFramework.SqlServer.dll
+D:\Github\MediaCenter\DBUtility\bin\Debug\System.Data.SQLite.dll
+D:\Github\MediaCenter\DBUtility\bin\Debug\System.Data.SQLite.EF6.dll
+D:\Github\MediaCenter\DBUtility\bin\Debug\System.Data.SQLite.Linq.dll
+D:\Github\MediaCenter\DBUtility\bin\Debug\EntityFramework.xml
+D:\Github\MediaCenter\DBUtility\bin\Debug\EntityFramework.SqlServer.xml
+D:\Github\MediaCenter\DBUtility\bin\Debug\System.Data.SQLite.xml
+D:\Github\MediaCenter\DBUtility\obj\Debug\DBUtility.dll
+D:\Github\MediaCenter\DBUtility\obj\Debug\DBUtility.pdb
+D:\Github\MediaCenter\build\Debug\DBUtility.dll.config
+D:\Github\MediaCenter\build\Debug\DBUtility.dll
+D:\Github\MediaCenter\build\Debug\DBUtility.pdb
+D:\Github\MediaCenter\DBUtility\obj\Debug\DBUtility.csprojResolveAssemblyReference.cache

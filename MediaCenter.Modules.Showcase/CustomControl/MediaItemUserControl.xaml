@@ -1,0 +1,56 @@
+﻿<ButtonBase x:Class="MediaCenter.Modules.Showcase.CustomControl.MediaItemUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MediaCenter.Modules.Showcase.CustomControl"
+             xmlns:commonControls="clr-namespace:MediaCenter.Theme.CustomControl;assembly=MediaCenter.Theme">
+    <ButtonBase.Resources>
+        <Style TargetType="{x:Type local:MediaItemUserControl}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:MediaItemUserControl}">
+                        <Border x:Name="wrapper" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#cccccc">
+                            <Grid>
+                                <Image x:Name="imgSelectedIcon" Source="{StaticResource IMG_ITEMSELECTED}" Visibility="Collapsed" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="40" />
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Row="0" x:Name="imgMain" Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}}" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="4,4,4,0" />
+                                    <commonControls:EnhancedTextBlock Grid.Row="1" x:Name="itemName" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                      Text="{Binding ItemName, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <!--<Setter Property="BorderBrush" Value="#209747" TargetName="wrapper" />
+                                <Setter Property="BorderThickness" Value="2" TargetName="wrapper" />-->
+                                <Setter Property="Background" Value="#f1f1f1" TargetName="wrapper" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="BorderBrush" Value="#209747" TargetName="wrapper" />
+                                <Setter Property="BorderThickness" Value="2" TargetName="wrapper" />
+                                <!--<Setter Property="Source" Value="{Binding ImageSelected, RelativeSource={RelativeSource TemplatedParent}}" TargetName="imgMain" />-->
+                                <Setter Property="Visibility" Value="Visible" TargetName="imgSelectedIcon" />
+                                <Setter Property="Foreground" Value="#209747" TargetName="itemName" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX=".95" ScaleY=".95" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="RenderTransformOrigin" Value=".5,.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ButtonBase.Resources>
+</ButtonBase>

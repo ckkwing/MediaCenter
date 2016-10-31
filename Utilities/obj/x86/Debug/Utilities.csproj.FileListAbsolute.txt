@@ -1,0 +1,12 @@
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\Utilities.dll
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\Utilities.pdb
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\Microsoft.Practices.Prism.Mvvm.Desktop.dll
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\Microsoft.Practices.Prism.Mvvm.dll
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\Microsoft.Practices.Prism.SharedInterfaces.dll
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\NLogger.dll
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\NLogger.pdb
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\Microsoft.Practices.Prism.Mvvm.xml
+D:\Github\MediaCenter\Utilities\bin\x86\Debug\Microsoft.Practices.Prism.SharedInterfaces.xml
+D:\Github\MediaCenter\Utilities\obj\x86\Debug\Utilities.csprojResolveAssemblyReference.cache
+D:\Github\MediaCenter\Utilities\obj\x86\Debug\Utilities.dll
+D:\Github\MediaCenter\Utilities\obj\x86\Debug\Utilities.pdb

@@ -1,0 +1,13 @@
+D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Showcase.dll
+D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Showcase.pdb
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.csprojResolveAssemblyReference.cache
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\ShowcaseView.g.cs
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase_MarkupCompile.cache
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase_MarkupCompile.lref
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\ShowcaseView.baml
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.g.resources
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.dll
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.pdb
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\CustomControl\MediaItemUserControl.g.cs
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\CustomControl\MediaItemUserControl.baml

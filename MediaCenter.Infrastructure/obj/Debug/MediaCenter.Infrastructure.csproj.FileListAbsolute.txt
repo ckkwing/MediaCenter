@@ -1,0 +1,8 @@
+D:\Github\MediaCenter\build\x86\Debug\MediaCenter.Infrastructure.dll
+D:\Github\MediaCenter\build\x86\Debug\MediaCenter.Infrastructure.pdb
+D:\Github\MediaCenter\MediaCenter.Infrastructure\obj\Debug\MediaCenter.Infrastructure.csprojResolveAssemblyReference.cache
+D:\Github\MediaCenter\MediaCenter.Infrastructure\obj\Debug\MediaCenter.Infrastructure.dll
+D:\Github\MediaCenter\MediaCenter.Infrastructure\obj\Debug\MediaCenter.Infrastructure.pdb
+D:\Github\MediaCenter\build\Debug\MediaCenter.Infrastructure.dll
+D:\Github\MediaCenter\build\Debug\MediaCenter.Infrastructure.pdb
+D:\Github\MediaCenter\build\Debug\MediaCenter.Infrastructure.dll.config

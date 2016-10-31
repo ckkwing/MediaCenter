@@ -1,0 +1,12 @@
+D:\Github\MediaCenter\build\x86\Debug\MediaCenter.Modules.Header.dll
+D:\Github\MediaCenter\build\x86\Debug\MediaCenter.Modules.Header.pdb
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.csprojResolveAssemblyReference.cache
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\HeaderView.g.cs
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header_MarkupCompile.cache
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header_MarkupCompile.lref
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\HeaderView.baml
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.g.resources
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.dll
+D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.pdb
+D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Header.dll
+D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Header.pdb

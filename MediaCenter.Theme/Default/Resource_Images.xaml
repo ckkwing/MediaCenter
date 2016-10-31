@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mscorlib="clr-namespace:System;assembly=mscorlib"
+    xmlns:Img="clr-namespace:System.Windows.Media.Imaging;assembly=PresentationCore">
+    <!--<mscorlib:String x:Key="IMG_GifIndicator" >pack://application:,,,/BackItUp.Theme;Component/Resources/Default/Images/Indicator_small.gif</mscorlib:String>-->
+    <!--<mscorlib:String x:Key="IMG_TEST" >pack://application:,,,/BackItUp.Theme;Component/Resources/Default/Images/Test.png</mscorlib:String>-->
+
+    <Img:BitmapImage x:Key="IMG_ITEMSELECTED" UriSource="../Resources/Default/Images/ItemSelected.png"/>
+    <Img:BitmapImage x:Key="IMG_TEST" UriSource="../Resources/Default/Images/Test.jpg"/>
+ 
+</ResourceDictionary>

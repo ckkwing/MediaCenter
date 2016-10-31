@@ -1,0 +1,7 @@
+D:\Github\MediaCenter\build\x86\Debug\Utilities.dll
+D:\Github\MediaCenter\build\x86\Debug\Utilities.pdb
+D:\Github\MediaCenter\Utilities\obj\Debug\Utilities.csprojResolveAssemblyReference.cache
+D:\Github\MediaCenter\Utilities\obj\Debug\Utilities.dll
+D:\Github\MediaCenter\Utilities\obj\Debug\Utilities.pdb
+D:\Github\MediaCenter\build\Debug\Utilities.dll
+D:\Github\MediaCenter\build\Debug\Utilities.pdb

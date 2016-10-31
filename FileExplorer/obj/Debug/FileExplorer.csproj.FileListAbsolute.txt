@@ -1,0 +1,13 @@
+D:\Github\MediaCenter\build\x86\Debug\FileExplorer.dll
+D:\Github\MediaCenter\build\x86\Debug\FileExplorer.pdb
+D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer.csprojResolveAssemblyReference.cache
+D:\Github\MediaCenter\FileExplorer\obj\Debug\UITreeView.g.cs
+D:\Github\MediaCenter\FileExplorer\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer_MarkupCompile.cache
+D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer_MarkupCompile.lref
+D:\Github\MediaCenter\FileExplorer\obj\Debug\UITreeView.baml
+D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer.g.resources
+D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer.dll
+D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer.pdb
+D:\Github\MediaCenter\build\Debug\FileExplorer.dll
+D:\Github\MediaCenter\build\Debug\FileExplorer.pdb

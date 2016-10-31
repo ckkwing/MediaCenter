@@ -1,0 +1,7 @@
+D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer.csprojResolveAssemblyReference.cache
+D:\Github\MediaCenter\FileExplorer\obj\Debug\UCSearchCategory.g.cs
+D:\Github\MediaCenter\FileExplorer\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Github\MediaCenter\FileExplorer\obj\Debug\NeroFileExplorer_MarkupCompile.cache
+D:\Github\MediaCenter\FileExplorer\obj\Debug\NeroFileExplorer_MarkupCompile.lref
+D:\Github\MediaCenter\FileExplorer\obj\Debug\NeroFileExplorer.dll
+D:\Github\MediaCenter\FileExplorer\obj\Debug\NeroFileExplorer.pdb
