@@ -17,6 +17,9 @@ namespace MediaCenter.Infrastructure.Core.Runner
                 case JobType.LoadDBMedias:
                     jbr = new LoadDBMediasJobRunner(job);
                     break;
+                case JobType.UpdateTags:
+                    jbr = new UpdateTagsJobRunner(job);
+                    break;
             }
             return jbr;
         }

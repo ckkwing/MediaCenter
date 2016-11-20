@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteDAL", "SQLiteDAL\SQLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaCenter.Modules.Showcase", "MediaCenter.Modules.Showcase\MediaCenter.Modules.Showcase.csproj", "{E09C13FB-3838-4F97-BD4D-75A17409732A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaCenter.Modules.Footer", "MediaCenter.Modules.Footer\MediaCenter.Modules.Footer.csproj", "{8C5B9553-F3C0-428B-9C4F-C428259D2890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,14 @@ Global
 		{E09C13FB-3838-4F97-BD4D-75A17409732A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E09C13FB-3838-4F97-BD4D-75A17409732A}.Release|x86.ActiveCfg = Release|Any CPU
 		{E09C13FB-3838-4F97-BD4D-75A17409732A}.Release|x86.Build.0 = Release|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Debug|x86.Build.0 = Debug|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Release|x86.ActiveCfg = Release|Any CPU
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,5 +162,6 @@ Global
 		{908D345E-4EB7-4161-BDF1-F6A85DC60991} = {7213A385-56BC-46C8-BAC2-8D074B95F9D6}
 		{51304024-BBB5-4B22-B218-A93C6B1B2B25} = {7213A385-56BC-46C8-BAC2-8D074B95F9D6}
 		{E09C13FB-3838-4F97-BD4D-75A17409732A} = {B544CA0B-E680-4E43-AEE8-F6366EB38CDA}
+		{8C5B9553-F3C0-428B-9C4F-C428259D2890} = {B544CA0B-E680-4E43-AEE8-F6366EB38CDA}
 	EndGlobalSection
 EndGlobal

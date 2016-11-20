@@ -1,5 +1,6 @@
 ﻿using MediaCenter.Infrastructure;
 using MediaCenter.Infrastructure.Behaviors;
+using MediaCenter.Modules.Footer;
 using MediaCenter.Modules.Header;
 using MediaCenter.Modules.Navigation;
 using MediaCenter.Modules.Showcase;
@@ -31,6 +32,7 @@ namespace MediaCenter
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(ShowcaseModule).Assembly));
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(HeaderModule).Assembly));
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(NavigationModule).Assembly));
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(FooterModule).Assembly));
         }
 
         protected override void InitializeShell()

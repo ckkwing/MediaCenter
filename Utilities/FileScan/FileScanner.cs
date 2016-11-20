@@ -118,6 +118,7 @@ namespace Utilities.FileScan
 
         private async void StartScan()
         {
+            NotifyEvent(ProcessType.InProcess);
             await GetFilesAsync();
             NotifyEvent(ProcessType.End);
             NLogger.LogHelper.UILogger.Debug("FileScanner end");
@@ -152,7 +153,6 @@ namespace Utilities.FileScan
 
         private Task<List<FileInfo>> GetFilesAsync()
         {
-            NotifyEvent(ProcessType.InProcess);
             foreach (string pathToScan in Config.PathsToScan)
             {
                 if (IsCancel)

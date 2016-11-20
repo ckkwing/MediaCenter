@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Utilities;
+using MediaCenter.Infrastructure.Core.Model;
 
 namespace MediaCenter.Modules.Navigation
 {
@@ -62,14 +63,24 @@ namespace MediaCenter.Modules.Navigation
         public NavigationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            //this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Subscribe(OnLoadDataCompleted, ThreadOption.UIThread);
             TagSelectedCommand = new DelegateCommand<TagInfo>(OnTagSelected, CanExcute);
             LoadData();
         }
-        
+
+        ~NavigationViewModel()
+        {
+            //this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Unsubscribe(OnLoadDataCompleted);
+        }
+
+        private void OnLoadDataCompleted(LoadMediasJob obj)
+        {
+            throw new NotImplementedException();
+        }
 
         private void LoadData()
         {
-            DataManager.Instance.DBCache.RefreshTagInfos();
+            //DataManager.Instance.DBCache.RefreshTagInfos();
             RunOnUIThreadAsync(() =>
             {
                 Tags.Clear();

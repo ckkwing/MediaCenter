@@ -16,6 +16,8 @@ namespace SQLiteDAL
 {
     public class ScannedFile : IScannedFile
     {
+        private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_FILE + " SET PATH = @PATH, NAME = @NAME, EXTENSION = @EXTENSION,  TAG = @TAG WHERE ID = {0};";
+
         public int InsertPatchFiles(IList<FileInfo> files)
         {
             int iSuccessRows = 0;
@@ -144,7 +146,6 @@ namespace SQLiteDAL
         public bool UpdateFile(MonitoredFile file)
         {
             int iRel = 0;
-            string sqlUpdateFormat = @"UPDATE "+ DataAccess.TABLE_NAME_FILE + " SET PATH = @PATH, NAME = @NAME, EXTENSION = @EXTENSION,  TAG = @TAG WHERE ID = {0};";
             string sqlUpdate = string.Format(sqlUpdateFormat, file.ID);
             SQLiteParameter[] parms = {
                 new SQLiteParameter("@PATH", DbType.String),
@@ -159,6 +160,45 @@ namespace SQLiteDAL
             iRel = SqliteHelper.ExecuteNonQuery(DataAccess.ConnectionStringProfile, CommandType.Text, sqlUpdate, parms);
 
             return iRel > 0 ? true : false;
+        }
+
+        public int UpdateFiles(IList<MonitoredFile> files)
+        {
+            int iSuccessRows = 0;
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@PATH", DbType.String),
+                new SQLiteParameter("@NAME", DbType.String),
+                new SQLiteParameter("@EXTENSION", DbType.String),
+                new SQLiteParameter("@TAG", DbType.String)
+                    };
+
+            try
+            {
+                foreach (MonitoredFile file in files)
+                {
+                    string sqlUpdate = string.Format(sqlUpdateFormat, file.ID);
+                    parms[0].Value = file.Path;
+                    parms[1].Value = file.Name;
+                    parms[2].Value = file.Extension;
+                    parms[3].Value = file.Tag;
+                    iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlUpdate, parms);
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return iSuccessRows;
         }
     }
 }

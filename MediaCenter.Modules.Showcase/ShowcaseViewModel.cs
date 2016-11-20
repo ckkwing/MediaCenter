@@ -119,7 +119,7 @@ namespace MediaCenter.Modules.Showcase
                 JobManager.Instance.ForceStop(currentJob);
                 currentJob = null;
             }
-            currentJob = LoadMediasJob.Create(new LoadMediasJob.LoadPattern() { Category = LoadMediasJob.Category.Tag, keyword = tag.Name });
+            currentJob = LoadMediasJob.Create(new LoadMediasJob.LoadPattern() { Category = LoadMediasJob.Category.Tag, keyword = tag.ID.ToString() });
             JobManager.Instance.AddJob(currentJob);
             JobManager.Instance.ForceStart(currentJob);
         }
@@ -135,6 +135,7 @@ namespace MediaCenter.Modules.Showcase
                 case JobType.LoadDBMedias:
                     {
                         LoadMediasJob loadMediasJob = job as LoadMediasJob;
+                        this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Publish(loadMediasJob);
                         RunOnUIThread(() => {
                             foreach (MonitoredFile file in loadMediasJob.Files)
                             {

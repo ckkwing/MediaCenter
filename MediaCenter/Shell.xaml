@@ -33,7 +33,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="2">
-
+            <ContentControl x:Name="footerRegion" cal:RegionManager.RegionName="{x:Static inf:RegionNames.FooterRegion}" />
         </Grid>
     </Grid>
 </CustomControl:BasicWindow>

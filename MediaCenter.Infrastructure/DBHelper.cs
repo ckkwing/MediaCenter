@@ -78,6 +78,11 @@ namespace MediaCenter.Infrastructure
             return iScannedFile.UpdateFile(file);
         }
 
+        public static int UpdateFiles(IList<MonitoredFile> files)
+        {
+            return iScannedFile.UpdateFiles(files);
+        }
+
         public static IList<TagInfo> GetTags()
         {
             return iTag.GetTags();

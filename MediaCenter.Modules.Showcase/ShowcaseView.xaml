@@ -45,7 +45,7 @@
                                         <MenuItem Header="Open file location"
                                                         Command="{Binding Path=PlacementTarget.Tag.OpenLocationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                                         CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Set tag"
+                                        <MenuItem Header="{DynamicResource IDS_SETTAGS}"
                                                         Command="{Binding Path=PlacementTarget.Tag.SetTagCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                                         CommandParameter="{Binding}"/>
                                     </ContextMenu>

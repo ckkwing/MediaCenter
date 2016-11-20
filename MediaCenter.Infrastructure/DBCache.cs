@@ -51,8 +51,18 @@ namespace MediaCenter.Infrastructure
             }
         }
 
+        private IList<string> monitoredFolderStrings = new List<string>();
+        public IList<string> MonitoredFolderStrings
+        {
+            get
+            {
+                return MonitoredFolders.Select(item => item.Path).ToList(); ;
+            }
+        }
+
         public void Init()
         {
+            RefreshTagInfos();
             RefreshMonitoredFolders();
         }
 

@@ -15,7 +15,8 @@ namespace MediaCenter.Infrastructure.Core.Model
 
     public enum JobType
     {
-        LoadDBMedias
+        LoadDBMedias,
+        UpdateTags,
     }
 
     public abstract class Job : ICloneable, INotifyPropertyChanged

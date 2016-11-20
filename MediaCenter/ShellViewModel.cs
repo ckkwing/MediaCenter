@@ -40,7 +40,7 @@ namespace MediaCenter
                     break;
                 case SettingType.SetTags:
                     {
-                        OpenTagSettingWindow(eventArgs.Content as MonitoredFile);
+                        OpenTagSettingWindow(eventArgs.Content);
                     }
                     break;
             }
@@ -56,19 +56,32 @@ namespace MediaCenter
 
             if (window.ResultButtonType == Theme.CustomControl.Dialog.CommonDialog.ResultButtonType.OK)
             {
-                DBHelper.InsertFoldersToMonitor(selectedFiles);
+                IList<string> existedFileList = DBHelper.GetExistMonitoredFolderStringList();
+                IEnumerable<string> newFolders = selectedFilesPath.Where(path => !existedFileList.Contains(path));
+                IEnumerable<IFolder> foldersToAdd = selectedFiles.Where(item => newFolders.Contains(item.FullPath));
+                DBHelper.InsertFoldersToMonitor(foldersToAdd.ToList());
+                DataManager.Instance.DBCache.RefreshMonitoredFolders();
                 //this.eventAggregator.GetEvent<MonitoredFoldersChangedEvent>().Publish("");
-                DataManager.Instance.FileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = DBHelper.GetExistMonitoredFolderStringList() };
+                DataManager.Instance.FileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = DataManager.Instance.DBCache.MonitoredFolderStrings };
                 DataManager.Instance.FileScanner.Start();
             }
         }
 
-        private void OpenTagSettingWindow(MonitoredFile monitoredFile)
+        private void OpenTagSettingWindow(object obj)
         {
-            if (null == monitoredFile)
+            if (null == obj)
                 return;
 
-            SetTagsWindow window = new Settings.SetTagsWindow(monitoredFile);
+            string folderPath = string.Empty;
+            IList<MonitoredFile> monitoredFiles = new List<MonitoredFile>();
+            if (obj is IFolder)
+                folderPath = (obj as IFolder).FullPath;
+            else if (obj is MonitoredFile)
+                monitoredFiles.Add(obj as MonitoredFile);
+            else
+                return;
+
+            SetTagsWindow window = new Settings.SetTagsWindow(folderPath, monitoredFiles);
             window.ShowDialog();
         }
         

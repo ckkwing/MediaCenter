@@ -24,7 +24,7 @@ namespace SQLiteDAL
             int iSuccessRows = 0;
             if (0 == folders.Count)
                 return iSuccessRows;
-            string sqlDelete = "DELETE FROM MonitoredFolder";
+            //string sqlDelete = "DELETE FROM MonitoredFolder";
             string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME) VALUES (NULL, @PATH, @NAME);";
             string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_MONITOREDFOLDER);
 
@@ -38,7 +38,7 @@ namespace SQLiteDAL
 
             try
             {
-                SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+                //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
 
                 foreach (MonitoredFolderInfo folder in folders)
                 {

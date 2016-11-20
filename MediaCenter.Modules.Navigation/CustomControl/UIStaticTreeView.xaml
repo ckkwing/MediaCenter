@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FileExplorer"
              xmlns:model="clr-namespace:FileExplorer.Model;assembly=FileExplorer"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              Background="Transparent">
     <UserControl.Resources>
         <Style x:Key="TreeViewItemFocusVisual">
@@ -68,7 +69,9 @@
     <Grid>
         <TreeView  Name="treeExplorer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              BorderBrush="Transparent"  Background="Transparent"
-             ItemsSource="{Binding Items}" SelectedItemChanged="treeExplorer_SelectedItemChanged">
+             ItemsSource="{Binding Items}" 
+             SelectedItemChanged="treeExplorer_SelectedItemChanged"
+             PreviewMouseRightButtonDown="treeExplorer_PreviewMouseRightButtonDown">
             <!--<TreeView.Resources>
                 -->
             <!-- Below two styles for removing treeview scroll bar context menu-->
@@ -79,7 +82,17 @@
 
                 <Style TargetType="{x:Type  ScrollViewer}"/>
             </TreeView.Resources>-->
-
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{DynamicResource IDS_SETTAGS}" Name="btnSetTags" Click="btnSetTags_Click" />
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SelectTreeNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                           CommandParameter="{Binding}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Folders}"  DataType="{x:Type model:IFolder}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="2,0,4,0">

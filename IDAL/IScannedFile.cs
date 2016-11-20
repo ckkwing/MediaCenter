@@ -16,5 +16,6 @@ namespace IDAL
         IList<MonitoredFile> GetFilesByTags(string tags);
         void GetFilesUnderFolderAsync(string folderPath, Action<IList<MonitoredFile>> callback,ref bool isCancel);
         bool UpdateFile(MonitoredFile file);
+        int UpdateFiles(IList<MonitoredFile> files);
     }
 }

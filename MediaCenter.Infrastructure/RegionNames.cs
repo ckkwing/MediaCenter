@@ -11,5 +11,6 @@ namespace MediaCenter.Infrastructure
         public const string HeaderRegion = "HeaderRegion";
         public const string NavigationRegion = "NavigationRegion";
         public const string MainRegion = "MainRegion";
+        public const string FooterRegion = "FooterRegion";
     }
 }

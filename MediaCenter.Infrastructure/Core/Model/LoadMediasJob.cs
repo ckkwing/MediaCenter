@@ -1,12 +1,11 @@
 ﻿using IDAL.Model;
-using MediaCenter.Infrastructure.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediaCenter.Infrastructure.Core
+namespace MediaCenter.Infrastructure.Core.Model
 {
     public class LoadMediasJob : Job
     {

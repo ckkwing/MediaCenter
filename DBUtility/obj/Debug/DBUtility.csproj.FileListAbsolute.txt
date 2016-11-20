@@ -18,6 +18,5 @@ D:\Github\MediaCenter\DBUtility\obj\Debug\DBUtility.csprojResolveAssemblyReferen
 D:\Project\Github\build\Debug\DBUtility.dll.config
 D:\Project\Github\build\Debug\DBUtility.dll
 D:\Project\Github\build\Debug\DBUtility.pdb
-D:\Project\Github\DBUtility\obj\Debug\DBUtility.csprojResolveAssemblyReference.cache
 D:\Project\Github\DBUtility\obj\Debug\DBUtility.dll
 D:\Project\Github\DBUtility\obj\Debug\DBUtility.pdb

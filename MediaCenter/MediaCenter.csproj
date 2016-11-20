@@ -186,6 +186,10 @@
       <Project>{c1a0c664-a994-437b-8662-bc38421854f7}</Project>
       <Name>MediaCenter.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MediaCenter.Modules.Footer\MediaCenter.Modules.Footer.csproj">
+      <Project>{8C5B9553-F3C0-428B-9C4F-C428259D2890}</Project>
+      <Name>MediaCenter.Modules.Footer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MediaCenter.Modules.Header\MediaCenter.Modules.Header.csproj">
       <Project>{f8146338-de7d-4479-aa80-8899eee37300}</Project>
       <Name>MediaCenter.Modules.Header</Name>

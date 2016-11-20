@@ -1,6 +1,7 @@
 ﻿using IDAL;
 using IDAL.Model;
 using MediaCenter.Infrastructure;
+using MediaCenter.Infrastructure.Core.Model;
 using MediaCenter.Infrastructure.Event;
 using MediaCenter.Theme.CustomControl;
 using Microsoft.Practices.Prism.Commands;
@@ -31,7 +32,8 @@ namespace MediaCenter.Settings
         [Import]
         private IEventAggregator EventAggregator;
 
-        private MonitoredFile monitoredFile;
+        private string folderPath = string.Empty;
+        private IList<MonitoredFile> monitoredFiles;
         private string tagArray = string.Empty;
         public string TagArray
         {
@@ -51,12 +53,13 @@ namespace MediaCenter.Settings
 
         #endregion
 
-        public SetTagsWindow(MonitoredFile monitoredFile)
+        public SetTagsWindow(string folderPath, IList<MonitoredFile> monitoredFiles)
             : base(null)
         {
             InitializeComponent();
-
-            this.monitoredFile = monitoredFile;
+            this.DataContext = this;
+            this.folderPath = folderPath;
+            this.monitoredFiles = monitoredFiles;
             CreateTagCommand = new DelegateCommand(OnCreateTag);
         }
 
@@ -67,6 +70,8 @@ namespace MediaCenter.Settings
             string[] array = TagArray.Split(';');
             for (int i = 0; i < array.Length; i++)
             {
+                if (string.IsNullOrEmpty(array[i]))
+                    continue;
                 TagInfo tagInfo = null;
                 tagInfo = DataManager.Instance.DBCache.TagInfos.FirstOrDefault(item => (0 == string.Compare(array[i], item.Name)));
                 if (tagInfo.IsNull())
@@ -77,21 +82,30 @@ namespace MediaCenter.Settings
                         break;
                     }
                     isNewTagCreated = true;
+                    DataManager.Instance.DBCache.TagInfos.Add(tagInfo);
                 }
 
                 if (!tagInfo.IsNull())
-                    tagToUpdate += array[i] + DataAccess.DB_MARK_SPLIT;
+                    tagToUpdate += tagInfo.ID + DataAccess.DB_MARK_SPLIT;
             }
 
-            this.monitoredFile.Tag = tagToUpdate; //need clone
-            if (DBHelper.UpdateFile(this.monitoredFile))
-            {
+            UpdateTagsJob job = UpdateTagsJob.Create(folderPath, monitoredFiles);
+            job.TagsToUpdate = tagToUpdate;
+            JobManager.Instance.AddJob(job);
+            JobManager.Instance.ForceStart(job);
 
-            }
+            //this.monitoredFile.Tag = tagToUpdate; //need clone
+            //if (DBHelper.UpdateFile(this.monitoredFile))
+            //{
+
+            //}
 
             //Notify ui refresh tag region
-            //if (isNewTagCreated)
-            //    this.EventAggregator.GetEvent<SettingsEvent>().Publish(new SettingEventArgs(SettingType.SetTags, null));
+            if (isNewTagCreated)
+            {
+                //this.EventAggregator.GetEvent<SettingsEvent>().Publish(new SettingEventArgs(SettingType.SetTags, null));
+                
+            }
         }
     }
 }
