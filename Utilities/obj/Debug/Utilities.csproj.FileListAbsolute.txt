@@ -5,3 +5,8 @@ D:\Github\MediaCenter\Utilities\obj\Debug\Utilities.dll
 D:\Github\MediaCenter\Utilities\obj\Debug\Utilities.pdb
 D:\Github\MediaCenter\build\Debug\Utilities.dll
 D:\Github\MediaCenter\build\Debug\Utilities.pdb
+D:\Project\Github\build\Debug\Utilities.dll
+D:\Project\Github\build\Debug\Utilities.pdb
+D:\Project\Github\Utilities\obj\Debug\Utilities.csprojResolveAssemblyReference.cache
+D:\Project\Github\Utilities\obj\Debug\Utilities.dll
+D:\Project\Github\Utilities\obj\Debug\Utilities.pdb

@@ -106,7 +106,7 @@ namespace MediaCenter.Modules.Showcase
                 JobManager.Instance.ForceStop(currentJob);
                 currentJob = null;
             }
-            currentJob = LoadMediasJob.Create(new LoadMediasJob.LoadPattern() { Category = LoadMediasJob.Category.Folder, keyword = string.Empty });
+            currentJob = LoadMediasJob.Create(new LoadMediasJob.LoadPattern() { Category = LoadMediasJob.Category.Folder, keyword = iFolder.FullPath });
             JobManager.Instance.AddJob(currentJob);
             JobManager.Instance.ForceStart(currentJob);
         }

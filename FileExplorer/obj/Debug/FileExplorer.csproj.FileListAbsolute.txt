@@ -11,3 +11,14 @@ D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer.dll
 D:\Github\MediaCenter\FileExplorer\obj\Debug\FileExplorer.pdb
 D:\Github\MediaCenter\build\Debug\FileExplorer.dll
 D:\Github\MediaCenter\build\Debug\FileExplorer.pdb
+D:\Project\Github\build\Debug\FileExplorer.dll
+D:\Project\Github\build\Debug\FileExplorer.pdb
+D:\Project\Github\FileExplorer\obj\Debug\FileExplorer.csprojResolveAssemblyReference.cache
+D:\Project\Github\FileExplorer\obj\Debug\UITreeView.g.cs
+D:\Project\Github\FileExplorer\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Project\Github\FileExplorer\obj\Debug\FileExplorer_MarkupCompile.cache
+D:\Project\Github\FileExplorer\obj\Debug\FileExplorer_MarkupCompile.lref
+D:\Project\Github\FileExplorer\obj\Debug\UITreeView.baml
+D:\Project\Github\FileExplorer\obj\Debug\FileExplorer.g.resources
+D:\Project\Github\FileExplorer\obj\Debug\FileExplorer.dll
+D:\Project\Github\FileExplorer\obj\Debug\FileExplorer.pdb

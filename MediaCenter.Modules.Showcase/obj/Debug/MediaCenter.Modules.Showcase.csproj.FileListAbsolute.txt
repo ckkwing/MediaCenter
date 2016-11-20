@@ -11,3 +11,16 @@ D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules
 D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\CustomControl\MediaItemUserControl.g.cs
 D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\Github\MediaCenter\MediaCenter.Modules.Showcase\obj\Debug\CustomControl\MediaItemUserControl.baml
+D:\Project\Github\build\Debug\MediaCenter.Modules.Showcase.dll
+D:\Project\Github\build\Debug\MediaCenter.Modules.Showcase.pdb
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.csprojResolveAssemblyReference.cache
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\CustomControl\MediaItemUserControl.g.cs
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\ShowcaseView.g.cs
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase_MarkupCompile.cache
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase_MarkupCompile.lref
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\CustomControl\MediaItemUserControl.baml
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\ShowcaseView.baml
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.g.resources
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.dll
+D:\Project\Github\MediaCenter.Modules.Showcase\obj\Debug\MediaCenter.Modules.Showcase.pdb

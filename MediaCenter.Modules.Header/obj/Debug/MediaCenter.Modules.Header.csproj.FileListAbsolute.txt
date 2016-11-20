@@ -10,3 +10,13 @@ D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.H
 D:\Github\MediaCenter\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.pdb
 D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Header.dll
 D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Header.pdb
+D:\Project\Github\build\Debug\MediaCenter.Modules.Header.dll
+D:\Project\Github\build\Debug\MediaCenter.Modules.Header.pdb
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.csprojResolveAssemblyReference.cache
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\HeaderView.g.cs
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header_MarkupCompile.cache
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header_MarkupCompile.lref
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\HeaderView.baml
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.g.resources
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.dll
+D:\Project\Github\MediaCenter.Modules.Header\obj\Debug\MediaCenter.Modules.Header.pdb

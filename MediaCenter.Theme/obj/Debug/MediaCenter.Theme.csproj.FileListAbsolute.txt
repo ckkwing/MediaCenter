@@ -11,3 +11,14 @@ D:\Github\MediaCenter\MediaCenter.Theme\obj\Debug\Default\Theme.baml
 D:\Github\MediaCenter\build\Debug\MediaCenter.Theme.dll
 D:\Github\MediaCenter\build\Debug\MediaCenter.Theme.pdb
 D:\Github\MediaCenter\MediaCenter.Theme\obj\Debug\Default\Resource_Images.baml
+D:\Project\Github\build\Debug\MediaCenter.Theme.dll
+D:\Project\Github\build\Debug\MediaCenter.Theme.pdb
+D:\Project\Github\MediaCenter.Theme\obj\Debug\MediaCenter.Theme.csprojResolveAssemblyReference.cache
+D:\Project\Github\MediaCenter.Theme\obj\Debug\Default\Resource_Images.baml
+D:\Project\Github\MediaCenter.Theme\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Project\Github\MediaCenter.Theme\obj\Debug\MediaCenter.Theme_MarkupCompile.cache
+D:\Project\Github\MediaCenter.Theme\obj\Debug\MediaCenter.Theme_MarkupCompile.lref
+D:\Project\Github\MediaCenter.Theme\obj\Debug\Default\Theme.baml
+D:\Project\Github\MediaCenter.Theme\obj\Debug\MediaCenter.Theme.g.resources
+D:\Project\Github\MediaCenter.Theme\obj\Debug\MediaCenter.Theme.dll
+D:\Project\Github\MediaCenter.Theme\obj\Debug\MediaCenter.Theme.pdb

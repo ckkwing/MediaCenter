@@ -8,3 +8,9 @@ D:\Github\MediaCenter\SQLiteDAL\obj\Debug\SQLiteDAL.pdb
 D:\Github\MediaCenter\build\Debug\SQLiteDAL.dll.config
 D:\Github\MediaCenter\build\Debug\SQLiteDAL.dll
 D:\Github\MediaCenter\build\Debug\SQLiteDAL.pdb
+D:\Project\Github\build\Debug\SQLiteDAL.dll.config
+D:\Project\Github\build\Debug\SQLiteDAL.dll
+D:\Project\Github\build\Debug\SQLiteDAL.pdb
+D:\Project\Github\SQLiteDAL\obj\Debug\SQLiteDAL.csprojResolveAssemblyReference.cache
+D:\Project\Github\SQLiteDAL\obj\Debug\SQLiteDAL.dll
+D:\Project\Github\SQLiteDAL\obj\Debug\SQLiteDAL.pdb

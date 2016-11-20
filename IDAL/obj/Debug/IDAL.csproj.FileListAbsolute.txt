@@ -5,3 +5,8 @@ D:\Github\MediaCenter\IDAL\obj\Debug\IDAL.dll
 D:\Github\MediaCenter\IDAL\obj\Debug\IDAL.pdb
 D:\Github\MediaCenter\build\Debug\IDAL.dll
 D:\Github\MediaCenter\build\Debug\IDAL.pdb
+D:\Project\Github\build\Debug\IDAL.dll
+D:\Project\Github\build\Debug\IDAL.pdb
+D:\Project\Github\IDAL\obj\Debug\IDAL.csprojResolveAssemblyReference.cache
+D:\Project\Github\IDAL\obj\Debug\IDAL.dll
+D:\Project\Github\IDAL\obj\Debug\IDAL.pdb
