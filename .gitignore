@@ -46,28 +46,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-*.obj
-*.exe
-*.pdb
-*.user
-*.aps
-*.pch
-*.vspscc
-*_i.c
-*_p.c
-*.ncb
-*.suo
-*.tlb
-*.tlh
-*.bak
-*.cache
-*.ilk
-*.log
-*.dll
-*.lib
-*.sbr
-
-build/
-Debug/  
-Release/  
-obj/
+## Include .dll files in packages folder
+# User-specific files
+!*.dll
+# Re-instate the build folder that is excluded in the default .gitignore
+# This folder is used by Microsoft.Bcl.Build.* package
+!build/
