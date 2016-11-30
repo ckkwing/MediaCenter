@@ -1,0 +1,5 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:System="clr-namespace:System;assembly=mscorlib"
+					xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore">
+    <media:FontFamily x:Key="FONTFAMILY_GLOBAL">Comic Sans MS,Segoe UI,Tahoma,FangSong</media:FontFamily>
+</ResourceDictionary>
