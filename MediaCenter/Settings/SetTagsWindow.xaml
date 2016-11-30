@@ -5,10 +5,76 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediaCenter.Settings"
         xmlns:CustomControl="clr-namespace:MediaCenter.Theme.CustomControl;assembly=MediaCenter.Theme"
-        Title="SetTagsWindow" Width="400" Height="300" WindowStartupLocation="CenterOwner">
-    <StackPanel>
-        <TextBlock Text="{Binding Tag}" />
-        <TextBox Width="200" Height="40" Text="{Binding TagArray}" />
-        <Button x:Name="btnCreate" Content="Create" Command="{Binding CreateTagCommand}" />
-    </StackPanel>
+        xmlns:Toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="White"
+        Title="SetTagsWindow" Width="400" Height="300">
+    <CustomControl:BasicWindow.Resources>
+        <Style x:Key="TagsListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <CustomControl:EnhancedTextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Path=Name}" />
+                            <!--<Button Grid.Column="1" Content="{DynamicResource IDS_REMOVE}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
+                                    Command="{Binding RemoveTagCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=CustomControl:BasicWindow}}" 
+                                    CommandParameter="{Binding}" />-->
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TagsListBoxStyle" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border SnapsToDevicePixels="true">
+                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+        </Style>
+    </CustomControl:BasicWindow.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="10,10,10,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!--<TextBox Width="160" Height="20" Text="{Binding TagArray}" />-->
+            <Toolkit:AutoCompleteBox Width="160" Height="20" IsDropDownOpen="True" ItemsSource="{Binding Tags}" ValueMemberPath="Name">
+                <Toolkit:AutoCompleteBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}">
+                            <!--<Run Text="{Binding Name}" />-->
+                        </TextBlock>
+                    </DataTemplate>
+                </Toolkit:AutoCompleteBox.ItemTemplate>
+            </Toolkit:AutoCompleteBox>
+            <Button Margin="10,0" Content="{DynamicResource IDS_ADD}" IsEnabled="{Binding Path=Text, ElementName=txtNewTags, Converter={StaticResource ObjectToBoolConverter}}"
+                    Command="{Binding AddTagCommand}" />
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" ItemsSource="{Binding Tags}" Style="{StaticResource TagsListBoxStyle}" ItemContainerStyle="{StaticResource TagsListBoxItemStyle}" />
+            <TextBlock Grid.Column="1" Text="Join" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <ListBox Grid.Column="2" ItemsSource="{Binding Tags}" Style="{StaticResource TagsListBoxStyle}" ItemContainerStyle="{StaticResource TagsListBoxItemStyle}" />
+        </Grid>
+        <Button Grid.Row="2" HorizontalAlignment="Right" Content="{DynamicResource IDS_OK}" Command="{Binding Path=RealActionCommand}" />
+    </Grid>
 </CustomControl:BasicWindow>

@@ -79,6 +79,8 @@ namespace SQLiteDAL
                 monitoredFile.ID = dr.GetInt32(0);
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
+                monitoredFile.Extension = dr.GetString(3);
+                monitoredFile.Tag = dr.GetString(4);
                 fileList.Add(monitoredFile);
             }
             dr.Close();
@@ -88,7 +90,7 @@ namespace SQLiteDAL
         public IList<MonitoredFile> GetFilesUnderFolder(string folderPath)
         {
             IList<MonitoredFile> fileList = new List<MonitoredFile>();
-            string sqlSelectFormat = "SELECT * FROM " + DataAccess.TABLE_NAME_FILE + (string.IsNullOrEmpty(folderPath) ? string.Empty:" WHERE PATH LIKE '%{0}%'");
+            string sqlSelectFormat = "SELECT * FROM " + DataAccess.TABLE_NAME_FILE + (string.IsNullOrEmpty(folderPath) ? string.Empty : " WHERE PATH LIKE '%{0}%'");
             string sqlSelect = string.Format(sqlSelectFormat, folderPath);
             SQLiteDataReader dr = SqliteHelper.ExecuteReader(DataAccess.ConnectionStringProfile, CommandType.Text, sqlSelect, null);
             while (dr.Read())
@@ -99,20 +101,22 @@ namespace SQLiteDAL
                 monitoredFile.ID = dr.GetInt32(0);
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
+                monitoredFile.Extension = dr.GetString(3);
+                monitoredFile.Tag = dr.GetString(4);
                 fileList.Add(monitoredFile);
             }
             dr.Close();
             return fileList;
         }
 
-        public void GetFilesUnderFolderAsync(string folderPath, Action<IList<MonitoredFile>> callback,ref bool isCancel)
+        public void GetFilesUnderFolderAsync(string folderPath, Action<IList<MonitoredFile>> callback, ref bool isCancel)
         {
             IList<MonitoredFile> fileList = new List<MonitoredFile>();
             string sqlSelectFormat = "SELECT * FROM " + DataAccess.TABLE_NAME_FILE + (string.IsNullOrEmpty(folderPath) ? string.Empty : " WHERE PATH LIKE '%{0}%'");
             string sqlSelect = string.Format(sqlSelectFormat, folderPath);
             SQLiteDataReader dr = SqliteHelper.ExecuteReader(DataAccess.ConnectionStringProfile, CommandType.Text, sqlSelect, null);
             int iCount = 0;
-            
+
             while (dr.Read())
             {
                 if (dr.IsDBNull(1))
@@ -121,6 +125,8 @@ namespace SQLiteDAL
                 monitoredFile.ID = dr.GetInt32(0);
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
+                monitoredFile.Extension = dr.GetString(3);
+                monitoredFile.Tag = dr.GetString(4);
                 fileList.Add(monitoredFile);
                 iCount++;
                 if (iCount >= 100)

@@ -10,8 +10,7 @@
         <ResourceDictionary Source="Resource_Images.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <!-- Resource dictionary entries should be defined here. -->
-
-    <media:FontFamily x:Key="FONTFAMILY_GLOBAL">Comic Sans MS,Segoe UI,Tahoma,FangSong</media:FontFamily>
+    <!--<media:FontFamily x:Key="FONTFAMILY_GLOBAL">Comic Sans MS,Segoe UI,Tahoma,FangSong</media:FontFamily>-->
     <System:Double x:Key="FontSize_Normal">12</System:Double>
     <!--<System:Double x:Key="PopupWindowWidth">600</System:Double>
     <System:Double x:Key="PopupWindowHeight">600</System:Double>-->
@@ -21,13 +20,13 @@
     <SolidColorBrush x:Key="Brush_Normal_Text" Color="#333333" />
 
     <Style x:Key="StyleBasicWindow" TargetType="{x:Type CustomControl:BasicWindow}">
-        <Setter Property="FontFamily" Value="{StaticResource FONTFAMILY_GLOBAL}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FONTFAMILY_GLOBAL}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
         <Setter Property="Background" Value="{StaticResource Brush_Main}"/>
     </Style>
 
     <Style TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="{StaticResource FONTFAMILY_GLOBAL}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FONTFAMILY_GLOBAL}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize_Normal}" />
         <Setter Property="FontStyle" Value="Normal" />
         <Setter Property="Foreground" Value="{StaticResource Brush_Normal_Text}" />
@@ -43,7 +42,7 @@
     </Style>
 
     <Style TargetType="{x:Type Button}">
-        <Setter Property="FontFamily" Value="{StaticResource FONTFAMILY_GLOBAL}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FONTFAMILY_GLOBAL}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="#cfcfcf" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />

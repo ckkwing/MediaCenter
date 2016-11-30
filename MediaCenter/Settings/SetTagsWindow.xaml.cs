@@ -8,6 +8,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
@@ -29,11 +30,10 @@ namespace MediaCenter.Settings
     /// </summary>
     public partial class SetTagsWindow : BasicWindow
     {
-        [Import]
-        private IEventAggregator EventAggregator;
-
-        private string folderPath = string.Empty;
-        private IList<MonitoredFile> monitoredFiles;
+        //[Import]
+        //private IEventAggregator EventAggregator;
+        
+        private object objToAddTags;
         private string tagArray = string.Empty;
         public string TagArray
         {
@@ -48,22 +48,69 @@ namespace MediaCenter.Settings
             }
         }
 
+        private ObservableCollection<TagInfo> totalTags = new ObservableCollection<TagInfo>();
+        public ObservableCollection<TagInfo> TotalTags
+        {
+            get
+            {
+                return totalTags;
+            }
+
+            set
+            {
+                totalTags = value;
+                OnPropertyChanged("TotalTags");
+            }
+        }
+
+        private ObservableCollection<TagInfo> tags = new ObservableCollection<TagInfo>();
+        public ObservableCollection<TagInfo> Tags
+        {
+            get
+            {
+                return tags;
+            }
+
+            set
+            {
+                tags = value;
+                OnPropertyChanged("Tags");
+            }
+        }
+
         #region Command
-        public ICommand CreateTagCommand { get; private set; }
+        public ICommand AddTagCommand { get; private set; }
+        public ICommand RemoveTagCommand { get; private set; }
+        public ICommand RealActionCommand { get; private set; }
 
         #endregion
 
-        public SetTagsWindow(string folderPath, IList<MonitoredFile> monitoredFiles)
+        public SetTagsWindow(object objToAddTags)
             : base(null)
         {
             InitializeComponent();
             this.DataContext = this;
-            this.folderPath = folderPath;
-            this.monitoredFiles = monitoredFiles;
-            CreateTagCommand = new DelegateCommand(OnCreateTag);
+            this.objToAddTags = objToAddTags;
+            AddTagCommand = new DelegateCommand(OnAddTag);
+            RemoveTagCommand = new DelegateCommand<TagInfo>(OnRemoveTag);
+            RealActionCommand = new DelegateCommand(OnRealAction);
+            GetExistTags();
+
         }
 
-        private void OnCreateTag()
+        private void GetExistTags()
+        {
+            if (objToAddTags is MonitoredFile)
+            {
+                Tags = new ObservableCollection<TagInfo>(DataManager.Instance.DBCache.GetContainTags(objToAddTags as MonitoredFile));
+                for(int i =0; i<40;i++)
+                {
+                    Tags.Add(new TagInfo() { Name = i.ToString() });
+                }
+            }
+        }
+
+        private void OnAddTag()
         {
             bool isNewTagCreated = false;
             string tagToUpdate = string.Empty;
@@ -89,10 +136,10 @@ namespace MediaCenter.Settings
                     tagToUpdate += tagInfo.ID + DataAccess.DB_MARK_SPLIT;
             }
 
-            UpdateTagsJob job = UpdateTagsJob.Create(folderPath, monitoredFiles);
-            job.TagsToUpdate = tagToUpdate;
-            JobManager.Instance.AddJob(job);
-            JobManager.Instance.ForceStart(job);
+            //UpdateTagsJob job = UpdateTagsJob.Create(folderPath, new List<MonitoredFile>() { monitoredFile });
+            //job.TagsToUpdate = tagToUpdate;
+            //JobManager.Instance.AddJob(job);
+            //JobManager.Instance.ForceStart(job);
 
             //this.monitoredFile.Tag = tagToUpdate; //need clone
             //if (DBHelper.UpdateFile(this.monitoredFile))
@@ -106,6 +153,15 @@ namespace MediaCenter.Settings
                 //this.EventAggregator.GetEvent<SettingsEvent>().Publish(new SettingEventArgs(SettingType.SetTags, null));
                 
             }
+        }
+
+        private void OnRemoveTag(TagInfo tagInfo)
+        {
+        }
+
+        private void OnRealAction()
+        {
+
         }
     }
 }

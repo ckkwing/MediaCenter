@@ -1,5 +1,10 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:System="clr-namespace:System;assembly=mscorlib">
   <!-- String form C++ Resource Start-->
+    <!--Common-->
+    <System:String x:Uid="IDS_OK" x:Key="IDS_OK">Ok</System:String>
+    <System:String x:Uid="IDS_ADD" x:Key="IDS_ADD">Add</System:String>
+    <System:String x:Uid="IDS_REMOVE" x:Key="IDS_REMOVE">Remove</System:String>
+    <!---->
     <System:String x:Uid="IDS_FOLDERMANAGER_TITLE" x:Key="IDS_FOLDERMANAGER_TITLE">Folder Manager</System:String>
     <System:String x:Uid="IDS_SETTAGS" x:Key="IDS_SETTAGS">Set tags</System:String>
 </ResourceDictionary>

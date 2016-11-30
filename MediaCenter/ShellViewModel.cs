@@ -72,16 +72,16 @@ namespace MediaCenter
             if (null == obj)
                 return;
 
-            string folderPath = string.Empty;
-            IList<MonitoredFile> monitoredFiles = new List<MonitoredFile>();
-            if (obj is IFolder)
-                folderPath = (obj as IFolder).FullPath;
-            else if (obj is MonitoredFile)
-                monitoredFiles.Add(obj as MonitoredFile);
-            else
-                return;
+            //string folderPath = string.Empty;
+            //IList<MonitoredFile> monitoredFiles = new List<MonitoredFile>();
+            //if (obj is IFolder)
+            //    folderPath = (obj as IFolder).FullPath;
+            //else if (obj is MonitoredFile)
+            //    monitoredFiles.Add(obj as MonitoredFile);
+            //else
+            //    return;
 
-            SetTagsWindow window = new Settings.SetTagsWindow(folderPath, monitoredFiles);
+            SetTagsWindow window = new Settings.SetTagsWindow(obj as MonitoredFile);
             window.ShowDialog();
         }
         

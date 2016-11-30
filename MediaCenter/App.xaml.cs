@@ -27,6 +27,8 @@ namespace MediaCenter
 
             ResourceDictionary lanRes = LanguageSetting.LoadLanguageResource();
             Application.Current.Resources.MergedDictionaries.Add(lanRes);
+            ResourceDictionary localizedCommonRes = LanguageSetting.LoadLocalizedCommonDictionary();
+            Application.Current.Resources.MergedDictionaries.Add(localizedCommonRes);
 
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();

@@ -44,3 +44,4 @@ D:\Project\Github\MediaCenter\obj\Debug\Shell.baml
 D:\Project\Github\MediaCenter\obj\Debug\MediaCenter.g.resources
 D:\Project\Github\MediaCenter\obj\Debug\MediaCenter.Properties.Resources.resources
 D:\Project\Github\MediaCenter\obj\Debug\MediaCenter.csproj.GenerateResource.Cache
+D:\Github\MediaCenter\MediaCenter\obj\Debug\LocalizedResources\CommonResource.baml

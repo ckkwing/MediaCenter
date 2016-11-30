@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.Extension;
 
 namespace MediaCenter.Infrastructure
 {
@@ -80,5 +81,26 @@ namespace MediaCenter.Infrastructure
         {
             TagInfos = DBHelper.GetTags();
         }
+
+        public IList<TagInfo> GetContainTags(MonitoredFile monitoredFile)
+        {
+            IList<TagInfo> tagInfos = new List<TagInfo>();
+            if (monitoredFile.IsNull())
+                return tagInfos;
+
+            string[] array = monitoredFile.Tag.Split(';');
+            for (int i = 0; i < array.Length; i++)
+            {
+                int tagId = -1;
+                if (!Int32.TryParse(array[i], out tagId))
+                    continue;
+                TagInfo tagInfo = TagInfos.FirstOrDefault(tag => tag.ID == tagId);
+                if (tagInfo.IsNull())
+                    continue;
+                tagInfos.Add(tagInfo);
+            }
+            return tagInfos;
+        }
+
     }
 }
