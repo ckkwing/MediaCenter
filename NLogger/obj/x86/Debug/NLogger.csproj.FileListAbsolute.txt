@@ -1,4 +1,0 @@
-D:\Github\MediaCenter\NLogger\bin\x86\Debug\NLogger.dll
-D:\Github\MediaCenter\NLogger\bin\x86\Debug\NLogger.pdb
-D:\Github\MediaCenter\NLogger\obj\x86\Debug\NLogger.dll
-D:\Github\MediaCenter\NLogger\obj\x86\Debug\NLogger.pdb

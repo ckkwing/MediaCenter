@@ -1,9 +1,0 @@
-D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Footer.dll
-D:\Github\MediaCenter\build\Debug\MediaCenter.Modules.Footer.pdb
-D:\Github\MediaCenter\MediaCenter.Modules.Footer\obj\Debug\FooterView.g.cs
-D:\Github\MediaCenter\MediaCenter.Modules.Footer\obj\Debug\MediaCenter.Modules.Footer_MarkupCompile.cache
-D:\Github\MediaCenter\MediaCenter.Modules.Footer\obj\Debug\MediaCenter.Modules.Footer_MarkupCompile.lref
-D:\Github\MediaCenter\MediaCenter.Modules.Footer\obj\Debug\FooterView.baml
-D:\Github\MediaCenter\MediaCenter.Modules.Footer\obj\Debug\MediaCenter.Modules.Footer.g.resources
-D:\Github\MediaCenter\MediaCenter.Modules.Footer\obj\Debug\MediaCenter.Modules.Footer.dll
-D:\Github\MediaCenter\MediaCenter.Modules.Footer\obj\Debug\MediaCenter.Modules.Footer.pdb
