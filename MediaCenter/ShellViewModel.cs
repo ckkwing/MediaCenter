@@ -27,6 +27,17 @@ namespace MediaCenter
         {
             this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<SettingsEvent>().Subscribe(OnSetting, ThreadOption.UIThread);
+            JobManager.Instance.JobRunningStateChanged += Instance_JobRunningStateChanged;
+        }
+
+        ~ShellViewModel()
+        {
+            JobManager.Instance.JobRunningStateChanged -= Instance_JobRunningStateChanged;
+        }
+
+        private void Instance_JobRunningStateChanged(object sender, Infrastructure.Core.Model.Job job)
+        {
+            ;
         }
 
         private void OnSetting(SettingEventArgs eventArgs)
@@ -71,17 +82,8 @@ namespace MediaCenter
         {
             if (null == obj)
                 return;
-
-            //string folderPath = string.Empty;
-            //IList<MonitoredFile> monitoredFiles = new List<MonitoredFile>();
-            //if (obj is IFolder)
-            //    folderPath = (obj as IFolder).FullPath;
-            //else if (obj is MonitoredFile)
-            //    monitoredFiles.Add(obj as MonitoredFile);
-            //else
-            //    return;
-
-            SetTagsWindow window = new Settings.SetTagsWindow(obj as MonitoredFile);
+            
+            SetTagsWindow window = new Settings.SetTagsWindow(obj);
             window.ShowDialog();
         }
         

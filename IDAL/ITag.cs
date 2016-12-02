@@ -11,5 +11,6 @@ namespace IDAL
     {
         IList<TagInfo> GetTags();
         bool InsertTag(TagInfo tagInfo);
+        int InsertPatchTags(IList<TagInfo> tagInfos);
     }
 }

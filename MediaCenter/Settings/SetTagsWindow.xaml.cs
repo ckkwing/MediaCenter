@@ -1,4 +1,5 @@
-﻿using IDAL;
+﻿using FileExplorer.Model;
+using IDAL;
 using IDAL.Model;
 using MediaCenter.Infrastructure;
 using MediaCenter.Infrastructure.Core.Model;
@@ -80,7 +81,6 @@ namespace MediaCenter.Settings
 
         #region Command
         public ICommand AddTagCommand { get; private set; }
-        public ICommand RemoveTagCommand { get; private set; }
         public ICommand RealActionCommand { get; private set; }
 
         #endregion
@@ -92,76 +92,98 @@ namespace MediaCenter.Settings
             this.DataContext = this;
             this.objToAddTags = objToAddTags;
             AddTagCommand = new DelegateCommand(OnAddTag);
-            RemoveTagCommand = new DelegateCommand<TagInfo>(OnRemoveTag);
             RealActionCommand = new DelegateCommand(OnRealAction);
             GetExistTags();
-
         }
 
         private void GetExistTags()
         {
+            TotalTags = new ObservableCollection<TagInfo>(DataManager.Instance.DBCache.TagInfos);
             if (objToAddTags is MonitoredFile)
             {
                 Tags = new ObservableCollection<TagInfo>(DataManager.Instance.DBCache.GetContainTags(objToAddTags as MonitoredFile));
-                for(int i =0; i<40;i++)
-                {
-                    Tags.Add(new TagInfo() { Name = i.ToString() });
-                }
             }
         }
 
         private void OnAddTag()
         {
-            bool isNewTagCreated = false;
-            string tagToUpdate = string.Empty;
             string[] array = TagArray.Split(';');
             for (int i = 0; i < array.Length; i++)
             {
                 if (string.IsNullOrEmpty(array[i]))
                     continue;
                 TagInfo tagInfo = null;
-                tagInfo = DataManager.Instance.DBCache.TagInfos.FirstOrDefault(item => (0 == string.Compare(array[i], item.Name)));
+                tagInfo = TotalTags.FirstOrDefault(item => (0 == string.Compare(array[i], item.Name)));
                 if (tagInfo.IsNull())
                 {
                     tagInfo = new TagInfo() { Name = array[i] };
-                    if (!DBHelper.InsertTag(tagInfo))
-                    {
-                        break;
-                    }
-                    isNewTagCreated = true;
-                    DataManager.Instance.DBCache.TagInfos.Add(tagInfo);
+                    TotalTags.Add(tagInfo);
                 }
 
                 if (!tagInfo.IsNull())
-                    tagToUpdate += tagInfo.ID + DataAccess.DB_MARK_SPLIT;
+                {
+                    AddTag(tagInfo);
+                }
             }
-
-            //UpdateTagsJob job = UpdateTagsJob.Create(folderPath, new List<MonitoredFile>() { monitoredFile });
-            //job.TagsToUpdate = tagToUpdate;
-            //JobManager.Instance.AddJob(job);
-            //JobManager.Instance.ForceStart(job);
-
-            //this.monitoredFile.Tag = tagToUpdate; //need clone
-            //if (DBHelper.UpdateFile(this.monitoredFile))
-            //{
-
-            //}
-
-            //Notify ui refresh tag region
-            if (isNewTagCreated)
-            {
-                //this.EventAggregator.GetEvent<SettingsEvent>().Publish(new SettingEventArgs(SettingType.SetTags, null));
-                
-            }
-        }
-
-        private void OnRemoveTag(TagInfo tagInfo)
-        {
         }
 
         private void OnRealAction()
         {
+            string tagToUpdate = string.Empty;
+            var newTags = from info in Tags where info.ID == -1 select info;
+            DBHelper.InsertTags(newTags.ToList());
+            foreach (TagInfo tagInfo in Tags)
+            {
+                tagToUpdate += tagInfo.ID + DataAccess.DB_MARK_SPLIT;
+            }
+            string folderPath = string.Empty;
+            List<MonitoredFile> files = new List<MonitoredFile>();
+            if (objToAddTags is MonitoredFile)
+            {
+                files.Add(objToAddTags as MonitoredFile);
+            }
+            else
+            {
+                IFolder iFolder = objToAddTags as IFolder;
+                folderPath = iFolder.FolderPath;
+            }
+            UpdateTagsJob job = UpdateTagsJob.Create(folderPath, files);
+            job.TagsToUpdate = tagToUpdate;
+            JobManager.Instance.AddJob(job);
+            JobManager.Instance.ForceStart(job);
+        }
 
+        private void OnListBoxItemDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListBoxItem listBoxItem = e.Source as ListBoxItem;
+            if (listBoxItem.IsNull())
+                return;
+            TagInfo tagInfo = listBoxItem.DataContext as TagInfo;
+            if (tagInfo.IsNull())
+                return;
+
+           switch(listBoxItem.Tag.ToString())
+            {
+                case "Add":
+                    AddTag(tagInfo);
+                    break;
+                case "Remove":
+                    RemoveTag(tagInfo);
+                    break;
+            }
+        }
+
+        private void AddTag(TagInfo tagInfo)
+        {
+            if (Tags.Contains(tagInfo))
+                return;
+            Tags.Add(tagInfo);
+        }
+
+        private void RemoveTag(TagInfo tagInfo)
+        {
+            if (Tags.Contains(tagInfo))
+                Tags.Remove(tagInfo);
         }
     }
 }

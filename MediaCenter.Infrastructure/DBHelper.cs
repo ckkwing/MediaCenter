@@ -92,5 +92,10 @@ namespace MediaCenter.Infrastructure
         {
             return iTag.InsertTag(tagInfo);
         }
+
+        public static int InsertTags(IList<TagInfo> tagInfos)
+        {
+            return iTag.InsertPatchTags(tagInfos);
+        }
     }
 }

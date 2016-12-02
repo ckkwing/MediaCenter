@@ -51,5 +51,49 @@ namespace SQLiteDAL
             }
             return bRel;
         }
+
+        public int InsertPatchTags(IList<TagInfo> tagInfos)
+        {
+            int iSuccessRows = 0;
+            if (null == tagInfos || 0 == tagInfos.Count)
+                return iSuccessRows;
+            string sqlInsertFormat = "INSERT INTO {0} (ID, VALUE) VALUES (NULL, @VALUE); " + DataAccess.SQL_SELECT_ID_LAST;
+            string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_TAG);
+
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@VALUE", DbType.String)
+                    };
+
+            try
+            {
+                foreach (TagInfo tagInfo in tagInfos)
+                {
+                    parms[0].Value = tagInfo.Name;
+                    object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);
+                    if (null != objRel)
+                    {
+                        iSuccessRows++;
+                        int id = Convert.ToInt32(objRel);
+                        tagInfo.ID = id;
+                    }
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return iSuccessRows;
+        }
     }
 }
