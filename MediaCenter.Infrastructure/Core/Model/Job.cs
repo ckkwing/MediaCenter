@@ -17,6 +17,7 @@ namespace MediaCenter.Infrastructure.Core.Model
     {
         LoadDBMedias,
         UpdateTags,
+        FileScanner,
     }
 
     public abstract class Job : ICloneable, INotifyPropertyChanged

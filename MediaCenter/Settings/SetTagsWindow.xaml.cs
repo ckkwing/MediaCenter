@@ -151,6 +151,7 @@ namespace MediaCenter.Settings
             job.TagsToUpdate = tagToUpdate;
             JobManager.Instance.AddJob(job);
             JobManager.Instance.ForceStart(job);
+            this.Close();
         }
 
         private void OnListBoxItemDoubleClick(object sender, MouseButtonEventArgs e)

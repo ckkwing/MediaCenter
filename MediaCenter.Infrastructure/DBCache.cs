@@ -65,6 +65,7 @@ namespace MediaCenter.Infrastructure
         {
             RefreshTagInfos();
             RefreshMonitoredFolders();
+            RefreshMonitoredFiles();
         }
 
         public void Uninit()
@@ -75,6 +76,11 @@ namespace MediaCenter.Infrastructure
         public void RefreshMonitoredFolders()
         {
             MonitoredFolders = DBHelper.GetExistMonitoredFolderList();
+        }
+
+        public void RefreshMonitoredFiles()
+        {
+            MonitoredFiles = DBHelper.GetFilesUnderFolder(string.Empty);
         }
 
         public void RefreshTagInfos()

@@ -2,6 +2,7 @@
 using Microsoft.Practices.Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,5 +24,12 @@ namespace IDAL.Model
             return new MonitoredFolderInfo() { Name = iFolder.Name, Path = iFolder.FullPath };
         }
 
+        public static MonitoredFolderInfo Convert(DirectoryInfo directoryInfo)
+        {
+            if (null == directoryInfo)
+                return Create();
+
+            return new MonitoredFolderInfo() { Name = directoryInfo.Name, Path = directoryInfo.FullName };
+        }
     }
 }

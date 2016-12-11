@@ -34,6 +34,11 @@ namespace MediaCenter.Infrastructure.Core.Runner
            
             return true;
         }
-        
+
+        protected override void JobRunning_End(DateTime dtLastRunTime)
+        {
+            base.JobRunning_End(dtLastRunTime);
+            DataManager.Instance.DBCache.RefreshMonitoredFolders();
+        }
     }
 }

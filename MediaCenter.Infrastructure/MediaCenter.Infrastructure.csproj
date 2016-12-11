@@ -114,8 +114,10 @@
     <Compile Include="Behaviors\ViewExportAttribute.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="Core\Error\ErrorCode.cs" />
+    <Compile Include="Core\Model\FileScannerJob.cs" />
     <Compile Include="Core\Model\Job.cs" />
     <Compile Include="Core\Model\UpdateTagsJob.cs" />
+    <Compile Include="Core\Runner\FileScannerJobRunner.cs" />
     <Compile Include="Core\Runner\IJobRunnerStatusCallback.cs" />
     <Compile Include="Core\Runner\JobRunner.cs" />
     <Compile Include="Core\JobScheduler.cs" />

@@ -43,5 +43,11 @@ namespace MediaCenter.Infrastructure.Core.Runner
             int iSuccessfulRow = DBHelper.UpdateFiles(filesToUpdate);
             return true;
         }
+
+        protected override void JobRunning_End(DateTime dtLastRunTime)
+        {
+            base.JobRunning_End(dtLastRunTime);
+            DataManager.Instance.DBCache.RefreshTagInfos();
+        }
     }
 }

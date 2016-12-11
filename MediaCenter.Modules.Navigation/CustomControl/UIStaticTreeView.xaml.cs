@@ -64,7 +64,24 @@ namespace MediaCenter.Modules.Navigation.CustomControl
                 return;
             }
 
+            this.ViewModel.SetCurrentFolder(folder);
             this.eventAggregator.GetEvent<MonitoredFoldersSelectedEvent>().Publish(folder);
+        }
+
+        private void treeExplorer_Expanded(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem item = e.OriginalSource as TreeViewItem;
+            if (item == null)
+            {
+                return;
+            }
+            IFolder folder = item.DataContext as IFolder;
+            if (folder.IsNull() || this.ViewModel.IsNull())
+            {
+                return;
+            }
+
+            this.ViewModel.LoadFolderChildren(folder);
         }
 
         private void treeExplorer_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

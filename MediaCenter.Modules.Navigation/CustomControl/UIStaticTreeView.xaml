@@ -71,6 +71,7 @@
              BorderBrush="Transparent"  Background="Transparent"
              ItemsSource="{Binding Items}" 
              SelectedItemChanged="treeExplorer_SelectedItemChanged"
+             TreeViewItem.Expanded="treeExplorer_Expanded"
              PreviewMouseRightButtonDown="treeExplorer_PreviewMouseRightButtonDown">
             <!--<TreeView.Resources>
                 -->

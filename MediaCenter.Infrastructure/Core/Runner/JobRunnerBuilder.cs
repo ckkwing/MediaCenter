@@ -20,6 +20,9 @@ namespace MediaCenter.Infrastructure.Core.Runner
                 case JobType.UpdateTags:
                     jbr = new UpdateTagsJobRunner(job);
                     break;
+                case JobType.FileScanner:
+                    jbr = new FileScannerJobRunner(job);
+                    break;
             }
             return jbr;
         }

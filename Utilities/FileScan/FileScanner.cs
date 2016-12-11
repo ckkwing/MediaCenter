@@ -98,30 +98,43 @@ namespace Utilities.FileScan
             ProcessEvent?.Invoke(this, new FileScannerProcessEventArgs(processType));
         }
 
-        public void Start()
+        private void NotifyEvent(FileScannerProcessEventArgs args)
+        {
+            ProcessEvent?.Invoke(this, args);
+        }
+
+        public void StartAsync()
         {
             Reset();
-            NLogger.LogHelper.UILogger.Debug("FileScanner start");
+            NLogger.LogHelper.UILogger.Debug("FileScanner async start");
             NotifyEvent(ProcessType.Start);
-            Thread runnerThread = new Thread(StartScan);
+            Thread runnerThread = new Thread(StartScanAsync);
             runnerThread.IsBackground = true;
             runnerThread.Name = "File Scanner Thread + ";
             runnerThread.Start();
+        }
+
+        public void StartSync()
+        {
+            Reset();
+            NLogger.LogHelper.UILogger.Debug("FileScanner sync start");
+            GetFiles();
+            NLogger.LogHelper.UILogger.Debug("FileScanner sync end");
         }
 
         public void Stop()
         {
             IsCancel = true;
             NotifyEvent(ProcessType.Cancelling);
-            NLogger.LogHelper.UILogger.Debug("FileScanner cancelling...");
+            NLogger.LogHelper.UILogger.Debug("FileScanner async cancelling...");
         }
 
-        private async void StartScan()
+        private async void StartScanAsync()
         {
             NotifyEvent(ProcessType.InProcess);
-            await GetFilesAsync();
+            await GetFiles();
             NotifyEvent(ProcessType.End);
-            NLogger.LogHelper.UILogger.Debug("FileScanner end");
+            NLogger.LogHelper.UILogger.Debug("FileScanner async end");
         }
 
         private bool CheckMediaType(FileInfo fileInfo)
@@ -151,7 +164,7 @@ namespace Utilities.FileScan
             return bRel;
         }
 
-        private Task<List<FileInfo>> GetFilesAsync()
+        private Task<List<FileInfo>> GetFiles()
         {
             foreach (string pathToScan in Config.PathsToScan)
             {
@@ -162,8 +175,10 @@ namespace Utilities.FileScan
                 DirectoryInfo directoryInfo = new DirectoryInfo(pathToScan);
                 if (null == directoryInfo || !directoryInfo.Exists)
                     continue;
-                IList<FileInfo> searchedFiles = ScanFilesInDirectory(directoryInfo);
+                IList<FileInfo> searchedFiles = new List<FileInfo>();
+                ScanFilesInDirectory(directoryInfo, ref searchedFiles);
                 FilesInDirectory.AddRange(searchedFiles);
+                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = searchedFiles });
             }
 
             return Task.Run(() =>
@@ -172,10 +187,10 @@ namespace Utilities.FileScan
             });
         }
 
-        private IList<FileInfo> ScanFilesInDirectory(DirectoryInfo directoryInfo)
+        private void ScanFilesInDirectory(DirectoryInfo directoryInfo, ref IList<FileInfo> searchedFiles)
         {
             if (null == directoryInfo || !directoryInfo.Exists)
-                return FilesInDirectory;
+                return;
 
             try
             {
@@ -189,7 +204,7 @@ namespace Utilities.FileScan
                         continue;
                     if (fileSystemInfo is DirectoryInfo)
                     {
-                        ScanFilesInDirectory(fileSystemInfo as DirectoryInfo);
+                        ScanFilesInDirectory(fileSystemInfo as DirectoryInfo, ref searchedFiles);
                     }
                     else
                     {
@@ -197,7 +212,7 @@ namespace Utilities.FileScan
                         if (null != fileInfo)
                         {
                             if (CheckMediaType(fileInfo))
-                                FilesInDirectory.Add(fileInfo);
+                                searchedFiles.Add(fileInfo);
                         }
                     }
                 }
@@ -206,7 +221,6 @@ namespace Utilities.FileScan
             {
                 NLogger.LogHelper.UILogger.Debug("ScanFilesInDirectory", e);
             }
-            return FilesInDirectory;
         }
     }
 }

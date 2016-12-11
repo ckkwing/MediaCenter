@@ -185,7 +185,7 @@ namespace FileExplorer.ViewModel
             //this.SearchViewModel.UninitialSearch();
         }
 
-        public void LoadFolderChildren(IFolder folder)
+        public virtual void LoadFolderChildren(IFolder folder)
         {
             if (folder.IsNull() || this.CurrentFolder == folder)
             {
@@ -198,7 +198,7 @@ namespace FileExplorer.ViewModel
             });
         }
 
-        public void SetCurrentFolder(IFolder folder)
+        public virtual void SetCurrentFolder(IFolder folder)
         {
             if (folder.IsNull() || this.CurrentFolder == folder)
             {

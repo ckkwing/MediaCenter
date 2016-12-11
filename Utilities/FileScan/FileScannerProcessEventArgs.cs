@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,9 @@ namespace Utilities.FileScan
                 processType = value;
             }
         }
+
+        public DirectoryInfo CurrentDir { get; set; }
+        public IList<FileInfo> Files = new List<FileInfo>();
 
         public FileScannerProcessEventArgs(ProcessType processType)
         {

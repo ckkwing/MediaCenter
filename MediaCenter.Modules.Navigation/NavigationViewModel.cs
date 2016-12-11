@@ -63,14 +63,14 @@ namespace MediaCenter.Modules.Navigation
         public NavigationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            //this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Subscribe(OnLoadDataCompleted, ThreadOption.UIThread);
             TagSelectedCommand = new DelegateCommand<TagInfo>(OnTagSelected, CanExcute);
+            Infrastructure.Core.Core.Instance.JobRunningStateChanged += Instance_JobRunningStateChanged;
             LoadData();
         }
 
         ~NavigationViewModel()
         {
-            //this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Unsubscribe(OnLoadDataCompleted);
+            Infrastructure.Core.Core.Instance.JobRunningStateChanged -= Instance_JobRunningStateChanged;
         }
 
         private void OnLoadDataCompleted(LoadMediasJob obj)
@@ -81,14 +81,7 @@ namespace MediaCenter.Modules.Navigation
         private void LoadData()
         {
             //DataManager.Instance.DBCache.RefreshTagInfos();
-            RunOnUIThreadAsync(() =>
-            {
-                Tags.Clear();
-                foreach (TagInfo tag in DataManager.Instance.DBCache.TagInfos)
-                {
-                    Tags.Add(tag);
-                }
-            });
+            RefreshTags();
 
             //DataManager.Instance.DBCache.RefreshMonitoredFolders();
             //RunOnUIThreadAsync(() =>
@@ -99,6 +92,18 @@ namespace MediaCenter.Modules.Navigation
             //        MonitoredFolders.Add(info);
             //    }
             //});
+        }
+
+        private void RefreshTags()
+        {
+            RunOnUIThreadAsync(() =>
+            {
+                Tags.Clear();
+                foreach (TagInfo tag in DataManager.Instance.DBCache.TagInfos)
+                {
+                    Tags.Add(tag);
+                }
+            });
         }
 
         private void OnTagSelected(TagInfo tag)
@@ -115,5 +120,33 @@ namespace MediaCenter.Modules.Navigation
         //{
         //    this.eventAggregator.GetEvent<MonitoredFoldersSelectedEvent>().Publish(iFolder);
         //}
+
+        private void Instance_JobRunningStateChanged(object sender, Job job)
+        {
+            if (null == job)
+                return;
+            switch(job.Type)
+            {
+                case JobType.UpdateTags:
+                    {
+                        RunOnUIThreadAsync(() => {
+                            this.Tags.Clear();
+                            foreach (TagInfo tagInfo in DataManager.Instance.DBCache.TagInfos)
+                            {
+                                this.Tags.Add(tagInfo);
+                            }
+                        });
+                    }
+                    break;
+                case JobType.LoadDBMedias:
+                    break;
+                case JobType.FileScanner:
+                    {
+                        RunOnUIThreadAsync(() => {
+                        });
+                    }
+                    break;
+            }
+        }
     }
 }

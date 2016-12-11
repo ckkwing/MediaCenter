@@ -25,7 +25,7 @@ namespace MediaCenter.Infrastructure
             return iDBEntity.InitDBProfile();
         }
 
-        public static int InsertFoldersToMonitor(IList<IFolder> folders)
+        public static int InsertFolders(IList<IFolder> folders)
         {
             IList<MonitoredFolderInfo> convertedFolders = new List<MonitoredFolderInfo>();
             foreach (IFolder iFolder in folders)
@@ -38,7 +38,7 @@ namespace MediaCenter.Infrastructure
             return iMonitorFolder.InsertPatchFolders(convertedFolders);
         }
 
-        public static int InsertFoldersToMonitor(IList<MonitoredFolderInfo> folders)
+        public static int InsertFolders(IList<MonitoredFolderInfo> folders)
         {
             return iMonitorFolder.InsertPatchFolders(folders);
         }
@@ -53,7 +53,7 @@ namespace MediaCenter.Infrastructure
             return iMonitorFolder.GetMonitoredFolderList().Select(item => item.Path).ToList();
         }
 
-        public static int InsertFilesToDB(IList<FileInfo> files)
+        public static int InsertFiles(IList<FileInfo> files)
         {
             return iScannedFile.InsertPatchFiles(files);
         }

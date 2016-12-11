@@ -1,6 +1,7 @@
 ﻿using FileExplorer.Model;
 using IDAL.Model;
 using MediaCenter.Infrastructure;
+using MediaCenter.Infrastructure.Core.Model;
 using MediaCenter.Infrastructure.Event;
 using MediaCenter.Settings;
 using MediaCenter.Settings.FolderManager;
@@ -67,14 +68,17 @@ namespace MediaCenter
 
             if (window.ResultButtonType == Theme.CustomControl.Dialog.CommonDialog.ResultButtonType.OK)
             {
-                IList<string> existedFileList = DBHelper.GetExistMonitoredFolderStringList();
-                IEnumerable<string> newFolders = selectedFilesPath.Where(path => !existedFileList.Contains(path));
-                IEnumerable<IFolder> foldersToAdd = selectedFiles.Where(item => newFolders.Contains(item.FullPath));
-                DBHelper.InsertFoldersToMonitor(foldersToAdd.ToList());
-                DataManager.Instance.DBCache.RefreshMonitoredFolders();
-                //this.eventAggregator.GetEvent<MonitoredFoldersChangedEvent>().Publish("");
-                DataManager.Instance.FileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = DataManager.Instance.DBCache.MonitoredFolderStrings };
-                DataManager.Instance.FileScanner.Start();
+                FileScannerJob currentJob = FileScannerJob.Create(selectedFilesPath);
+                JobManager.Instance.AddJob(currentJob);
+                JobManager.Instance.ForceStart(currentJob);
+
+                //IList<string> existedFileList = DBHelper.GetExistMonitoredFolderStringList();
+                //IEnumerable<string> newFolders = selectedFilesPath.Where(path => !existedFileList.Contains(path));
+                //IEnumerable<IFolder> foldersToAdd = selectedFiles.Where(item => newFolders.Contains(item.FullPath));
+                //DBHelper.InsertFoldersToMonitor(foldersToAdd.ToList());
+                //DataManager.Instance.DBCache.RefreshMonitoredFolders();
+                //DataManager.Instance.FileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = DataManager.Instance.DBCache.MonitoredFolderStrings };
+                //DataManager.Instance.FileScanner.StartAsync();
             }
         }
 
