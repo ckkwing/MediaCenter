@@ -19,6 +19,20 @@ namespace MediaCenter.Modules.Header
     {
         [Import]
         public IEventAggregator EventAggregator;
+
+        [Import]
+        HeaderViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as HeaderViewModel;
+            }
+            set
+            {
+                this.DataContext = value;
+            }
+        }
+
         public HeaderView()
         {
             InitializeComponent();

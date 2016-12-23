@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.FileScan;
+using static Utilities.StandardFileExtensions;
+using Utilities;
 
 namespace IDAL.Model
 {
@@ -55,7 +58,7 @@ namespace IDAL.Model
             }
         }
 
-        protected string extension = string.Empty;
+        private string extension = string.Empty;
         public string Extension
         {
             get
@@ -67,6 +70,21 @@ namespace IDAL.Model
             {
                 extension = value;
                 OnPropertyChanged("Extension");
+            }
+        }
+
+        private FileCategory category = FileCategory.Unknown;
+        public FileCategory Category
+        {
+            get
+            {
+                return category;
+            }
+
+            set
+            {
+                category = value;
+                OnPropertyChanged("Category");
             }
         }
 
@@ -84,18 +102,33 @@ namespace IDAL.Model
                 OnPropertyChanged("Tag");
             }
         }
-        
+
+        private int parentID = -1;
+        public int ParentID
+        {
+            get
+            {
+                return parentID;
+            }
+
+            set
+            {
+                parentID = value;
+                OnPropertyChanged("ParentID");
+            }
+        }
+
         public static MonitoredFile Create()
         {
             return new MonitoredFile();
         }
 
-        public static MonitoredFile Convert(FileInfo fileInfo)
+        public static MonitoredFile Convert(ScannedFileInfo scannedFileInfo)
         {
-            if (null == fileInfo)
+            if (null == scannedFileInfo || null == scannedFileInfo.File)
                 return Create();
 
-            return new MonitoredFile() { Name = fileInfo.Name, Path = fileInfo.FullName, Extension = fileInfo.Extension };
+            return new MonitoredFile() { Name = scannedFileInfo.File.Name, Path = scannedFileInfo.File.FullName, Extension = scannedFileInfo.File.Extension, Category = scannedFileInfo.Category };
         }
     }
 }

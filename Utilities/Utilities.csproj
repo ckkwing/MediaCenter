@@ -81,6 +81,7 @@
     <Compile Include="Extension\CommonExtension.cs" />
     <Compile Include="FileScan\FileScanner.cs" />
     <Compile Include="FileScan\FileScannerProcessEventArgs.cs" />
+    <Compile Include="FileScan\ScannedFileInfo.cs" />
     <Compile Include="FolderDefine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\LanguageSetting.cs" />

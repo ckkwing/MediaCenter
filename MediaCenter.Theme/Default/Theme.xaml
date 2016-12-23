@@ -41,7 +41,16 @@
         <Setter Property="ToolTipService.IsEnabled" Value="{Binding IsTextTrimmed, RelativeSource={RelativeSource Self}}" />
     </Style>
 
-    <Style TargetType="{x:Type Button}">
+    <Style TargetType="{x:Type CustomControl:PathTrimmingTextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="ToolTip" Value="{Binding Text,RelativeSource={RelativeSource Mode=Self}}" />
+        <Setter Property="ToolTipService.IsEnabled" Value="{Binding IsTextTrimmed, RelativeSource={RelativeSource Self}}" />
+    </Style>
+
+        <Style TargetType="{x:Type Button}">
         <Setter Property="FontFamily" Value="{DynamicResource FONTFAMILY_GLOBAL}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="#cfcfcf" />

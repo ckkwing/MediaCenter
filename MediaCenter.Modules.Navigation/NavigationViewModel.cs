@@ -39,21 +39,6 @@ namespace MediaCenter.Modules.Navigation
             }
         }
 
-        //private ObservableCollection<MonitoredFolderInfo> monitoredFolders = new ObservableCollection<MonitoredFolderInfo>();
-        //public ObservableCollection<MonitoredFolderInfo> MonitoredFolders
-        //{
-        //    get
-        //    {
-        //        return monitoredFolders;
-        //    }
-
-        //    set
-        //    {
-        //        monitoredFolders = value;
-        //        OnPropertyChanged("MonitoredFolders");
-        //    }
-        //}
-
         #region Command
         public ICommand TagSelectedCommand { get; private set; }
 
@@ -125,6 +110,8 @@ namespace MediaCenter.Modules.Navigation
         {
             if (null == job)
                 return;
+            if (job.JobStatus.RunningState == Infrastructure.Core.Interface.JobState.Running)
+                return;
             switch(job.Type)
             {
                 case JobType.UpdateTags:
@@ -139,12 +126,6 @@ namespace MediaCenter.Modules.Navigation
                     }
                     break;
                 case JobType.LoadDBMedias:
-                    break;
-                case JobType.FileScanner:
-                    {
-                        RunOnUIThreadAsync(() => {
-                        });
-                    }
                     break;
             }
         }

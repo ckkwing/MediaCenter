@@ -1,19 +1,22 @@
-﻿using System;
+﻿using Microsoft.Practices.Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Utilities.StandardFileExtensions;
 
 namespace Utilities.FileScan
 {
     public delegate void FileScannerProcessEventHandler(object sender, FileScannerProcessEventArgs e);
-    public class FileScanner
+    public class FileScanner : BindableBase
     {
-        private readonly IList<string> defaultMusicExtension = new List<string>(StandardFileExtensions.GetAudioExtensions());
-        private readonly IList<string> defaultVideoExtension = new List<string>(StandardFileExtensions.GetVideoExtensions());
-        private readonly IList<string> defaultPhotoExtension = new List<string>(StandardFileExtensions.GetImageExtensions());
+        private static readonly IList<string> defaultMusicExtension = new List<string>(StandardFileExtensions.GetAudioExtensions());
+        private static readonly IList<string> defaultVideoExtension = new List<string>(StandardFileExtensions.GetVideoExtensions());
+        private static readonly IList<string> defaultPhotoExtension = new List<string>(StandardFileExtensions.GetImageExtensions());
+        private static readonly IList<string> defaultDocumentExtension = new List<string>(StandardFileExtensions.GetDocumentExtensions());
 
         public class FileScannerConfiguration
         {
@@ -47,6 +50,21 @@ namespace Utilities.FileScan
             }
         }
 
+        private bool isInProcess = false;
+        public bool IsInProcess
+        {
+            get
+            {
+                return isInProcess;
+            }
+
+            private set
+            {
+                isInProcess = value;
+                OnPropertyChanged("IsInProcess");
+            }
+        }
+
         private bool isCancel = false;
         public bool IsCancel
         {
@@ -58,11 +76,12 @@ namespace Utilities.FileScan
             private set
             {
                 isCancel = value;
+                OnPropertyChanged("IsCancel");
             }
         }
 
-        private List<FileInfo> filesInDirectory = new List<FileInfo>();
-        public List<FileInfo> FilesInDirectory
+        private List<ScannedFileInfo> filesInDirectory = new List<ScannedFileInfo>();
+        public List<ScannedFileInfo> FilesInDirectory
         {
             get
             {
@@ -91,6 +110,8 @@ namespace Utilities.FileScan
         private void Reset()
         {
             FilesInDirectory.Clear();
+            IsCancel = false;
+            IsInProcess = false;
         }
 
         private void NotifyEvent(ProcessType processType)
@@ -156,16 +177,63 @@ namespace Utilities.FileScan
             {
                 //MusicCount++;
             }
+            else if (defaultDocumentExtension.Contains(ext))
+            {
+                //DocumentCount++;
+            }
             else
             {
-                //bRel = false;
+                bRel = false;
             }
 
             return bRel;
         }
 
-        private Task<List<FileInfo>> GetFiles()
+        private bool CheckMediaType(ScannedFileInfo scannedFile)
         {
+            bool bRel = true;
+            if (null == scannedFile)
+                return false;
+            scannedFile.Category = GetFileCategory(scannedFile.File);
+            if (scannedFile.Category == FileCategory.Unknown)
+                bRel = false;
+            return bRel;
+        }
+
+        private FileCategory GetFileCategory(FileInfo fileInfo)
+        {
+            FileCategory category = FileCategory.Unknown;
+            if (null == fileInfo)
+                return category;
+
+            string ext = fileInfo.Extension.ToUpper();
+            if (defaultPhotoExtension.Contains(ext))
+            {
+                //ImageCount++;
+                category = FileCategory.Image;
+            }
+            else if (defaultVideoExtension.Contains(ext))
+            {
+                //VideoCount++;
+                category = FileCategory.Video;
+            }
+            else if (defaultMusicExtension.Contains(ext))
+            {
+                //MusicCount++;
+                category = FileCategory.Audio;
+            }
+            else if (defaultDocumentExtension.Contains(ext))
+            {
+                //DocumentCount++;
+                category = FileCategory.Document;
+            }
+
+            return category;
+        }
+
+        private Task<List<ScannedFileInfo>> GetFiles()
+        {
+            IsInProcess = true;
             foreach (string pathToScan in Config.PathsToScan)
             {
                 if (IsCancel)
@@ -175,23 +243,24 @@ namespace Utilities.FileScan
                 DirectoryInfo directoryInfo = new DirectoryInfo(pathToScan);
                 if (null == directoryInfo || !directoryInfo.Exists)
                     continue;
-                IList<FileInfo> searchedFiles = new List<FileInfo>();
+                IList<ScannedFileInfo> searchedFiles = new List<ScannedFileInfo>();
                 ScanFilesInDirectory(directoryInfo, ref searchedFiles);
                 FilesInDirectory.AddRange(searchedFiles);
-                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = searchedFiles });
             }
 
             return Task.Run(() =>
             {
+                IsInProcess = false;
                 return FilesInDirectory;
             });
         }
 
-        private void ScanFilesInDirectory(DirectoryInfo directoryInfo, ref IList<FileInfo> searchedFiles)
+        private void ScanFilesInDirectory(DirectoryInfo directoryInfo, ref IList<ScannedFileInfo> searchedFiles)
         {
             if (null == directoryInfo || !directoryInfo.Exists)
                 return;
 
+            IList<ScannedFileInfo> fileList = new List<ScannedFileInfo>();
             try
             {
                 FileSystemInfo[] fileSystemInfos = directoryInfo.GetFileSystemInfos();
@@ -204,15 +273,19 @@ namespace Utilities.FileScan
                         continue;
                     if (fileSystemInfo is DirectoryInfo)
                     {
-                        ScanFilesInDirectory(fileSystemInfo as DirectoryInfo, ref searchedFiles);
+                        ScanFilesInDirectory(fileSystemInfo as DirectoryInfo, ref fileList);
                     }
                     else
                     {
                         FileInfo fileInfo = fileSystemInfo as FileInfo;
                         if (null != fileInfo)
                         {
-                            if (CheckMediaType(fileInfo))
-                                searchedFiles.Add(fileInfo);
+                            ScannedFileInfo scannedFileInfo = new ScannedFileInfo() { File = fileInfo };
+                            if (CheckMediaType(scannedFileInfo))
+                            {
+                                fileList.Add(scannedFileInfo);
+                                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = fileList, CurrentFile = scannedFileInfo });
+                            }
                         }
                     }
                 }
@@ -220,6 +293,11 @@ namespace Utilities.FileScan
             catch(Exception e)
             {
                 NLogger.LogHelper.UILogger.Debug("ScanFilesInDirectory", e);
+            }
+            finally
+            {
+                ((List<ScannedFileInfo>)searchedFiles).AddRange(fileList);
+                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = fileList });
             }
         }
     }

@@ -145,7 +145,7 @@ namespace MediaCenter.Settings
             else
             {
                 IFolder iFolder = objToAddTags as IFolder;
-                folderPath = iFolder.FolderPath;
+                folderPath = iFolder.FullPath;
             }
             UpdateTagsJob job = UpdateTagsJob.Create(folderPath, files);
             job.TagsToUpdate = tagToUpdate;

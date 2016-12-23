@@ -84,6 +84,10 @@
       <Project>{908d345e-4eb7-4161-bdf1-f6a85dc60991}</Project>
       <Name>IDAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{3362BCCC-3DDA-4DB8-8E91-E4FF3BA9FEA3}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

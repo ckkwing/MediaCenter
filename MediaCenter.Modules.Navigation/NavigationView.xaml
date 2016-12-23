@@ -77,7 +77,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListBox Grid.Row="0"  ItemsSource="{Binding Tags}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <TextBlock Text="{DynamicResource IDS_ALLTAGS}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <ListBox ItemsSource="{Binding Tags}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </StackPanel>
         <GridSplitter Height="1" />
         <customControl:UIStaticTreeView Grid.Row="1" />
     </Grid>

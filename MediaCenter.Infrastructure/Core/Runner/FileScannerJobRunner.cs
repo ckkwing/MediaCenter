@@ -14,6 +14,7 @@ namespace MediaCenter.Infrastructure.Core.Runner
     {
         private FileScannerJob fileScannerJob = null;
         private FileScanner fileScanner = new FileScanner();
+        private IList<MonitoredFolderInfo> newMonitoredFolderInfos = new List<MonitoredFolderInfo>();
         public FileScannerJobRunner(Job job) : base(job)
         {
         }
@@ -33,12 +34,11 @@ namespace MediaCenter.Infrastructure.Core.Runner
         {
             fileScannerJob = this.Job as FileScannerJob;
 
-            IList<string> existedFileList = DBHelper.GetExistMonitoredFolderStringList();
-            IEnumerable<string> newFolders = fileScannerJob.FilesPath.Where(path => !existedFileList.Contains(path));
-            //IEnumerable<IFolder> foldersToAdd = selectedFiles.Where(item => newFolders.Contains(item.FullPath));
-            //DBHelper.InsertFoldersToMonitor(newFolders);
+            //IList<string> existedFileList = DBHelper.GetExistMonitoredFolderStringList();
+            //IEnumerable<string> newFolders = fileScannerJob.FilesPath.Where(path => !existedFileList.Contains(path));
+            //fileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = newFolders.ToList() };
 
-            fileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = newFolders.ToList() };
+            fileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = fileScannerJob.FilesPath };
             fileScanner.StartSync();
             return true;
         }
@@ -48,8 +48,30 @@ namespace MediaCenter.Infrastructure.Core.Runner
             base.JobRunning_End(dtLastRunTime);
             fileScanner.ProcessEvent -= FileScanner_ProcessEvent;
             //DBHelper.InsertFilesToDB(FileScanner.FilesInDirectory);
+            RemoveUnMonitoredFoldersAndFiles();
             DataManager.Instance.DBCache.RefreshMonitoredFiles();
             DataManager.Instance.DBCache.RefreshMonitoredFolders();
+        }
+
+        private void RemoveUnMonitoredFoldersAndFiles()
+        {
+            IList<MonitoredFolderInfo> foldersToDeleteFromDB = new List<MonitoredFolderInfo>();
+            foreach (MonitoredFolderInfo folder in DataManager.Instance.DBCache.MonitoredFolders)
+            {
+                bool isNeedToDelete = true;
+                foreach(MonitoredFolderInfo newFolder in newMonitoredFolderInfos)
+                {
+                    if (0 == string.Compare(folder.Path, newFolder.Path, true))
+                    {
+                        isNeedToDelete = false;
+                        break;
+                    }
+                }
+                if (isNeedToDelete)
+                    foldersToDeleteFromDB.Add(folder);
+            }
+            DBHelper.DeleteFolders(foldersToDeleteFromDB);
+            DBHelper.DeleteFilesUnderFolders(foldersToDeleteFromDB);
         }
 
         private void FileScanner_ProcessEvent(object sender, FileScannerProcessEventArgs e)
@@ -60,18 +82,26 @@ namespace MediaCenter.Infrastructure.Core.Runner
                     break;
                 case ProcessType.InProcess:
                     {
+                        MonitoredFolderInfo monitoredFolderInfo = MonitoredFolderInfo.Convert(e.CurrentDir);
+                        newMonitoredFolderInfos.Add(monitoredFolderInfo);
                         if (null == DataManager.Instance.DBCache.MonitoredFolders.FirstOrDefault(folder => 0 == string.Compare(folder.Path, e.CurrentDir.FullName, true)))
                         {
-                            IList<MonitoredFolderInfo> monitoredFolderInfo = new List<MonitoredFolderInfo>() {
-                                MonitoredFolderInfo.Convert(e.CurrentDir)
+                            IList<MonitoredFolderInfo> monitoredFolderInfos = new List<MonitoredFolderInfo>() {
+                                monitoredFolderInfo
                             };
-                            DBHelper.InsertFolders(monitoredFolderInfo);
+                            DBHelper.InsertFolders(monitoredFolderInfos);
                         }
-                        IList<FileInfo> filesToAdd = new List<FileInfo>();
-                        foreach(FileInfo fileInfo in e.Files)
+                        IList<MonitoredFile> filesToAdd = new List<MonitoredFile>();
+                        foreach(ScannedFileInfo fileInfo in e.Files)
                         {
-                            if (null == DataManager.Instance.DBCache.MonitoredFiles.FirstOrDefault(file => 0 == string.Compare(fileInfo.FullName, file.Path)))
-                                filesToAdd.Add(fileInfo);
+                            if (null == fileInfo || null == fileInfo.File)
+                                continue;
+                            if (null == DataManager.Instance.DBCache.MonitoredFiles.FirstOrDefault(file => 0 == string.Compare(fileInfo.File.FullName, file.Path)))
+                            {
+                                MonitoredFile file = MonitoredFile.Convert(fileInfo);
+                                file.ParentID = monitoredFolderInfo.ID;
+                                filesToAdd.Add(file);
+                            }
                         }
                         DBHelper.InsertFiles(filesToAdd);
                     }

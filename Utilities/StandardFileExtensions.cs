@@ -8,6 +8,15 @@ namespace Utilities
 {
     public static class StandardFileExtensions
     {
+        public enum FileCategory
+        {
+            Unknown,
+            Image,
+            Audio,
+            Video,
+            Document
+        }
+
         /// <summary> The image extensions. </summary>
         public static string[] GetImageExtensions()
         {

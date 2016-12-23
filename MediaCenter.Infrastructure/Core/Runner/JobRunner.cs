@@ -97,7 +97,11 @@ namespace MediaCenter.Infrastructure.Core.Runner
             _logger.ErrorFormat("============ JobRunner Thread Start, Job:{0}============", _job);
             Utilities.Utility.PreventSleep(true);
             DateTime dtLastRunTime = DateTime.MinValue;
-
+            Job.JobStatus.RunningState = Interface.JobState.Running;
+            if (_jobRunnerStatusCallback != null)
+            {
+                _jobRunnerStatusCallback.OnJobStart(this);
+            }
             try
             {
                 while (true)
@@ -167,7 +171,7 @@ namespace MediaCenter.Infrastructure.Core.Runner
             }
 
             _logger.ErrorFormat("JobRunning_End, WorkingSet:{0}", Environment.WorkingSet);
-
+            Job.JobStatus.RunningState = Interface.JobState.Pending;
             JobRunning_End(dtLastRunTime);
             
             _isCancelled = false;

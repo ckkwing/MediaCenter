@@ -69,6 +69,7 @@
     <Compile Include="CustomControl\CustomVirtualizingPanel.cs" />
     <Compile Include="CustomControl\Dialog\CommonDialog.cs" />
     <Compile Include="CustomControl\EnhancedTextBlock.cs" />
+    <Compile Include="CustomControl\PathTrimmingTextBlock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

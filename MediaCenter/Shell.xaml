@@ -21,13 +21,13 @@
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="70*"/>
+                <ColumnDefinition Width="30*" MinWidth="180" />
+                <ColumnDefinition Width="70*" MinWidth="180"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <ContentControl prism:RegionManager.RegionName="{x:Static inf:RegionNames.NavigationRegion}" />
             </Grid>
-            <GridSplitter Width="1" />
+            <GridSplitter Width="4" />
             <Grid Grid.Column="1">
                 <ContentControl x:Name="mainRegion" cal:RegionManager.RegionName="{x:Static inf:RegionNames.MainRegion}" />
             </Grid>

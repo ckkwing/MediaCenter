@@ -20,6 +20,9 @@ using System.Threading;
 using FileExplorer.Model;
 using MediaCenter.Infrastructure.Core.Model;
 using MediaCenter.Infrastructure.Core;
+using Utilities.FileScan;
+using System.Windows.Data;
+using static MediaCenter.Infrastructure.Model.MediaInfo;
 
 namespace MediaCenter.Modules.Showcase
 {
@@ -28,9 +31,11 @@ namespace MediaCenter.Modules.Showcase
     public class ShowcaseViewModel : ViewModelBase
     {
         private IEventAggregator eventAggregator;
+        private int iMediaTypes = (int)MediaType.Document | (int)MediaType.Image | (int)MediaType.Music | (int)MediaType.Video;
+        private List<string> defaultExtension = new List<string>();
 
-        private ObservableCollection<MonitoredFile> files = new ObservableCollection<MonitoredFile>();
-        public ObservableCollection<MonitoredFile> Files
+        private IList<MonitoredFile> files = new List<MonitoredFile>();
+        public IList<MonitoredFile> Files
         {
             get
             {
@@ -40,7 +45,36 @@ namespace MediaCenter.Modules.Showcase
             set
             {
                 files = value;
-                OnPropertyChanged("Files");
+                //OnPropertyChanged("Files");
+            }
+        }
+
+        private ICollectionView contentView;
+        public ICollectionView ContentView
+        {
+            get
+            {
+                if (contentView == null)
+                {
+                    contentView = CollectionViewSource.GetDefaultView(Files);
+                    //contentView.CurrentChanged += JobView_CurrentChanged;
+                }
+                return contentView;
+            }
+        }
+
+        private string currentFilePath = string.Empty;
+        public string CurrentFilePath
+        {
+            get
+            {
+                return currentFilePath;
+            }
+
+            set
+            {
+                currentFilePath = value;
+                OnPropertyChanged("CurrentFilePath");
             }
         }
 
@@ -59,19 +93,60 @@ namespace MediaCenter.Modules.Showcase
             this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<MonitoredFoldersSelectedEvent>().Subscribe(this.MonitoredFoldersSelected, ThreadOption.UIThread);
             this.eventAggregator.GetEvent<TagChangedEvent>().Subscribe(this.OnTagSelected, ThreadOption.UIThread);
+            this.eventAggregator.GetEvent<MediaFilterChangedEvent>().Subscribe(this.OnFilterChanged, ThreadOption.UIThread);
             JobManager.Instance.JobRunningStateChanged += Instance_JobRunningStateChanged;
+            DataManager.Instance.FileScanner.ProcessEvent += FileScanner_ProcessEvent;
             PlayCommand = new DelegateCommand<MonitoredFile>(OnPlay, CanExcute);
             OpenLocationCommand = new DelegateCommand<MonitoredFile>(OnOpenLocation, CanExcute);
             SetTagCommand = new DelegateCommand<MonitoredFile>(OnSetTag, CanExcute);
+            ChangeFilterRule();
         }
 
         ~ShowcaseViewModel()
         {
+            DataManager.Instance.FileScanner.ProcessEvent -= FileScanner_ProcessEvent;
             this.eventAggregator.GetEvent<MonitoredFoldersSelectedEvent>().Unsubscribe(this.MonitoredFoldersSelected);
             this.eventAggregator.GetEvent<TagChangedEvent>().Unsubscribe(this.OnTagSelected);
+            this.eventAggregator.GetEvent<MediaFilterChangedEvent>().Unsubscribe(this.OnFilterChanged);
             JobManager.Instance.JobRunningStateChanged -= Instance_JobRunningStateChanged;
         }
-        
+
+        private void OnFilterChanged(int iFilter)
+        {
+            this.iMediaTypes = iFilter;
+            ChangeFilterRule();
+        }
+
+        private void ChangeFilterRule()
+        {
+            defaultExtension.Clear();
+            if ((int)MediaType.Image == (iMediaTypes & (int)MediaType.Image))
+            {
+                defaultExtension.AddRange(StandardFileExtensions.GetImageExtensions());
+            }
+            if ((int)MediaType.Video == (iMediaTypes & (int)MediaType.Video))
+            {
+                defaultExtension.AddRange(StandardFileExtensions.GetVideoExtensions());
+            }
+            if ((int)MediaType.Music == (iMediaTypes & (int)MediaType.Music))
+            {
+                defaultExtension.AddRange(StandardFileExtensions.GetAudioExtensions());
+            }
+            if ((int)MediaType.Document == (iMediaTypes & (int)MediaType.Document))
+            {
+                defaultExtension.AddRange(StandardFileExtensions.GetDocumentExtensions());
+            }
+
+            ContentView.Filter = (item) =>
+            {
+                if (-1 == iMediaTypes)
+                    return false;
+                string ext = ((MonitoredFile)item).Extension.ToUpper();
+                return defaultExtension.Contains(ext);
+            };
+            ContentView.Refresh();
+        }
+
         private void OnSetTag(MonitoredFile monitoredFile)
         {
             if (null == monitoredFile)
@@ -141,12 +216,31 @@ namespace MediaCenter.Modules.Showcase
                             {
                                 Files.Add(file);
                             }
+                            ContentView.Refresh();
                         });
                         
                     }
                     break;
             }
         }
-        
+
+        private void FileScanner_ProcessEvent(object sender, Utilities.FileScan.FileScannerProcessEventArgs e)
+        {
+            if (e.IsNull() || e.CurrentFile.IsNull() || e.CurrentFile.File.IsNull())
+                return;
+            switch (e.ProcessType)
+            {
+                case ProcessType.Start:
+                    break;
+                case ProcessType.InProcess:
+                    {
+                        this.CurrentFilePath = e.CurrentFile.File.FullName;
+                    }
+                    break;
+                case ProcessType.End:
+                    break;
+            }
+        }
+
     }
 }

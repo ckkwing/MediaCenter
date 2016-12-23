@@ -58,7 +58,9 @@ namespace SQLiteDAL
                                                                     PATH TEXT NOT NULL,
                                                                     NAME TEXT NOT NULL,
                                                                     EXTENSION TEXT,
-                                                                    TAG TEXT
+                                                                    CATEGORY INTEGER,
+                                                                    TAG TEXT,
+                                                                    PARENTID INTEGER
                                                                     );";
             string sql = string.Format(sqlFormat, DataAccess.TABLE_NAME_FILE);
             SqliteHelper.ExecuteNonQuery(DataAccess.ConnectionStringProfile, CommandType.Text, sql, null);

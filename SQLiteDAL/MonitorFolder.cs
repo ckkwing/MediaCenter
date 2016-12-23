@@ -25,7 +25,7 @@ namespace SQLiteDAL
             if (0 == folders.Count)
                 return iSuccessRows;
             //string sqlDelete = "DELETE FROM MonitoredFolder";
-            string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME) VALUES (NULL, @PATH, @NAME);";
+            string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME) VALUES (NULL, @PATH, @NAME);" + DataAccess.SQL_SELECT_ID_LAST;
             string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_MONITOREDFOLDER);
 
             SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
@@ -44,7 +44,13 @@ namespace SQLiteDAL
                 {
                     parms[0].Value = folder.Path;
                     parms[1].Value = folder.Name;
-                    iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                    object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);
+                    if (null != objRel)
+                    {
+                        iSuccessRows++;
+                        int id = Convert.ToInt32(objRel);
+                        folder.ID = id;
+                    }
                 }
 
                 trans.Commit();
@@ -81,6 +87,39 @@ namespace SQLiteDAL
             return folderList;
         }
 
+        public void DeletePatchFolders(IList<MonitoredFolderInfo> folders)
+        {
+            if (0 == folders.Count)
+                return;
+            string sqlDeleteFormat = "DELETE FROM {0} WHERE ID=@ID";
+            string sqlDelete = string.Format(sqlDeleteFormat, DataAccess.TABLE_NAME_MONITOREDFOLDER);
 
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@ID", DbType.Int32)
+                    };
+
+            try
+            {
+                foreach (MonitoredFolderInfo folder in folders)
+                {
+                    parms[0].Value = folder.ID;
+                    SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

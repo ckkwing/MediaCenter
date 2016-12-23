@@ -68,17 +68,17 @@ namespace MediaCenter
 
             if (window.ResultButtonType == Theme.CustomControl.Dialog.CommonDialog.ResultButtonType.OK)
             {
-                FileScannerJob currentJob = FileScannerJob.Create(selectedFilesPath);
-                JobManager.Instance.AddJob(currentJob);
-                JobManager.Instance.ForceStart(currentJob);
+                //FileScannerJob currentJob = FileScannerJob.Create(selectedFilesPath);
+                //JobManager.Instance.AddJob(currentJob);
+                //JobManager.Instance.ForceStart(currentJob);
 
                 //IList<string> existedFileList = DBHelper.GetExistMonitoredFolderStringList();
                 //IEnumerable<string> newFolders = selectedFilesPath.Where(path => !existedFileList.Contains(path));
                 //IEnumerable<IFolder> foldersToAdd = selectedFiles.Where(item => newFolders.Contains(item.FullPath));
                 //DBHelper.InsertFoldersToMonitor(foldersToAdd.ToList());
                 //DataManager.Instance.DBCache.RefreshMonitoredFolders();
-                //DataManager.Instance.FileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = DataManager.Instance.DBCache.MonitoredFolderStrings };
-                //DataManager.Instance.FileScanner.StartAsync();
+                DataManager.Instance.FileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = selectedFilesPath };
+                DataManager.Instance.FileScanner.StartAsync();
             }
         }
 

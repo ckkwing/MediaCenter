@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediaCenter.Infrastructure.Core.Interface;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -50,11 +51,25 @@ namespace MediaCenter.Infrastructure.Core.Model
             set { _priority = value; }
         }
 
+        private IJobStatus _jobStatus = null;
+        public IJobStatus JobStatus
+        {
+            get
+            {
+                return _jobStatus;
+            }
+            set
+            {
+                _jobStatus = value;
+            }
+        }
+
         public Job()
         {
             this.JobID = Guid.NewGuid().ToString();
             this.JobPriority = JobPriority.Normal;
             this.IsActived = true;
+            _jobStatus = new JobStatusImpl();
         }
 
         public Job(JobType type)

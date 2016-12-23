@@ -14,6 +14,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Utilities.Extension;
 using MediaCenter.Infrastructure.Core.Model;
+using System.Windows.Threading;
+using Utilities.FileScan;
+using System.Diagnostics;
 
 namespace MediaCenter.Modules.Navigation.CustomControl
 {
@@ -37,17 +40,14 @@ namespace MediaCenter.Modules.Navigation.CustomControl
             if (null == eventAggregator)
                 throw new ArgumentNullException("IEventAggregator");
             this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Subscribe(OnLoadDataCompleted, ThreadOption.UIThread);
-
+            DataManager.Instance.FileScanner.ProcessEvent += FileScanner_ProcessEvent;
             ViewModel = new StaticFileExplorerViewModel();
-            //IList<string> paths = new List<string>();
-            //DataManager.Instance.DBCache.MonitoredFolders.ToList().ForEach(item => {
-            //    paths.Add(item.Path);
-            //});
             ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
         }
 
         ~UIStaticTreeView()
         {
+            DataManager.Instance.FileScanner.ProcessEvent -= FileScanner_ProcessEvent;
             this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Unsubscribe(OnLoadDataCompleted);
         }
 
@@ -64,7 +64,7 @@ namespace MediaCenter.Modules.Navigation.CustomControl
                 return;
             }
 
-            this.ViewModel.SetCurrentFolder(folder);
+            //this.ViewModel.SetCurrentFolder(folder);
             this.eventAggregator.GetEvent<MonitoredFoldersSelectedEvent>().Publish(folder);
         }
 
@@ -81,7 +81,7 @@ namespace MediaCenter.Modules.Navigation.CustomControl
                 return;
             }
 
-            this.ViewModel.LoadFolderChildren(folder);
+            //this.ViewModel.LoadFolderChildren(folder);
         }
 
         private void treeExplorer_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -108,6 +108,32 @@ namespace MediaCenter.Modules.Navigation.CustomControl
             if (folder.IsNull())
                 return;
             this.eventAggregator.GetEvent<SettingsEvent>().Publish(new SettingEventArgs(SettingType.SetTags, folder));
+        }
+
+        private void btnOpenLocation_Click(object sender, RoutedEventArgs e)
+        {
+            IFolder folder = treeExplorer.SelectedItem as IFolder;
+            if (folder.IsNull())
+                return;
+
+            Process.Start("explorer.exe", folder.FullPath);
+        }
+
+        private void FileScanner_ProcessEvent(object sender, FileScannerProcessEventArgs e)
+        {
+            if (e.IsNull())
+                return;
+            switch (e.ProcessType)
+            {
+                case ProcessType.End:
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                        {
+                            ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
+                        }));
+                    }
+                    break;
+            }
         }
     }
 }

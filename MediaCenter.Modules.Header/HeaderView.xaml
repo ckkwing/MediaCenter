@@ -11,15 +11,16 @@
                 <MenuItem Header="_Open" />
                 <MenuItem Header="_Save" />
                 <Separator />
-                <MenuItem Header="Folder Manager" Click="MenuItem_Click" />
+                <MenuItem Header="{DynamicResource IDS_FOLDERMANAGER_TITLE}" Click="MenuItem_Click" />
                 <Separator />
                 <MenuItem Header="_Exit" />
             </MenuItem>
         </Menu>
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-            <CheckBox Content="Image" />
-            <CheckBox Content="Video" />
-            <CheckBox Content="Document" />
+            <CheckBox Content="{DynamicResource IDS_IMAGE}" IsChecked="{Binding IsImageSelected}" />
+            <CheckBox Content="{DynamicResource IDS_VIDEO}" IsChecked="{Binding IsVideoSelected}" />
+            <CheckBox Content="{DynamicResource IDS_MUSIC}" IsChecked="{Binding IsMusicSelected}" />
+            <CheckBox Content="{DynamicResource IDS_DOCUMENT}" IsChecked="{Binding IsDocumentSelected}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

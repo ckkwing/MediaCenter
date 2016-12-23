@@ -4,7 +4,14 @@
     <System:String x:Uid="IDS_OK" x:Key="IDS_OK">Ok</System:String>
     <System:String x:Uid="IDS_ADD" x:Key="IDS_ADD">Add</System:String>
     <System:String x:Uid="IDS_REMOVE" x:Key="IDS_REMOVE">Remove</System:String>
+    <System:String x:Uid="IDS_PLAY" x:Key="IDS_PLAY">Play</System:String>
+    <System:String x:Uid="IDS_OPENLOCATION" x:Key="IDS_OPENLOCATION">Open location</System:String>
+    <System:String x:Uid="IDS_IMAGE" x:Key="IDS_IMAGE">Image</System:String>
+    <System:String x:Uid="IDS_VIDEO" x:Key="IDS_VIDEO">Video</System:String>
+    <System:String x:Uid="IDS_MUSIC" x:Key="IDS_MUSIC">Music</System:String>
+    <System:String x:Uid="IDS_DOCUMENT" x:Key="IDS_DOCUMENT">Document</System:String>
     <!---->
     <System:String x:Uid="IDS_FOLDERMANAGER_TITLE" x:Key="IDS_FOLDERMANAGER_TITLE">Folder Manager</System:String>
+    <System:String x:Uid="IDS_ALLTAGS" x:Key="IDS_ALLTAGS">All tags</System:String>
     <System:String x:Uid="IDS_SETTAGS" x:Key="IDS_SETTAGS">Set tags</System:String>
 </ResourceDictionary>

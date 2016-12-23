@@ -43,6 +43,11 @@ namespace MediaCenter.Infrastructure
             return iMonitorFolder.InsertPatchFolders(folders);
         }
 
+        public static void DeleteFolders(IList<MonitoredFolderInfo> folders)
+        {
+            iMonitorFolder.DeletePatchFolders(folders);
+        }
+
         public static IList<MonitoredFolderInfo> GetExistMonitoredFolderList()
         {
             return iMonitorFolder.GetMonitoredFolderList();
@@ -53,7 +58,7 @@ namespace MediaCenter.Infrastructure
             return iMonitorFolder.GetMonitoredFolderList().Select(item => item.Path).ToList();
         }
 
-        public static int InsertFiles(IList<FileInfo> files)
+        public static int InsertFiles(IList<MonitoredFile> files)
         {
             return iScannedFile.InsertPatchFiles(files);
         }
@@ -81,6 +86,11 @@ namespace MediaCenter.Infrastructure
         public static int UpdateFiles(IList<MonitoredFile> files)
         {
             return iScannedFile.UpdateFiles(files);
+        }
+
+        public static void DeleteFilesUnderFolders(IList<MonitoredFolderInfo> folders)
+        {
+            iScannedFile.DeleteFilesUnderFolders(folders);
         }
 
         public static IList<TagInfo> GetTags()

@@ -86,6 +86,7 @@
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{DynamicResource IDS_SETTAGS}" Name="btnSetTags" Click="btnSetTags_Click" />
+                    <MenuItem Header="{DynamicResource IDS_OPENLOCATION}" Name="btnOpenLocation" Click="btnOpenLocation_Click" />
                 </ContextMenu>
             </TreeView.ContextMenu>
             <!--<i:Interaction.Triggers>

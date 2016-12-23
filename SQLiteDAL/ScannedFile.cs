@@ -11,20 +11,21 @@ using DBUtility;
 using System.IO;
 using IDAL.Model;
 using System.Diagnostics;
+using static Utilities.StandardFileExtensions;
 
 namespace SQLiteDAL
 {
     public class ScannedFile : IScannedFile
     {
-        private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_FILE + " SET PATH = @PATH, NAME = @NAME, EXTENSION = @EXTENSION,  TAG = @TAG WHERE ID = {0};";
+        private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_FILE + " SET PATH = @PATH, NAME = @NAME, EXTENSION = @EXTENSION,  TAG = @TAG, PARENTID = @PARENTID WHERE ID = {0};";
 
-        public int InsertPatchFiles(IList<FileInfo> files)
+        public int InsertPatchFiles(IList<MonitoredFile> files)
         {
             int iSuccessRows = 0;
             if (0 == files.Count)
                 return iSuccessRows;
-            string sqlDelete = "DELETE FROM File";
-            string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, EXTENSION, TAG) VALUES (NULL, @PATH, @NAME, @EXTENSION, @TAG);";
+            //string sqlDelete = "DELETE FROM File";
+            string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, EXTENSION, CATEGORY, TAG, PARENTID) VALUES (NULL, @PATH, @NAME, @EXTENSION, @CATEGORY, @TAG, @PARENTID);";
             string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_FILE);
 
             SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
@@ -34,19 +35,23 @@ namespace SQLiteDAL
                 new SQLiteParameter("@PATH", DbType.String),
                 new SQLiteParameter("@NAME", DbType.String),
                 new SQLiteParameter("@EXTENSION", DbType.String),
-                new SQLiteParameter("@TAG", DbType.String)
+                new SQLiteParameter("@CATEGORY", DbType.Int32),
+                new SQLiteParameter("@TAG", DbType.String),
+                new SQLiteParameter("@PARENTID", DbType.Int32)
                     };
 
             try
             {
-                SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+                //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
 
-                foreach (FileInfo file in files)
+                foreach (MonitoredFile file in files)
                 {
-                    parms[0].Value = file.FullName;
+                    parms[0].Value = file.Path;
                     parms[1].Value = file.Name;
                     parms[2].Value = file.Extension;
-                    parms[3].Value = string.Empty;
+                    parms[3].Value = (int)file.Category;
+                    parms[4].Value = string.Empty;
+                    parms[5].Value = file.ParentID;
                     iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
                 }
 
@@ -80,7 +85,9 @@ namespace SQLiteDAL
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
                 monitoredFile.Extension = dr.GetString(3);
-                monitoredFile.Tag = dr.GetString(4);
+                monitoredFile.Category = (FileCategory)dr.GetInt32(4);
+                monitoredFile.Tag = dr.GetString(5);
+                monitoredFile.ParentID = dr.GetInt32(6);
                 fileList.Add(monitoredFile);
             }
             dr.Close();
@@ -102,7 +109,9 @@ namespace SQLiteDAL
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
                 monitoredFile.Extension = dr.GetString(3);
-                monitoredFile.Tag = dr.GetString(4);
+                monitoredFile.Category = (FileCategory)dr.GetInt32(4);
+                monitoredFile.Tag = dr.GetString(5);
+                monitoredFile.ParentID = dr.GetInt32(6);
                 fileList.Add(monitoredFile);
             }
             dr.Close();
@@ -126,7 +135,9 @@ namespace SQLiteDAL
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
                 monitoredFile.Extension = dr.GetString(3);
-                monitoredFile.Tag = dr.GetString(4);
+                monitoredFile.Category = (FileCategory)dr.GetInt32(4);
+                monitoredFile.Tag = dr.GetString(5);
+                monitoredFile.ParentID = dr.GetInt32(6);
                 fileList.Add(monitoredFile);
                 iCount++;
                 if (iCount >= 100)
@@ -157,12 +168,16 @@ namespace SQLiteDAL
                 new SQLiteParameter("@PATH", DbType.String),
                 new SQLiteParameter("@NAME", DbType.String),
                 new SQLiteParameter("@EXTENSION", DbType.String),
-                new SQLiteParameter("@TAG", DbType.String)
+                new SQLiteParameter("@CATEGORY", DbType.Int32),
+                new SQLiteParameter("@TAG", DbType.String),
+                new SQLiteParameter("@PARENTID", DbType.Int32)
                     };
             parms[0].Value = file.Path;
             parms[1].Value = file.Name;
             parms[2].Value = file.Extension;
-            parms[3].Value = file.Tag;
+            parms[3].Value = (int)file.Category;
+            parms[4].Value = file.Tag;
+            parms[5].Value = file.ParentID;
             iRel = SqliteHelper.ExecuteNonQuery(DataAccess.ConnectionStringProfile, CommandType.Text, sqlUpdate, parms);
 
             return iRel > 0 ? true : false;
@@ -178,7 +193,9 @@ namespace SQLiteDAL
                 new SQLiteParameter("@PATH", DbType.String),
                 new SQLiteParameter("@NAME", DbType.String),
                 new SQLiteParameter("@EXTENSION", DbType.String),
-                new SQLiteParameter("@TAG", DbType.String)
+                new SQLiteParameter("@CATEGORY", DbType.Int32),
+                new SQLiteParameter("@TAG", DbType.String),
+                new SQLiteParameter("@PARENTID", DbType.Int32)
                     };
 
             try
@@ -189,7 +206,9 @@ namespace SQLiteDAL
                     parms[0].Value = file.Path;
                     parms[1].Value = file.Name;
                     parms[2].Value = file.Extension;
-                    parms[3].Value = file.Tag;
+                    parms[3].Value = (int)file.Category;
+                    parms[4].Value = file.Tag;
+                    parms[5].Value = file.ParentID;
                     iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlUpdate, parms);
                 }
 
@@ -205,6 +224,40 @@ namespace SQLiteDAL
                 conn.Close();
             }
             return iSuccessRows;
+        }
+
+        public void DeleteFilesUnderFolders(IList<MonitoredFolderInfo> monitoredFolderInfos)
+        {
+            if (0 == monitoredFolderInfos.Count)
+                return;
+            string sqlDeleteFormat = "DELETE FROM {0} WHERE PARENTID=@PARENTID";
+            string sqlDelete = string.Format(sqlDeleteFormat, DataAccess.TABLE_NAME_FILE);
+
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@PARENTID", DbType.Int32)
+                    };
+
+            try
+            {
+                foreach (MonitoredFolderInfo monitoredFolderInfo in monitoredFolderInfos)
+                {
+                    parms[0].Value = monitoredFolderInfo.ID;
+                    SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+                }
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
     }
 }

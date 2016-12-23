@@ -14,5 +14,6 @@ namespace IDAL
         //int InsertPatchFolders(IList<string> folders);
         int InsertPatchFolders(IList<MonitoredFolderInfo> folders);
         IList<MonitoredFolderInfo> GetMonitoredFolderList();
+        void DeletePatchFolders(IList<MonitoredFolderInfo> folders);
     }
 }

@@ -8,6 +8,7 @@
              xmlns:local="clr-namespace:MediaCenter.Modules.Showcase"
              xmlns:localCustomControl="clr-namespace:MediaCenter.Modules.Showcase.CustomControl"
              xmlns:CustomControl="clr-namespace:MediaCenter.Theme.CustomControl;assembly=MediaCenter.Theme"
+             xmlns:infrastructure="clr-namespace:MediaCenter.Infrastructure;assembly=MediaCenter.Infrastructure"
              Name="currentView">
     <UserControl.Resources>
         <Style x:Key="ItemsControlStyle" TargetType="{x:Type ItemsControl}">
@@ -39,10 +40,10 @@
                                                      ItemName="{Binding Name}" Image="{StaticResource IMG_TEST}" ImageSelected="{Binding CheckedImage}" Background="White">
                                 <localCustomControl:MediaItemUserControl.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="Play"
+                                        <MenuItem Header="{DynamicResource IDS_PLAY}"
                                                         Command="{Binding Path=PlacementTarget.Tag.PlayCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                                         CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Open file location"
+                                        <MenuItem Header="{DynamicResource IDS_OPENLOCATION}"
                                                         Command="{Binding Path=PlacementTarget.Tag.OpenLocationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                                         CommandParameter="{Binding}"/>
                                         <MenuItem Header="{DynamicResource IDS_SETTAGS}"
@@ -74,5 +75,9 @@
     </UserControl.Resources>
     <Grid>
         <ItemsControl ItemsSource="{Binding Path=Files}" Style="{StaticResource ItemsControlStyle}" />
+        <Grid Height="60" Width="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Aqua" Panel.ZIndex="100"
+              Visibility="{Binding FileScanner.IsInProcess, Source={x:Static infrastructure:DataManager.Instance}, Converter={StaticResource BoolToVisibilityCollapseConverter}}">
+            <CustomControl:PathTrimmingTextBlock Path="{Binding CurrentFilePath}" ToolTip="{Binding Path=CurrentFilePath}" />
+        </Grid>
     </Grid>
 </UserControl>

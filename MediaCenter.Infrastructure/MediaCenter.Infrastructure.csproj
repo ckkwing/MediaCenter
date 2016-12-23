@@ -114,8 +114,10 @@
     <Compile Include="Behaviors\ViewExportAttribute.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="Core\Error\ErrorCode.cs" />
+    <Compile Include="Core\Interface\IJobStatus.cs" />
     <Compile Include="Core\Model\FileScannerJob.cs" />
     <Compile Include="Core\Model\Job.cs" />
+    <Compile Include="Core\Model\JobStatusImpl.cs" />
     <Compile Include="Core\Model\UpdateTagsJob.cs" />
     <Compile Include="Core\Runner\FileScannerJobRunner.cs" />
     <Compile Include="Core\Runner\IJobRunnerStatusCallback.cs" />
@@ -129,11 +131,13 @@
     <Compile Include="DBCache.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Event\LoadDataCompletedEvent.cs" />
+    <Compile Include="Event\MediaFilterChangedEvent.cs" />
     <Compile Include="Event\MonitoredFoldersSelectedEvent.cs" />
     <Compile Include="Event\SettingsEvent.cs" />
     <Compile Include="Event\TagChangedEvent.cs" />
     <Compile Include="JobManager.cs" />
     <Compile Include="MediaCenterCommands.cs" />
+    <Compile Include="Model\MediaInfo.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

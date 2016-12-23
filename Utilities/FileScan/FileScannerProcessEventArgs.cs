@@ -32,7 +32,8 @@ namespace Utilities.FileScan
         }
 
         public DirectoryInfo CurrentDir { get; set; }
-        public IList<FileInfo> Files = new List<FileInfo>();
+        public IList<ScannedFileInfo> Files = new List<ScannedFileInfo>();
+        public ScannedFileInfo CurrentFile { get; set; }
 
         public FileScannerProcessEventArgs(ProcessType processType)
         {
