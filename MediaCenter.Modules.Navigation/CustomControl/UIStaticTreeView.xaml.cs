@@ -125,6 +125,14 @@ namespace MediaCenter.Modules.Navigation.CustomControl
                 return;
             switch (e.ProcessType)
             {
+                case ProcessType.InProcess:
+                    break;
+                    {
+                        if (e.IsOneDirScanned)
+                        {
+
+                        }
+                    }
                 case ProcessType.End:
                     {
                         Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>

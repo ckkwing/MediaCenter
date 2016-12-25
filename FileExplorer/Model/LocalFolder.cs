@@ -11,7 +11,8 @@ namespace FileExplorer.Model
 {
     public class LocalFolder : FolderBase
     {
-        internal const FileAttributes ExcludeFileAttributes = FileAttributes.Hidden | FileAttributes.System;//| FileAttributes.Temporary;
+        //internal const FileAttributes ExcludeFileAttributes = FileAttributes.Hidden | FileAttributes.System;//| FileAttributes.Temporary;
+        internal const FileAttributes ExcludeFileAttributes = FileAttributes.System;
         internal static List<string> LocalExcludedFolders = new List<string>();
 
         static LocalFolder()

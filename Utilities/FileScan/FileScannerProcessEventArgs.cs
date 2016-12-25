@@ -31,6 +31,8 @@ namespace Utilities.FileScan
             }
         }
 
+        public bool IsOneDirScanned { get; set; }
+
         public DirectoryInfo CurrentDir { get; set; }
         public IList<ScannedFileInfo> Files = new List<ScannedFileInfo>();
         public ScannedFileInfo CurrentFile { get; set; }
@@ -38,6 +40,7 @@ namespace Utilities.FileScan
         public FileScannerProcessEventArgs(ProcessType processType)
         {
             this.ProcessType = processType;
+            IsOneDirScanned = false;
         }
     }
 }

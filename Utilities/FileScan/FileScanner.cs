@@ -288,6 +288,8 @@ namespace Utilities.FileScan
                             }
                         }
                     }
+
+                    NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = fileList, CurrentFile = null, IsOneDirScanned = true });
                 }
             }
             catch(Exception e)
