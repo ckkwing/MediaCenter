@@ -78,6 +78,7 @@
     <Compile Include="CustomControl\MediaItemUserControl.xaml.cs">
       <DependentUpon>MediaItemUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\UIFile.cs" />
     <Compile Include="ShowcaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowcaseView.xaml.cs">

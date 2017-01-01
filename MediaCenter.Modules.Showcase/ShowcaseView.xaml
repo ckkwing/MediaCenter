@@ -37,7 +37,7 @@
                     <DataTemplate>
                         <Grid>
                             <localCustomControl:MediaItemUserControl Grid.Row="1" Width="140" Height="140" Tag="{Binding DataContext, ElementName=currentView}"
-                                                     ItemName="{Binding Name}" Image="{StaticResource IMG_TEST}" ImageSelected="{Binding CheckedImage}" Background="White">
+                                                     ItemName="{Binding MonitoredFile.Name}" Image="{StaticResource IMG_TEST}" ImageSelected="{Binding CheckedImage}" Background="White">
                                 <localCustomControl:MediaItemUserControl.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Header="{DynamicResource IDS_PLAY}"

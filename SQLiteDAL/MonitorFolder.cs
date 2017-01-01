@@ -14,6 +14,8 @@ namespace SQLiteDAL
 {
     public class MonitorFolder : IMonitorFolder
     {
+        private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_MONITOREDFOLDER + " SET PATH = @PATH, NAME = @NAME, ISSCANNED = @ISSCANNED WHERE ID = {0};";
+
         public bool InsertFolder(string folderPath)
         {
             throw new NotImplementedException();
@@ -25,7 +27,7 @@ namespace SQLiteDAL
             if (0 == folders.Count)
                 return iSuccessRows;
             //string sqlDelete = "DELETE FROM MonitoredFolder";
-            string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME) VALUES (NULL, @PATH, @NAME);" + DataAccess.SQL_SELECT_ID_LAST;
+            string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, ISSCANNED) VALUES (NULL, @PATH, @NAME, @ISSCANNED);" + DataAccess.SQL_SELECT_ID_LAST;
             string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_MONITOREDFOLDER);
 
             SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
@@ -33,7 +35,8 @@ namespace SQLiteDAL
             SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
             SQLiteParameter[] parms = {
                 new SQLiteParameter("@PATH", DbType.String),
-                new SQLiteParameter("@NAME", DbType.String)
+                new SQLiteParameter("@NAME", DbType.String),
+                new SQLiteParameter("@ISSCANNED", DbType.Int32)
                     };
 
             try
@@ -44,6 +47,7 @@ namespace SQLiteDAL
                 {
                     parms[0].Value = folder.Path;
                     parms[1].Value = folder.Name;
+                    parms[2].Value = folder.IsScanned ? 1 : 0;
                     object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);
                     if (null != objRel)
                     {
@@ -67,7 +71,56 @@ namespace SQLiteDAL
 
             return iSuccessRows;
         }
-        
+
+        public int UpdateFolders(IList<MonitoredFolderInfo> folders)
+        {
+            int iSuccessRows = 0;
+            if (0 == folders.Count)
+                return iSuccessRows;
+
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@PATH", DbType.String),
+                new SQLiteParameter("@NAME", DbType.String),
+                new SQLiteParameter("@ISSCANNED", DbType.Int32)
+                    };
+
+            try
+            {
+                //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+
+                foreach (MonitoredFolderInfo folder in folders)
+                {
+                    string sqlUpdate = string.Format(sqlUpdateFormat, folder.ID);
+                    parms[0].Value = folder.Path;
+                    parms[1].Value = folder.Name;
+                    parms[2].Value = folder.IsScanned ? 1 : 0;
+                    object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlUpdate, parms);
+                    if (null != objRel)
+                    {
+                        iSuccessRows++;
+                        int id = Convert.ToInt32(objRel);
+                        folder.ID = id;
+                    }
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return iSuccessRows;
+        }
+
         public IList<MonitoredFolderInfo> GetMonitoredFolderList()
         {
             IList<MonitoredFolderInfo> folderList = new List<MonitoredFolderInfo>();
@@ -80,7 +133,8 @@ namespace SQLiteDAL
                 int id = dr.GetInt32(0);
                 string path = dr.GetString(1);
                 string name = dr.GetString(2);
-                MonitoredFolderInfo folderInfo = new MonitoredFolderInfo() { ID = id, Path = path, Name = name };
+                int iScanned = dr.GetInt32(3);
+                MonitoredFolderInfo folderInfo = new MonitoredFolderInfo() { ID = id, Path = path, Name = name, IsScanned = (1 == iScanned) ? true : false };
                 folderList.Add(folderInfo);
             }
             dr.Close();

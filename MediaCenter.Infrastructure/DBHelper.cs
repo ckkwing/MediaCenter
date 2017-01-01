@@ -43,6 +43,11 @@ namespace MediaCenter.Infrastructure
             return iMonitorFolder.InsertPatchFolders(folders);
         }
 
+        public static int UpdateFolders(IList<MonitoredFolderInfo> folders)
+        {
+            return iMonitorFolder.UpdateFolders(folders);
+        }
+
         public static void DeleteFolders(IList<MonitoredFolderInfo> folders)
         {
             iMonitorFolder.DeletePatchFolders(folders);

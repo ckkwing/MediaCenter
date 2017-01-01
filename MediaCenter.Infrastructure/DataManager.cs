@@ -70,16 +70,28 @@ namespace MediaCenter.Infrastructure
                     break;
                 case ProcessType.InProcess:
                     {
+                        if (e.InnerType != InnerType.OneDirectoryScanned)
+                            return;
                         if (e.IsNull() || e.CurrentDir.IsNull())
                             return;
                         MonitoredFolderInfo monitoredFolderInfo = MonitoredFolderInfo.Convert(e.CurrentDir);
+                        monitoredFolderInfo.IsScanned = true;
                         newMonitoredFolderInfos.Add(monitoredFolderInfo);
-                        if (null == DBCache.MonitoredFolders.FirstOrDefault(folder => 0 == string.Compare(folder.Path, e.CurrentDir.FullName, true)))
-                        {
-                            IList<MonitoredFolderInfo> monitoredFolderInfos = new List<MonitoredFolderInfo>() {
+                        IList<MonitoredFolderInfo> monitoredFolderInfos = new List<MonitoredFolderInfo>() {
                                 monitoredFolderInfo
                             };
+                        MonitoredFolderInfo existFolder = DBCache.MonitoredFolders.FirstOrDefault(folder => 0 == string.Compare(folder.Path, e.CurrentDir.FullName, true));
+                        if (null == existFolder)
+                        {
                             DBHelper.InsertFolders(monitoredFolderInfos);
+                        }
+                        else
+                        {
+                            existFolder.IsScanned = true;
+                            monitoredFolderInfos = new List<MonitoredFolderInfo>() {
+                                existFolder
+                            };
+                            DBHelper.UpdateFolders(monitoredFolderInfos);
                         }
                         IList<MonitoredFile> filesToAdd = new List<MonitoredFile>();
                         foreach (ScannedFileInfo fileInfo in e.Files)

@@ -13,6 +13,7 @@ namespace IDAL
         bool InsertFolder(string folderPath);
         //int InsertPatchFolders(IList<string> folders);
         int InsertPatchFolders(IList<MonitoredFolderInfo> folders);
+        int UpdateFolders(IList<MonitoredFolderInfo> folders);
         IList<MonitoredFolderInfo> GetMonitoredFolderList();
         void DeletePatchFolders(IList<MonitoredFolderInfo> folders);
     }

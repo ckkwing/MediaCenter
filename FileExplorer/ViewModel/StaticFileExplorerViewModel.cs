@@ -89,6 +89,64 @@ namespace FileExplorer.ViewModel
             });
         }
 
+        public void UpdateFolderTree(IList<string> resourcePaths)
+        {
+            IFolder parent = RootFolder;
+            foreach (string resourcePath in resourcePaths)
+            {
+                parent = RootFolder;
+                string[] splitedFolders = resourcePath.Split(new string[] { ExplorerFactoryBase.PATH_SPLITER }, StringSplitOptions.RemoveEmptyEntries);
+                string path = string.Empty;
+                for (int i = 0; i < splitedFolders.Length; i++)
+                {
+                    path += splitedFolders[i] + ExplorerFactoryBase.PATH_SPLITER;
+                    DirectoryInfo directory = new DirectoryInfo(path);
+                    if (directory.IsNull())
+                        break;
+                    IFolder node = FindInFolder(directory.FullName, parent.Folders);
+                    if (node.IsNull())
+                    {
+                        LocalFolder currentFolder = new LocalFolder(directory, parent);
+                        currentFolder.Folders.Clear();
+                        parent.Folders.Add(currentFolder);
+                        parent = currentFolder;
+                    }
+                    else
+                    {
+                        parent = node;
+                    }
+                }
+            }
+        }
 
+        public void RemoveFolderTree(IList<string> resourcePaths)
+        {
+            IFolder parent = RootFolder;
+            foreach (string resourcePath in resourcePaths)
+            {
+                IFolder node = FindInFolder(resourcePath + ExplorerFactoryBase.PATH_SPLITER, parent.Folders);
+                if (!node.IsNull())
+                {
+                    node.Parent.Folders.Remove(node);
+                }
+            }
+        }
+
+        private IFolder FindInFolder(string folderPathToFind, IList<IFolder> folders)
+        {
+            IFolder folder = null;
+            foreach(IFolder iFolder in folders)
+            {
+                if (0 == string.Compare(iFolder.FullPath, folderPathToFind, true))
+                {
+                    folder = iFolder;
+                    break;
+                }
+                folder = FindInFolder(folderPathToFind, iFolder.Folders);
+                if (!folder.IsNull())
+                    break;
+            }
+            return folder;
+        }
     }
 }

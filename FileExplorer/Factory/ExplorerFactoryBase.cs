@@ -10,6 +10,7 @@ namespace FileExplorer.Factory
 {
     public abstract class ExplorerFactoryBase
     {
+        public static readonly string PATH_SPLITER = "\\";
         public static DataSourceShell GetShellItem(string parseNames)
         {
             DataSourceShell result = null;

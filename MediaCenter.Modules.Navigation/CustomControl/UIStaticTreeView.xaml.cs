@@ -17,6 +17,8 @@ using MediaCenter.Infrastructure.Core.Model;
 using System.Windows.Threading;
 using Utilities.FileScan;
 using System.Diagnostics;
+using IDAL.Model;
+using System.IO;
 
 namespace MediaCenter.Modules.Navigation.CustomControl
 {
@@ -40,6 +42,7 @@ namespace MediaCenter.Modules.Navigation.CustomControl
             if (null == eventAggregator)
                 throw new ArgumentNullException("IEventAggregator");
             this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Subscribe(OnLoadDataCompleted, ThreadOption.UIThread);
+            this.eventAggregator.GetEvent<DBFolderChangedEvent>().Subscribe(OnDBFolderChanged, ThreadOption.UIThread);
             DataManager.Instance.FileScanner.ProcessEvent += FileScanner_ProcessEvent;
             ViewModel = new StaticFileExplorerViewModel();
             ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
@@ -49,6 +52,7 @@ namespace MediaCenter.Modules.Navigation.CustomControl
         {
             DataManager.Instance.FileScanner.ProcessEvent -= FileScanner_ProcessEvent;
             this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Unsubscribe(OnLoadDataCompleted);
+            this.eventAggregator.GetEvent<DBFolderChangedEvent>().Unsubscribe(OnDBFolderChanged);
         }
 
         private void OnLoadDataCompleted(LoadMediasJob obj)
@@ -126,20 +130,47 @@ namespace MediaCenter.Modules.Navigation.CustomControl
             switch (e.ProcessType)
             {
                 case ProcessType.InProcess:
-                    break;
                     {
-                        if (e.IsOneDirScanned)
+                        if (!e.CurrentDir.IsNull() && e.InnerType == InnerType.OneDirectoryScanned)
                         {
-
+                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                            {
+                                ViewModel.UpdateFolderTree(new List<string>() { e.CurrentDir.FullName });
+                            }));
                         }
                     }
+                    break;
                 case ProcessType.End:
                     {
                         Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                         {
-                            ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
+                            //ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
                         }));
                     }
+                    break;
+            }
+        }
+
+        private void OnDBFolderChanged(DBFolderChangedArgs args)
+        {
+           switch(args.Type)
+            {
+                case DBFolderChangedArgs.ChangedType.Removed:
+                    {
+                        IList<string> resourcePaths = new List<string>();
+                        foreach(MonitoredFolderInfo folder in args.MonitoredFolderList)
+                        {
+                            resourcePaths.Add(folder.Path);
+                        }
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                        {
+                            ViewModel.RemoveFolderTree(resourcePaths);
+                        }));
+                    }
+                    break;
+                case DBFolderChangedArgs.ChangedType.Added:
+                    break;
+                case DBFolderChangedArgs.ChangedType.Modified:
                     break;
             }
         }

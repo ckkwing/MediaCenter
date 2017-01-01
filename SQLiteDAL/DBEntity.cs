@@ -31,7 +31,8 @@ namespace SQLiteDAL
             string sqlFormat = @"CREATE TABLE {0}(
                                                                     ID INTEGER PRIMARY KEY   AUTOINCREMENT,
                                                                     PATH TEXT NOT NULL,
-                                                                    NAME TEXT NOT NULL
+                                                                    NAME TEXT NOT NULL,
+                                                                    ISSCANNED INTEGER NOT NULL
                                                                     );";
             string sql = string.Format(sqlFormat, DataAccess.TABLE_NAME_MONITOREDFOLDER);
             SqliteHelper.ExecuteNonQuery(DataAccess.ConnectionStringProfile, CommandType.Text, sql, null);

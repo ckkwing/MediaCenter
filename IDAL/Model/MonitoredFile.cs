@@ -118,6 +118,21 @@ namespace IDAL.Model
             }
         }
 
+        private bool isScanned = false;
+        public bool IsScanned
+        {
+            get
+            {
+                return isScanned;
+            }
+
+            set
+            {
+                isScanned = value;
+                OnPropertyChanged("IsScanned");
+            }
+        }
+
         public static MonitoredFile Create()
         {
             return new MonitoredFile();

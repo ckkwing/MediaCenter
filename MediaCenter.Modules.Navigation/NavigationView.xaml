@@ -77,11 +77,21 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Vertical">
+        <Expander Grid.Row="0" ExpandDirection="Down">
+            <Expander.Header>
+                <TextBlock Text="{DynamicResource IDS_ALLTAGS}" />
+            </Expander.Header>
+            <ListBox ItemsSource="{Binding Tags}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </Expander>
+        <Expander Grid.Row="1" IsExpanded="True">
+            <Expander.Header>
+                <TextBlock Text="{DynamicResource IDS_FOLDER}" />
+            </Expander.Header>
+            <customControl:UIStaticTreeView />
+        </Expander>
+        <!--<StackPanel Grid.Row="0" Orientation="Vertical">
             <TextBlock Text="{DynamicResource IDS_ALLTAGS}" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <ListBox ItemsSource="{Binding Tags}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        </StackPanel>
-        <GridSplitter Height="1" />
-        <customControl:UIStaticTreeView Grid.Row="1" />
+        </StackPanel>-->
     </Grid>
 </UserControl>

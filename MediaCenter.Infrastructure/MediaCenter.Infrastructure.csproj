@@ -130,6 +130,7 @@
     <Compile Include="DataManager.cs" />
     <Compile Include="DBCache.cs" />
     <Compile Include="DBHelper.cs" />
+    <Compile Include="Event\DBFolderChangedEvent.cs" />
     <Compile Include="Event\LoadDataCompletedEvent.cs" />
     <Compile Include="Event\MediaFilterChangedEvent.cs" />
     <Compile Include="Event\MonitoredFoldersSelectedEvent.cs" />

@@ -23,6 +23,7 @@ using MediaCenter.Infrastructure.Core;
 using Utilities.FileScan;
 using System.Windows.Data;
 using static MediaCenter.Infrastructure.Model.MediaInfo;
+using MediaCenter.Modules.Showcase.Model;
 
 namespace MediaCenter.Modules.Showcase
 {
@@ -34,8 +35,8 @@ namespace MediaCenter.Modules.Showcase
         private int iMediaTypes = (int)MediaType.Document | (int)MediaType.Image | (int)MediaType.Music | (int)MediaType.Video;
         private List<string> defaultExtension = new List<string>();
 
-        private IList<MonitoredFile> files = new List<MonitoredFile>();
-        public IList<MonitoredFile> Files
+        private IList<UIFile> files = new List<UIFile>();
+        public IList<UIFile> Files
         {
             get
             {
@@ -96,9 +97,9 @@ namespace MediaCenter.Modules.Showcase
             this.eventAggregator.GetEvent<MediaFilterChangedEvent>().Subscribe(this.OnFilterChanged, ThreadOption.UIThread);
             JobManager.Instance.JobRunningStateChanged += Instance_JobRunningStateChanged;
             DataManager.Instance.FileScanner.ProcessEvent += FileScanner_ProcessEvent;
-            PlayCommand = new DelegateCommand<MonitoredFile>(OnPlay, CanExcute);
-            OpenLocationCommand = new DelegateCommand<MonitoredFile>(OnOpenLocation, CanExcute);
-            SetTagCommand = new DelegateCommand<MonitoredFile>(OnSetTag, CanExcute);
+            PlayCommand = new DelegateCommand<UIFile>(OnPlay, CanExcute);
+            OpenLocationCommand = new DelegateCommand<UIFile>(OnOpenLocation, CanExcute);
+            SetTagCommand = new DelegateCommand<UIFile>(OnSetTag, CanExcute);
             ChangeFilterRule();
         }
 
@@ -141,34 +142,34 @@ namespace MediaCenter.Modules.Showcase
             {
                 if (-1 == iMediaTypes)
                     return false;
-                string ext = ((MonitoredFile)item).Extension.ToUpper();
+                string ext = ((UIFile)item).MonitoredFile.Extension.ToUpper();
                 return defaultExtension.Contains(ext);
             };
             ContentView.Refresh();
         }
 
-        private void OnSetTag(MonitoredFile monitoredFile)
+        private void OnSetTag(UIFile uiFile)
         {
-            if (null == monitoredFile)
+            if (null == uiFile || null == uiFile.MonitoredFile)
                 return;
-            this.eventAggregator.GetEvent<SettingsEvent>().Publish(new SettingEventArgs(SettingType.SetTags, monitoredFile));
+            this.eventAggregator.GetEvent<SettingsEvent>().Publish(new SettingEventArgs(SettingType.SetTags, uiFile.MonitoredFile));
         }
 
-        private void OnOpenLocation(MonitoredFile monitoredFile)
+        private void OnOpenLocation(UIFile uiFile)
         {
-            if (null == monitoredFile)
+            if (null == uiFile || null == uiFile.MonitoredFile)
                 return;
-            FileInfo file = new FileInfo(monitoredFile.Path);
+            FileInfo file = new FileInfo(uiFile.MonitoredFile.Path);
             if (file.IsNull())
                 return;
             Process.Start("explorer.exe", file.DirectoryName);
         }
 
-        private void OnPlay(MonitoredFile monitoredFile)
+        private void OnPlay(UIFile uiFile)
         {
-            if (null == monitoredFile)
+            if (null == uiFile || null == uiFile.MonitoredFile)
                 return;
-            Process.Start(monitoredFile.Path);
+            Process.Start(uiFile.MonitoredFile.Path);
         }
 
         private void MonitoredFoldersSelected(IFolder iFolder)
@@ -214,7 +215,7 @@ namespace MediaCenter.Modules.Showcase
                         RunOnUIThread(() => {
                             foreach (MonitoredFile file in loadMediasJob.Files)
                             {
-                                Files.Add(file);
+                                Files.Add(new UIFile(file));
                             }
                             ContentView.Refresh();
                         });
@@ -234,7 +235,8 @@ namespace MediaCenter.Modules.Showcase
                     break;
                 case ProcessType.InProcess:
                     {
-                        this.CurrentFilePath = e.CurrentFile.File.FullName;
+                        if (e.InnerType == InnerType.OneFileScanned)
+                            this.CurrentFilePath = e.CurrentFile.File.FullName;
                     }
                     break;
                 case ProcessType.End:

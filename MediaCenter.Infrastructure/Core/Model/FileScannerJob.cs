@@ -8,18 +8,18 @@ namespace MediaCenter.Infrastructure.Core.Model
 {
     public class FileScannerJob : Job
     {
-        IList<string> filesPath = new List<string>();
+        IList<string> foldersPath = new List<string>();
 
-        public IList<string> FilesPath
+        public IList<string> FoldersPath
         {
             get
             {
-                return filesPath;
+                return foldersPath;
             }
 
             set
             {
-                filesPath = value;
+                foldersPath = value;
             }
         }
 
@@ -37,7 +37,7 @@ namespace MediaCenter.Infrastructure.Core.Model
         public FileScannerJob(IList<string> filesPath)
             :this()
         {
-            this.FilesPath = filesPath;
+            this.FoldersPath = filesPath;
         }
 
         public static FileScannerJob Create(IList<string> filesPath)

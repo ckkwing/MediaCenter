@@ -12,7 +12,6 @@ namespace FileExplorer.Factory
 {
     class StaticLocalExplorerFactory : LocalExplorerFactory
     {
-        private readonly string pathSpliter = "\\";
         IList<string> folderPaths = new List<string>();
         public StaticLocalExplorerFactory(IList<string> folderPaths)
         {
@@ -44,11 +43,11 @@ namespace FileExplorer.Factory
             {
                 //FindParent(folderPath, ref parents);
                 parent = pcRoot;
-                string[] splitedFolders = folderPath.Split(new string[] { pathSpliter }, StringSplitOptions.RemoveEmptyEntries);
+                string[] splitedFolders = folderPath.Split(new string[] { PATH_SPLITER }, StringSplitOptions.RemoveEmptyEntries);
                 string path = string.Empty;
                 for(int i =0; i<splitedFolders.Length;i++)
                 {
-                    path += splitedFolders[i] + pathSpliter;
+                    path += splitedFolders[i] + PATH_SPLITER;
                     DirectoryInfo directory = new DirectoryInfo(path);
                     if (directory.IsNull())
                         break;

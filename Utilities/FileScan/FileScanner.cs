@@ -80,8 +80,8 @@ namespace Utilities.FileScan
             }
         }
 
-        private List<ScannedFileInfo> filesInDirectory = new List<ScannedFileInfo>();
-        public List<ScannedFileInfo> FilesInDirectory
+        private IList<ScannedFileInfo> filesInDirectory = new List<ScannedFileInfo>();
+        public IList<ScannedFileInfo> FilesInDirectory
         {
             get
             {
@@ -114,9 +114,9 @@ namespace Utilities.FileScan
             IsInProcess = false;
         }
 
-        private void NotifyEvent(ProcessType processType)
+        private void NotifyEvent(ProcessType processType, InnerType innerType = InnerType.NA)
         {
-            ProcessEvent?.Invoke(this, new FileScannerProcessEventArgs(processType));
+            ProcessEvent?.Invoke(this, new FileScannerProcessEventArgs(processType, innerType));
         }
 
         private void NotifyEvent(FileScannerProcessEventArgs args)
@@ -152,7 +152,7 @@ namespace Utilities.FileScan
 
         private async void StartScanAsync()
         {
-            NotifyEvent(ProcessType.InProcess);
+            //NotifyEvent(ProcessType.InProcess);
             await GetFiles();
             NotifyEvent(ProcessType.End);
             NLogger.LogHelper.UILogger.Debug("FileScanner async end");
@@ -231,7 +231,7 @@ namespace Utilities.FileScan
             return category;
         }
 
-        private Task<List<ScannedFileInfo>> GetFiles()
+        private Task<IList<ScannedFileInfo>> GetFiles()
         {
             IsInProcess = true;
             foreach (string pathToScan in Config.PathsToScan)
@@ -243,9 +243,9 @@ namespace Utilities.FileScan
                 DirectoryInfo directoryInfo = new DirectoryInfo(pathToScan);
                 if (null == directoryInfo || !directoryInfo.Exists)
                     continue;
-                IList<ScannedFileInfo> searchedFiles = new List<ScannedFileInfo>();
-                ScanFilesInDirectory(directoryInfo, ref searchedFiles);
-                FilesInDirectory.AddRange(searchedFiles);
+                //IList<ScannedFileInfo> searchedFiles = new List<ScannedFileInfo>();
+                ScanFilesInDirectory(directoryInfo, ref filesInDirectory);
+                //FilesInDirectory.AddRange(searchedFiles);
             }
 
             return Task.Run(() =>
@@ -273,7 +273,7 @@ namespace Utilities.FileScan
                         continue;
                     if (fileSystemInfo is DirectoryInfo)
                     {
-                        ScanFilesInDirectory(fileSystemInfo as DirectoryInfo, ref fileList);
+                        ScanFilesInDirectory(fileSystemInfo as DirectoryInfo, ref searchedFiles);
                     }
                     else
                     {
@@ -283,13 +283,14 @@ namespace Utilities.FileScan
                             ScannedFileInfo scannedFileInfo = new ScannedFileInfo() { File = fileInfo };
                             if (CheckMediaType(scannedFileInfo))
                             {
+                                //searchedFiles.Add(scannedFileInfo);
                                 fileList.Add(scannedFileInfo);
-                                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = fileList, CurrentFile = scannedFileInfo });
+                                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess, InnerType.OneFileScanned) { CurrentFile = scannedFileInfo });
                             }
                         }
                     }
 
-                    NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = fileList, CurrentFile = null, IsOneDirScanned = true });
+                    //NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess, InnerType.OneDirectoryScanned) { CurrentDir = directoryInfo, Files = fileList});
                 }
             }
             catch(Exception e)
@@ -299,7 +300,7 @@ namespace Utilities.FileScan
             finally
             {
                 ((List<ScannedFileInfo>)searchedFiles).AddRange(fileList);
-                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess) { CurrentDir = directoryInfo, Files = fileList });
+                NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess, InnerType.OneDirectoryScanned) { CurrentDir = directoryInfo, Files = fileList });
             }
         }
     }
