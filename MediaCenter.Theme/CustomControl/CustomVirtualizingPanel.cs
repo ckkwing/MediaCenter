@@ -93,6 +93,11 @@ namespace MediaCenter.Theme.CustomControl
             // Note: this could be deferred to idle time for efficiency
             CleanUpItems(firstVisibleItemIndex, lastVisibleItemIndex);
 
+            //if (availableSize.Width == double.PositiveInfinity || availableSize.Height == double.PositiveInfinity)
+            //{
+            //    return Size.Empty;
+            //}
+
             return availableSize;
         }
 

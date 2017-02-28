@@ -11,13 +11,13 @@
              xmlns:infrastructure="clr-namespace:MediaCenter.Infrastructure;assembly=MediaCenter.Infrastructure"
              Name="currentView">
     <UserControl.Resources>
-        <Style x:Key="ItemsControlStyle" TargetType="{x:Type ItemsControl}">
+            <Style x:Key="ItemsControlStyle" TargetType="{x:Type ItemsControl}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ItemsControl}">
                         <Border>
-                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" CanContentScroll="True">
+                            <ScrollViewer Style="{StaticResource VirtualizingScrollViewerStyle}" Focusable="false" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" CanContentScroll="True">
                                 <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </ScrollViewer>
                         </Border>
@@ -28,7 +28,8 @@
                 <Setter.Value>
                     <ItemsPanelTemplate>
                         <!--<VirtualizingStackPanel IsItemsHost="True" />-->
-                        <CustomControl:CustomVirtualizingPanel />
+                        <!--<CustomControl:CustomVirtualizingPanel />-->
+                        <CustomControl:VirtualizingWrapPanel />
                     </ItemsPanelTemplate>
                 </Setter.Value>
             </Setter>
@@ -74,8 +75,8 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <ItemsControl ItemsSource="{Binding Path=Files}" Style="{StaticResource ItemsControlStyle}" />
-        <Grid Height="60" Width="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Aqua" Panel.ZIndex="100"
+        <ItemsControl ItemsSource="{Binding Path=Files}" Style="{StaticResource ItemsControlStyle}" VirtualizingStackPanel.IsVirtualizing="True" />
+        <Grid Height="60" Width="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Panel.ZIndex="100"
               Visibility="{Binding FileScanner.IsInProcess, Source={x:Static infrastructure:DataManager.Instance}, Converter={StaticResource BoolToVisibilityCollapseConverter}}">
             <CustomControl:PathTrimmingTextBlock Path="{Binding CurrentFilePath}" ToolTip="{Binding Path=CurrentFilePath}" />
         </Grid>

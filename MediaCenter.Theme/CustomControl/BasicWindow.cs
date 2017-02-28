@@ -1,46 +1,150 @@
-﻿using System;
+﻿using Microsoft.Practices.Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MediaCenter.Theme.CustomControl
 {
     public class BasicWindow : Window, INotifyPropertyChanged
     {
+        public Visibility CanMinimize
+        {
+            get { return (Visibility)GetValue(CanMinimizeProperty); }
+            set { SetValue(CanMinimizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty CanMinimizeProperty =
+            DependencyProperty.Register("CanMinimize", typeof(Visibility),
+            typeof(BasicWindow), new UIPropertyMetadata(Visibility.Visible));
+
+        public Visibility CanClose
+        {
+            get { return (Visibility)GetValue(CanCloseProperty); }
+            set { SetValue(CanCloseProperty, value); }
+        }
+
+        public static readonly DependencyProperty CanCloseProperty =
+            DependencyProperty.Register("CanClose", typeof(Visibility),
+            typeof(BasicWindow), new UIPropertyMetadata(Visibility.Visible));
+
+        public Brush TitlebarBackgroundBrush
+        {
+            get { return (Brush)GetValue(TitlebarBackgroundBrushProperty); }
+            set { SetValue(TitlebarBackgroundBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitlebarBackgroundBrushProperty =
+            DependencyProperty.Register("TitlebarBackgroundBrush", typeof(Brush),
+             typeof(BasicWindow), new UIPropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString(@"#3cbcb7"))));
+
+        #region Command
+        public ICommand CloseWindowCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand MinimizeWindowCommand
+        {
+            get;
+            set;
+        }
+        #endregion
+
         public BasicWindow()
-            : base()
         {
+            CloseWindowCommand = new DelegateCommand(OnClose, CanExcute);
+            MinimizeWindowCommand = new DelegateCommand(OnMinimize, CanExcute);
+            //Load Style
+            InitializeStyle();
 
+            //Load event delegate
+            this.Loaded += delegate { InitializeEvent(); };
         }
 
-        static BasicWindow()
-        {
-            //DefaultStyleKeyProperty.OverrideMetadata(typeof(BasicWindow), new FrameworkPropertyMetadata(typeof(BasicWindow)));
-        }
-
-        public BasicWindow(Window owner = null)
-            : this()
+        public BasicWindow(Window owner)
+            :this()
         {
             SetOwner(owner);
-            this.Style = Application.Current.Resources["StyleBasicWindow"] as Style;
         }
 
-        protected void SetOwner(Window owner)
+    protected void SetOwner(Window owner)
+    {
+        if (null == owner)
         {
-            if (null == owner)
+            if (null != Application.Current && null != Application.Current.MainWindow)
+                this.Owner = Application.Current.MainWindow;
+        }
+        else
+        {
+            this.Owner = owner;
+        }
+    }
+
+    protected virtual void InitializeStyle()
+        {
+            if (null == Application.Current)
+                return;
+            if (!Application.Current.Resources.Contains("CommonBaseWindowStyle"))
+                return;
+
+            this.Style = (Style)Application.Current.Resources["CommonBaseWindowStyle"];
+        }
+
+        private void InitializeEvent()
+        {
+            try
             {
-                if (null != Application.Current && null != Application.Current.MainWindow)
-                    this.Owner = Application.Current.MainWindow;
+                ControlTemplate baseWindowTemplate = (ControlTemplate)Application.Current.Resources["CommonBaseWindowControlTemplate"];
+                Border tp = (Border)baseWindowTemplate.FindName("topborder", this);
+                if (null == tp)
+                    return;
+
+                tp.MouseLeftButtonDown += delegate
+                {
+                    try
+                    {
+                        this.DragMove();
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        NLogger.LogHelper.UILogger.DebugFormat("DragMove exception: {0}", e.Message);
+                    }
+                };
             }
-            else
+            catch (Exception ex)
             {
-                this.Owner = owner;
+                NLogger.LogHelper.UILogger.DebugFormat("InitializeEvent exception: {0}", ex.Message);
             }
         }
-        
+
+        virtual protected void OnClose()
+        {
+            this.Close();
+        }
+
+        virtual protected void OnMinimize()
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        protected bool CanExcute()
+        {
+            return true;
+        }
+
+        protected bool CanExcute(object parameter)
+        {
+            return true;
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;

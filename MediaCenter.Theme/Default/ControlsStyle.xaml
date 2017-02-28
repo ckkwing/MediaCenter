@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vsm="clr-namespace:System.Windows;assembly=PresentationFramework">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MediaCenter.Theme;component/Default/WindowStyle.xaml" />
+        <ResourceDictionary Source="/MediaCenter.Theme;component/Default/ScrollbarStyle.xaml" />
+        <ResourceDictionary Source="/MediaCenter.Theme;component/Default/ComboBoxStyle.xaml" />
+        <ResourceDictionary Source="/MediaCenter.Theme;component/Default/CheckBoxStyle.xaml" />
+       <!-- <ResourceDictionary Source="/BackItUp.Theme;component/Default/BackupButton.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/ButtonShapeRadioButton.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/NavigationBottomBar.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/FolderSelectionControlStyle.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/TimePickerStyle.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/HintTextBox.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/PopupActionButton.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/CategoryUserControl.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/ScrollViewer.xaml" />
+        <ResourceDictionary Source="/BackItUp.Theme;component/Default/PopupBackupTarget.xaml" />-->
+        <!--<ResourceDictionary Source="/BackItUp.Theme;component/Default/TextBlock.xaml" />-->
+        <!--<ResourceDictionary Source="/BackItUp.Theme;component/Default/Brush.xaml" />-->
+        <!--<ResourceDictionary Source="/BackItUp.Theme;component/Default/PasswordBoxStyle.xaml" />-->
+        <!--<ResourceDictionary Source="/BackItUp.Theme;component/Default/Window.xaml" />-->
+        <!--<ResourceDictionary Source="/BackItUp.Theme;component/Default/TextBoxStyle.xaml" />-->
+        <!--<ResourceDictionary Source="/BackItUp.Theme;component/Default/HighContrastModeStyles.xaml" />-->
+        <!--<ResourceDictionary Source="/BackItUp.Theme;component/Default/ProgressBarStyle.xaml" />-->
+    </ResourceDictionary.MergedDictionaries>
+
+
+</ResourceDictionary>

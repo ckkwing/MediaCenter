@@ -75,10 +75,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CastHelper.cs" />
     <Compile Include="Common\ResourceProvider.cs" />
     <Compile Include="Converter\BoolToVisibilityCollapseConverter.cs" />
     <Compile Include="Converter\ObjectToBoolConverter.cs" />
+    <Compile Include="Converter\ObjectToVisibilityConverter.cs" />
+    <Compile Include="Converter\SelectedItemDisplayConverter.cs" />
+    <Compile Include="Converter\WidthAndHeightToRectConverter.cs" />
     <Compile Include="Extension\CommonExtension.cs" />
+    <Compile Include="Extension\ResizableExtention.cs" />
     <Compile Include="FileScan\FileScanner.cs" />
     <Compile Include="FileScan\FileScannerProcessEventArgs.cs" />
     <Compile Include="FileScan\ScannedFileInfo.cs" />

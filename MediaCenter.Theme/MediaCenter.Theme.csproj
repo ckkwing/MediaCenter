@@ -49,8 +49,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -69,7 +71,10 @@
     <Compile Include="CustomControl\CustomVirtualizingPanel.cs" />
     <Compile Include="CustomControl\Dialog\CommonDialog.cs" />
     <Compile Include="CustomControl\EnhancedTextBlock.cs" />
+    <Compile Include="CustomControl\ImageButton.cs" />
     <Compile Include="CustomControl\PathTrimmingTextBlock.cs" />
+    <Compile Include="CustomControl\UniformGridPanel.cs" />
+    <Compile Include="CustomControl\VirtualizingWrapPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,11 +92,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Default\CheckBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Default\ComboBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Default\ControlsStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Default\Resource_Images.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Default\ScrollbarStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Default\Theme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Default\WindowStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -101,6 +126,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Default\Images\ItemSelected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Default\Images\Close.png" />
+    <Resource Include="Resources\Default\Images\Minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Default\Images\Common\DropDownArrow.png" />
+    <Resource Include="Resources\Default\Images\Common\DropDownArrow_Pressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Default\Images\CheckBox\CheckBox_NULL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Default\Images\CheckBox\CheckBox_Checked.png" />
+    <Resource Include="Resources\Default\Images\CheckBox\CheckBox_Normal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

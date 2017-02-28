@@ -5,7 +5,16 @@
     <!--<mscorlib:String x:Key="IMG_GifIndicator" >pack://application:,,,/BackItUp.Theme;Component/Resources/Default/Images/Indicator_small.gif</mscorlib:String>-->
     <!--<mscorlib:String x:Key="IMG_TEST" >pack://application:,,,/BackItUp.Theme;Component/Resources/Default/Images/Test.png</mscorlib:String>-->
 
+    <Img:BitmapImage x:Key="IMG_CLOSE" UriSource="../Resources/Default/Images/Close.png"/>
+    <Img:BitmapImage x:Key="IMG_MINIMIZE" UriSource="../Resources/Default/Images/Minimize.png"/>
     <Img:BitmapImage x:Key="IMG_ITEMSELECTED" UriSource="../Resources/Default/Images/ItemSelected.png"/>
+    <Img:BitmapImage x:Key="IMG_DROPDOW" UriSource="../Resources/Default/Images/Common/DropDownArrow.png" />
+    <Img:BitmapImage x:Key="IMG_DROPDOW_PRESSED" UriSource="../Resources/Default/Images/Common/DropDownArrow_Pressed.png" />
+
+    <Img:BitmapImage x:Key="IMG_CHECKBOX_NORMAL" UriSource="../Resources/Default/Images/CheckBox/CheckBox_Normal.png" />
+    <Img:BitmapImage x:Key="IMG_CHECKBOX_CHECKED" UriSource="../Resources/Default/Images/CheckBox/CheckBox_Checked.png" />
+    <Img:BitmapImage x:Key="IMG_CHECKBOX_NULL" UriSource="../Resources/Default/Images/CheckBox/CheckBox_NULL.png" />
+    
     <Img:BitmapImage x:Key="IMG_TEST" UriSource="../Resources/Default/Images/Test.jpg"/>
  
 </ResourceDictionary>

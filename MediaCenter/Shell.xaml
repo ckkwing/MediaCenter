@@ -8,7 +8,7 @@
         xmlns:inf="clr-namespace:MediaCenter.Infrastructure;assembly=MediaCenter.Infrastructure"
         xmlns:local="clr-namespace:MediaCenter"
         xmlns:CustomControl="clr-namespace:MediaCenter.Theme.CustomControl;assembly=MediaCenter.Theme"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="True"
         Title="Shell" Width="900" Height="600">
     <Grid>
         <Grid.RowDefinitions>

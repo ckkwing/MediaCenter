@@ -5,21 +5,23 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
-    xmlns:CustomControl="clr-namespace:MediaCenter.Theme.CustomControl">
+    xmlns:customControl="clr-namespace:MediaCenter.Theme.CustomControl">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resource_Images.xaml" />
+        <ResourceDictionary Source="ControlsStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
     <!-- Resource dictionary entries should be defined here. -->
     <!--<media:FontFamily x:Key="FONTFAMILY_GLOBAL">Comic Sans MS,Segoe UI,Tahoma,FangSong</media:FontFamily>-->
     <System:Double x:Key="FontSize_Normal">12</System:Double>
     <!--<System:Double x:Key="PopupWindowWidth">600</System:Double>
     <System:Double x:Key="PopupWindowHeight">600</System:Double>-->
     <Color x:Key="Color_Main">#FFEDEDED</Color>
-    
+
     <SolidColorBrush x:Key="Brush_Main" Color="{StaticResource Color_Main}"/>
     <SolidColorBrush x:Key="Brush_Normal_Text" Color="#333333" />
 
-    <Style x:Key="StyleBasicWindow" TargetType="{x:Type CustomControl:BasicWindow}">
+    <Style x:Key="StyleBasicWindow" TargetType="{x:Type customControl:BasicWindow}">
         <Setter Property="FontFamily" Value="{DynamicResource FONTFAMILY_GLOBAL}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
         <Setter Property="Background" Value="{StaticResource Brush_Main}"/>
@@ -32,7 +34,7 @@
         <Setter Property="Foreground" Value="{StaticResource Brush_Normal_Text}" />
     </Style>
 
-    <Style TargetType="{x:Type CustomControl:EnhancedTextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style TargetType="{x:Type customControl:EnhancedTextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="Wrap" />
@@ -41,7 +43,7 @@
         <Setter Property="ToolTipService.IsEnabled" Value="{Binding IsTextTrimmed, RelativeSource={RelativeSource Self}}" />
     </Style>
 
-    <Style TargetType="{x:Type CustomControl:PathTrimmingTextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style TargetType="{x:Type customControl:PathTrimmingTextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
@@ -50,7 +52,7 @@
         <Setter Property="ToolTipService.IsEnabled" Value="{Binding IsTextTrimmed, RelativeSource={RelativeSource Self}}" />
     </Style>
 
-        <Style TargetType="{x:Type Button}">
+    <Style TargetType="{x:Type Button}">
         <Setter Property="FontFamily" Value="{DynamicResource FONTFAMILY_GLOBAL}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="#cfcfcf" />
@@ -59,5 +61,38 @@
         <Setter Property="Width" Value="80" />
         <Setter Property="Height" Value="22"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="ImageButtonStyle" TargetType="{x:Type customControl:ImageButton}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type customControl:ImageButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="image"  HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Source="{Binding Image, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Button}}}"
+                               Height="{Binding ImageHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type customControl:ImageButton}}}"
+                               Width="{Binding ImageWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type customControl:ImageButton}}}"/>
+                        <TextBlock Margin="10,0,0,0" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Button}}}"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Source" TargetName="image" Value="{Binding ImageOver, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Button}}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Source" TargetName="image" Value="{Binding ImagePressed, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Button}}}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
