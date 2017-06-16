@@ -16,6 +16,9 @@ namespace MediaCenter.Settings.FolderManager
     /// </summary>
     public partial class FolderManagerWindow : BasicWindow
     {
+        //public int Test { get; set; } = 1;
+        //public override string ToString() => $"{Test}";
+
         private IList<IFolder> selectedFileList = new List<IFolder>();
         public IList<IFolder> SelectedFileList
         {

@@ -128,7 +128,6 @@ namespace Utilities.FileScan
         {
             Reset();
             NLogger.LogHelper.UILogger.Debug("FileScanner async start");
-            NotifyEvent(ProcessType.Start);
             Thread runnerThread = new Thread(StartScanAsync);
             runnerThread.IsBackground = true;
             runnerThread.Name = "File Scanner Thread + ";
@@ -152,7 +151,7 @@ namespace Utilities.FileScan
 
         private async void StartScanAsync()
         {
-            //NotifyEvent(ProcessType.InProcess);
+            NotifyEvent(ProcessType.Start);
             await GetFiles();
             NotifyEvent(ProcessType.End);
             NLogger.LogHelper.UILogger.Debug("FileScanner async end");

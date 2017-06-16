@@ -37,6 +37,8 @@ namespace MediaCenter.Infrastructure.Core.Runner
             fileScannerJob = Job as FileScannerJob;
             if (null == fileScannerJob)
                 return false;
+            DataManager.Instance.FileScanner.Stop();
+
             //fileScanner.ProcessEvent += FileScanner_ProcessEvent;
             IList<MonitoredFolderInfo> existedFileList = DBHelper.GetExistMonitoredFolderList();
             needToRemovedPaths = existedFileList.Where(folder => !fileScannerJob.FoldersPath.Contains(folder.Path)).ToList();
@@ -68,29 +70,21 @@ namespace MediaCenter.Infrastructure.Core.Runner
 
         protected override bool JobRunning_DoWork()
         {
-            DataManager.Instance.FileScanner.Stop();
-            DBHelper.DeleteFolders(needToRemovedPaths);
-            eventAggregator.GetEvent<DBFolderChangedEvent>().Publish(new DBFolderChangedArgs() { Type = DBFolderChangedArgs.ChangedType.Removed, MonitoredFolderList = needToRemovedPaths });
+            
+            if (needToRemovedPaths.Count > 0)
+            {
+                DBHelper.DeleteFolders(needToRemovedPaths);
+                eventAggregator.GetEvent<DBFolderChangedEvent>().Publish(new DBFolderChangedArgs() { Type = DBFolderChangedArgs.ChangedType.Removed, MonitoredFolderList = needToRemovedPaths });
+            }
             DBHelper.InsertFolders(needToAddPaths);
-            //fileScannerJob = this.Job as FileScannerJob;
-
-            ////IList<string> existedFileList = DBHelper.GetExistMonitoredFolderStringList();
-            ////IEnumerable<string> newFolders = fileScannerJob.FilesPath.Where(path => !existedFileList.Contains(path));
-            ////fileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = newFolders.ToList() };
-
-            //fileScanner.Config = new FileScanner.FileScannerConfiguration() { PathsToScan = fileScannerJob.FilesPath };
-            //fileScanner.StartSync();
+            DataManager.Instance.DBCache.RefreshMonitoredFolders();
             return true;
         }
 
         protected override void JobRunning_End(DateTime dtLastRunTime)
         {
             base.JobRunning_End(dtLastRunTime);
-            //fileScanner.ProcessEvent -= FileScanner_ProcessEvent;
-            //RemoveUnMonitoredFoldersAndFiles();
-            //DataManager.Instance.DBCache.RefreshMonitoredFiles();
 
-            DataManager.Instance.DBCache.RefreshMonitoredFolders();
             IList<string> pathsToScan = new List<string>();
             foreach(MonitoredFolderInfo folder in DataManager.Instance.DBCache.MonitoredFolders)
             {

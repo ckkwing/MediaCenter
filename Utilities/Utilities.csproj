@@ -87,6 +87,7 @@
     <Compile Include="FileScan\FileScanner.cs" />
     <Compile Include="FileScan\FileScannerProcessEventArgs.cs" />
     <Compile Include="FileScan\ScannedFileInfo.cs" />
+    <Compile Include="FileUtility.cs" />
     <Compile Include="FolderDefine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\LanguageSetting.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="StringConstant.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="ViewModelBase.cs" />
+    <Compile Include="WebHelper.cs" />
     <Compile Include="WindowsAPI\NativeFileAPI.cs" />
     <Compile Include="WindowsAPI\ShellAPI.cs" />
     <Compile Include="WindowsAPI\User32API.cs" />
