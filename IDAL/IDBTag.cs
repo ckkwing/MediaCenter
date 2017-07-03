@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-    public interface ITag
+    public interface IDBTag
     {
-        IList<TagInfo> GetTags();
-        bool InsertTag(TagInfo tagInfo);
-        int InsertPatchTags(IList<TagInfo> tagInfos);
+        IList<DBTagInfo> GetTags();
+        bool InsertTag(DBTagInfo tagInfo);
+        int InsertPatchTags(IList<DBTagInfo> tagInfos);
     }
 }

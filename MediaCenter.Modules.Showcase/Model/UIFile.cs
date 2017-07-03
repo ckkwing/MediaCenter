@@ -11,7 +11,7 @@ namespace MediaCenter.Modules.Showcase.Model
     public class UIFile : BindableBase
     {
         private bool isSelected = false;
-        private MonitoredFile monitoredFile;
+        private DBFileInfo monitoredFile;
 
         public bool IsSelected
         {
@@ -27,7 +27,7 @@ namespace MediaCenter.Modules.Showcase.Model
             }
         }
 
-        public MonitoredFile MonitoredFile
+        public DBFileInfo MonitoredFile
         {
             get
             {
@@ -41,7 +41,7 @@ namespace MediaCenter.Modules.Showcase.Model
             }
         }
 
-        public UIFile(MonitoredFile monitoredFile)
+        public UIFile(DBFileInfo monitoredFile)
         {
             this.MonitoredFile = monitoredFile;
         }

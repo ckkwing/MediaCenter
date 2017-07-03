@@ -19,7 +19,7 @@ namespace MediaCenter.Infrastructure.Event
 
         public ChangedType Type { get; set; }
 
-        public IList<MonitoredFolderInfo> MonitoredFolderList { get; set; }
+        public IList<DBFolderInfo> MonitoredFolderList { get; set; }
     }
 
     public class DBFolderChangedEvent : PubSubEvent<DBFolderChangedArgs>

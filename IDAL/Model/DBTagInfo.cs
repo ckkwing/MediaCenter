@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDAL.Model
 {
-    public class TagInfo
+    public class DBTagInfo
     {
         private int id = -1;
 

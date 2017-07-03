@@ -42,17 +42,15 @@ namespace MediaCenter.Modules.Navigation.CustomControl
             if (null == eventAggregator)
                 throw new ArgumentNullException("IEventAggregator");
             this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Subscribe(OnLoadDataCompleted, ThreadOption.UIThread);
-            this.eventAggregator.GetEvent<DBFolderChangedEvent>().Subscribe(OnDBFolderChanged, ThreadOption.UIThread);
-            DataManager.Instance.FileScanner.ProcessEvent += FileScanner_ProcessEvent;
+            //this.eventAggregator.GetEvent<DBFolderChangedEvent>().Subscribe(OnDBFolderChanged, ThreadOption.UIThread);
             ViewModel = new StaticFileExplorerViewModel();
-            ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
+            ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.FolderStrings);
         }
 
         ~UIStaticTreeView()
         {
-            DataManager.Instance.FileScanner.ProcessEvent -= FileScanner_ProcessEvent;
             this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Unsubscribe(OnLoadDataCompleted);
-            this.eventAggregator.GetEvent<DBFolderChangedEvent>().Unsubscribe(OnDBFolderChanged);
+            //this.eventAggregator.GetEvent<DBFolderChangedEvent>().Unsubscribe(OnDBFolderChanged);
         }
 
         private void OnLoadDataCompleted(LoadMediasJob obj)
@@ -68,7 +66,7 @@ namespace MediaCenter.Modules.Navigation.CustomControl
                 return;
             }
 
-            //this.ViewModel.SetCurrentFolder(folder);
+            this.ViewModel.SetCurrentFolder(folder);
             this.eventAggregator.GetEvent<MonitoredFoldersSelectedEvent>().Publish(folder);
         }
 
@@ -85,7 +83,7 @@ namespace MediaCenter.Modules.Navigation.CustomControl
                 return;
             }
 
-            //this.ViewModel.LoadFolderChildren(folder);
+            this.ViewModel.LoadFolderChildren(folder);
         }
 
         private void treeExplorer_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -123,56 +121,56 @@ namespace MediaCenter.Modules.Navigation.CustomControl
             Process.Start("explorer.exe", folder.FullPath);
         }
 
-        private void FileScanner_ProcessEvent(object sender, FileScannerProcessEventArgs e)
-        {
-            if (e.IsNull())
-                return;
-            switch (e.ProcessType)
-            {
-                case ProcessType.InProcess:
-                    {
-                        if (!e.CurrentDir.IsNull() && e.InnerType == InnerType.OneDirectoryScanned)
-                        {
-                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                            {
-                                ViewModel.UpdateFolderTree(new List<string>() { e.CurrentDir.FullName });
-                            }));
-                        }
-                    }
-                    break;
-                case ProcessType.End:
-                    {
-                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                        {
-                            //ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
-                        }));
-                    }
-                    break;
-            }
-        }
+        //private void FileScanner_ProcessEvent(object sender, FileScannerProcessEventArgs e)
+        //{
+        //    if (e.IsNull())
+        //        return;
+        //    switch (e.ProcessType)
+        //    {
+        //        case ProcessType.InProcess:
+        //            {
+        //                if (!e.CurrentDir.IsNull() && e.InnerType == InnerType.OneDirectoryScanned)
+        //                {
+        //                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+        //                    {
+        //                        ViewModel.UpdateFolderTree(new List<string>() { e.CurrentDir.FullName });
+        //                    }));
+        //                }
+        //            }
+        //            break;
+        //        case ProcessType.End:
+        //            {
+        //                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+        //                {
+        //                    //ViewModel.LoadExplorerByFolderPaths(DataManager.Instance.DBCache.MonitoredFolderStrings);
+        //                }));
+        //            }
+        //            break;
+        //    }
+        //}
 
-        private void OnDBFolderChanged(DBFolderChangedArgs args)
-        {
-           switch(args.Type)
-            {
-                case DBFolderChangedArgs.ChangedType.Removed:
-                    {
-                        IList<string> resourcePaths = new List<string>();
-                        foreach(MonitoredFolderInfo folder in args.MonitoredFolderList)
-                        {
-                            resourcePaths.Add(folder.Path);
-                        }
-                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                        {
-                            ViewModel.RemoveFolderTree(resourcePaths);
-                        }));
-                    }
-                    break;
-                case DBFolderChangedArgs.ChangedType.Added:
-                    break;
-                case DBFolderChangedArgs.ChangedType.Modified:
-                    break;
-            }
-        }
+        //private void OnDBFolderChanged(DBFolderChangedArgs args)
+        //{
+        //   switch(args.Type)
+        //    {
+        //        case DBFolderChangedArgs.ChangedType.Removed:
+        //            {
+        //                IList<string> resourcePaths = new List<string>();
+        //                foreach(FolderInfo folder in args.MonitoredFolderList)
+        //                {
+        //                    resourcePaths.Add(folder.Path);
+        //                }
+        //                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+        //                {
+        //                    ViewModel.RemoveFolderTree(resourcePaths);
+        //                }));
+        //            }
+        //            break;
+        //        case DBFolderChangedArgs.ChangedType.Added:
+        //            break;
+        //        case DBFolderChangedArgs.ChangedType.Modified:
+        //            break;
+        //    }
+        //}
     }
 }

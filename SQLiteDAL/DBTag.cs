@@ -11,11 +11,11 @@ using System.Data;
 
 namespace SQLiteDAL
 {
-    public class Tag : ITag
+    public class DBTag : IDBTag
     {
-        public IList<TagInfo> GetTags()
+        public IList<DBTagInfo> GetTags()
         {
-            IList<TagInfo> tagList = new List<TagInfo>();
+            IList<DBTagInfo> tagList = new List<DBTagInfo>();
             string sqlSelect = "SELECT * FROM " + DataAccess.TABLE_NAME_TAG;
             SQLiteDataReader dr = SqliteHelper.ExecuteReader(DataAccess.ConnectionStringProfile, CommandType.Text, sqlSelect, null);
             while (dr.Read())
@@ -24,14 +24,14 @@ namespace SQLiteDAL
                     continue;
                 int id = dr.GetInt32(0);
                 string name = dr.GetString(1);
-                TagInfo tagInfo = new TagInfo() { ID = id, Name = name };
+                DBTagInfo tagInfo = new DBTagInfo() { ID = id, Name = name };
                 tagList.Add(tagInfo);
             }
             dr.Close();
             return tagList;
         }
 
-        public bool InsertTag(TagInfo tagInfo)
+        public bool InsertTag(DBTagInfo tagInfo)
         {
             bool bRel = false;
             if (null == tagInfo)
@@ -52,7 +52,7 @@ namespace SQLiteDAL
             return bRel;
         }
 
-        public int InsertPatchTags(IList<TagInfo> tagInfos)
+        public int InsertPatchTags(IList<DBTagInfo> tagInfos)
         {
             int iSuccessRows = 0;
             if (null == tagInfos || 0 == tagInfos.Count)
@@ -69,7 +69,7 @@ namespace SQLiteDAL
 
             try
             {
-                foreach (TagInfo tagInfo in tagInfos)
+                foreach (DBTagInfo tagInfo in tagInfos)
                 {
                     parms[0].Value = tagInfo.Name;
                     object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);

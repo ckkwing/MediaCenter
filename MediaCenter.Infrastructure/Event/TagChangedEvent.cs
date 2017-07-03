@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MediaCenter.Infrastructure.Event
 {
-    public class TagChangedEvent : PubSubEvent<TagInfo>
+    public class TagChangedEvent : PubSubEvent<DBTagInfo>
     {
     }
 }

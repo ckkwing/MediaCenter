@@ -23,8 +23,8 @@ namespace MediaCenter.Infrastructure.Core.Model
 
         public LoadPattern Pattern { get; set; }
 
-        private IList<MonitoredFile> files = new List<MonitoredFile>();
-        public IList<MonitoredFile> Files
+        private IList<DBFileInfo> files = new List<DBFileInfo>();
+        public IList<DBFileInfo> Files
         {
             get
             {

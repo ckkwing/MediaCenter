@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SQLiteDAL
 {
-    public class MonitorFolder : IMonitorFolder
+    public class DBFolder : IDBFolder
     {
         private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_MONITOREDFOLDER + " SET PATH = @PATH, NAME = @NAME, ISSCANNED = @ISSCANNED WHERE ID = {0};";
 
@@ -21,7 +21,7 @@ namespace SQLiteDAL
             throw new NotImplementedException();
         }
 
-        public int InsertPatchFolders(IList<MonitoredFolderInfo> folders)
+        public int InsertPatchFolders(IList<DBFolderInfo> folders)
         {
             int iSuccessRows = 0;
             if (0 == folders.Count)
@@ -43,7 +43,7 @@ namespace SQLiteDAL
             {
                 //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
 
-                foreach (MonitoredFolderInfo folder in folders)
+                foreach (DBFolderInfo folder in folders)
                 {
                     parms[0].Value = folder.Path;
                     parms[1].Value = folder.Name;
@@ -72,7 +72,7 @@ namespace SQLiteDAL
             return iSuccessRows;
         }
 
-        public int UpdateFolders(IList<MonitoredFolderInfo> folders)
+        public int UpdateFolders(IList<DBFolderInfo> folders)
         {
             int iSuccessRows = 0;
             if (0 == folders.Count)
@@ -91,7 +91,7 @@ namespace SQLiteDAL
             {
                 //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
 
-                foreach (MonitoredFolderInfo folder in folders)
+                foreach (DBFolderInfo folder in folders)
                 {
                     string sqlUpdate = string.Format(sqlUpdateFormat, folder.ID);
                     parms[0].Value = folder.Path;
@@ -121,9 +121,9 @@ namespace SQLiteDAL
             return iSuccessRows;
         }
 
-        public IList<MonitoredFolderInfo> GetMonitoredFolderList()
+        public IList<DBFolderInfo> GetMonitoredFolderList()
         {
-            IList<MonitoredFolderInfo> folderList = new List<MonitoredFolderInfo>();
+            IList<DBFolderInfo> folderList = new List<DBFolderInfo>();
             string sqlSelect = "SELECT * FROM " + DataAccess.TABLE_NAME_MONITOREDFOLDER;
             SQLiteDataReader dr = SqliteHelper.ExecuteReader(DataAccess.ConnectionStringProfile, CommandType.Text, sqlSelect, null);
             while (dr.Read())
@@ -134,14 +134,14 @@ namespace SQLiteDAL
                 string path = dr.GetString(1);
                 string name = dr.GetString(2);
                 int iScanned = dr.GetInt32(3);
-                MonitoredFolderInfo folderInfo = new MonitoredFolderInfo() { ID = id, Path = path, Name = name, IsScanned = (1 == iScanned) ? true : false };
+                DBFolderInfo folderInfo = new DBFolderInfo() { ID = id, Path = path, Name = name, IsScanned = (1 == iScanned) ? true : false };
                 folderList.Add(folderInfo);
             }
             dr.Close();
             return folderList;
         }
 
-        public void DeletePatchFolders(IList<MonitoredFolderInfo> folders)
+        public void DeletePatchFolders(IList<DBFolderInfo> folders)
         {
             if (0 == folders.Count)
                 return;
@@ -157,7 +157,7 @@ namespace SQLiteDAL
 
             try
             {
-                foreach (MonitoredFolderInfo folder in folders)
+                foreach (DBFolderInfo folder in folders)
                 {
                     parms[0].Value = folder.ID;
                     SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);

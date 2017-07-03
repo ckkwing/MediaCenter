@@ -16,9 +16,9 @@ namespace MediaCenter.Infrastructure
     public class DBHelper
     {
         private static readonly IDBEntity iDBEntity = DataAccess.CreateDBEntity();
-        private static readonly IMonitorFolder iMonitorFolder = DataAccess.CreateMonitorFolder();
-        private static readonly IScannedFile iScannedFile = DataAccess.CreateScannedFile();
-        private static readonly ITag iTag = DataAccess.CreateTag();
+        private static readonly IDBFolder iMonitorFolder = DataAccess.CreateMonitorFolder();
+        private static readonly IDBFile iScannedFile = DataAccess.CreateScannedFile();
+        private static readonly IDBTag iTag = DataAccess.CreateTag();
 
         public static bool InitDBProfile()
         {
@@ -27,10 +27,10 @@ namespace MediaCenter.Infrastructure
 
         public static int InsertFolders(IList<IFolder> folders)
         {
-            IList<MonitoredFolderInfo> convertedFolders = new List<MonitoredFolderInfo>();
+            IList<DBFolderInfo> convertedFolders = new List<DBFolderInfo>();
             foreach (IFolder iFolder in folders)
             {
-                MonitoredFolderInfo newFolder = MonitoredFolderInfo.Convert(iFolder);
+                DBFolderInfo newFolder = DBFolderInfo.Convert(iFolder);
                 if (newFolder.IsNull())
                     continue;
                 convertedFolders.Add(newFolder);
@@ -38,77 +38,82 @@ namespace MediaCenter.Infrastructure
             return iMonitorFolder.InsertPatchFolders(convertedFolders);
         }
 
-        public static int InsertFolders(IList<MonitoredFolderInfo> folders)
+        public static int InsertFolders(IList<DBFolderInfo> folders)
         {
             return iMonitorFolder.InsertPatchFolders(folders);
         }
 
-        public static int UpdateFolders(IList<MonitoredFolderInfo> folders)
+        public static int UpdateFolders(IList<DBFolderInfo> folders)
         {
             return iMonitorFolder.UpdateFolders(folders);
         }
 
-        public static void DeleteFolders(IList<MonitoredFolderInfo> folders)
+        public static void DeleteFolders(IList<DBFolderInfo> folders)
         {
             iMonitorFolder.DeletePatchFolders(folders);
         }
 
-        public static IList<MonitoredFolderInfo> GetExistMonitoredFolderList()
+        public static IList<DBFolderInfo> GetExistFolderList()
         {
             return iMonitorFolder.GetMonitoredFolderList();
         }
 
-        public static IList<string> GetExistMonitoredFolderStringList()
+        public static IList<string> GetExistFolderStringList()
         {
             return iMonitorFolder.GetMonitoredFolderList().Select(item => item.Path).ToList();
         }
 
-        public static int InsertFiles(IList<MonitoredFile> files)
+        public static int InsertFiles(IList<IDAL.Model.DBFileInfo> files)
         {
             return iScannedFile.InsertPatchFiles(files);
         }
 
-        public static IList<MonitoredFile> GetFilesUnderFolder(string folderPath)
+        public static IList<IDAL.Model.DBFileInfo> GetFilesUnderFolder(string folderPath)
         {
             return iScannedFile.GetFilesUnderFolder(folderPath);
         }
 
-        public static void GetFilesUnderFolderAsync(string folderPath, Action<IList<MonitoredFile>> callback,ref bool isCancel)
+        public static void GetFilesUnderFolderAsync(string folderPath, Action<IList<IDAL.Model.DBFileInfo>> callback,ref bool isCancel)
         {
             iScannedFile.GetFilesUnderFolderAsync(folderPath, callback,ref isCancel);
         }
 
-        public static IList<MonitoredFile> GetFilesByTags(string tags)
+        public static IList<IDAL.Model.DBFileInfo> GetFilesByTags(string tags)
         {
             return iScannedFile.GetFilesByTags(tags);
         }
 
-        public static bool UpdateFile(MonitoredFile file)
+        public static bool UpdateFile(IDAL.Model.DBFileInfo file)
         {
             return iScannedFile.UpdateFile(file);
         }
 
-        public static int UpdateFiles(IList<MonitoredFile> files)
+        public static int UpdateFiles(IList<IDAL.Model.DBFileInfo> files)
         {
             return iScannedFile.UpdateFiles(files);
         }
 
-        public static void DeleteFilesUnderFolders(IList<MonitoredFolderInfo> folders)
+        public static void DeleteFiles(IList<DBFileInfo> files)
+        {
+            iScannedFile.DeleteFiles(files);
+        }
+
+        public static void DeleteFilesUnderFolders(IList<DBFolderInfo> folders)
         {
             iScannedFile.DeleteFilesUnderFolders(folders);
         }
 
-        public static IList<TagInfo> GetTags()
+        public static IList<DBTagInfo> GetTags()
         {
             return iTag.GetTags();
         }
 
-        public static bool InsertTag(TagInfo tagInfo)
+        public static bool InsertTag(DBTagInfo tagInfo)
         {
             return iTag.InsertTag(tagInfo);
         }
 
-        public static int InsertTags(IList<TagInfo> tagInfos)
+        public static int InsertTags(IList<DBTagInfo> tagInfos)
         {
             return iTag.InsertPatchTags(tagInfos);
         }

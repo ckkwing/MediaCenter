@@ -90,6 +90,7 @@
     <Compile Include="Model\LocalFile.cs" />
     <Compile Include="Model\LocalFolder.cs" />
     <Compile Include="Model\LocalRootFolder.cs" />
+    <Compile Include="Model\StaticLocalFolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell\CommonProvider.cs" />
     <Compile Include="Shell\DataSourceShell.cs" />

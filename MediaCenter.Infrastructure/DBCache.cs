@@ -10,8 +10,8 @@ namespace MediaCenter.Infrastructure
 {
     public class DBCache
     {
-        private IList<TagInfo> tagInfos = new List<TagInfo>();
-        public IList<TagInfo> TagInfos
+        private IList<DBTagInfo> tagInfos = new List<DBTagInfo>();
+        public IList<DBTagInfo> TagInfos
         {
             get
             {
@@ -24,48 +24,48 @@ namespace MediaCenter.Infrastructure
             }
         }
 
-        private IList<MonitoredFolderInfo> monitoredFolders = new List<MonitoredFolderInfo>();
-        public IList<MonitoredFolderInfo> MonitoredFolders
+        private IList<DBFolderInfo> folders = new List<DBFolderInfo>();
+        public IList<DBFolderInfo> Folders
         {
             get
             {
-                return monitoredFolders;
+                return folders;
             }
 
             private set
             {
-                monitoredFolders = value;
+                folders = value;
             }
         }
 
-        private IList<MonitoredFile> monitoredFiles = new List<MonitoredFile>();
-        public IList<MonitoredFile> MonitoredFiles
+        private IList<DBFileInfo> files = new List<DBFileInfo>();
+        public IList<DBFileInfo> Files
         {
             get
             {
-                return monitoredFiles;
+                return files;
             }
 
             set
             {
-                monitoredFiles = value;
+                files = value;
             }
         }
 
-        private IList<string> monitoredFolderStrings = new List<string>();
-        public IList<string> MonitoredFolderStrings
+        private IList<string> folderStrings = new List<string>();
+        public IList<string> FolderStrings
         {
             get
             {
-                return MonitoredFolders.Select(item => item.Path).ToList(); ;
+                return Folders.Select(item => item.Path).ToList(); ;
             }
         }
 
         public void Init()
         {
-            RefreshTagInfos();
-            RefreshMonitoredFolders();
-            RefreshMonitoredFiles();
+            RefreshTags();
+            RefreshFolders();
+            RefreshFiles();
         }
 
         public void Uninit()
@@ -73,24 +73,24 @@ namespace MediaCenter.Infrastructure
 
         }
 
-        public void RefreshMonitoredFolders()
+        public void RefreshFolders()
         {
-            MonitoredFolders = DBHelper.GetExistMonitoredFolderList();
+            Folders = DBHelper.GetExistFolderList();
         }
 
-        public void RefreshMonitoredFiles()
+        public void RefreshFiles()
         {
-            MonitoredFiles = DBHelper.GetFilesUnderFolder(string.Empty);
+            Files = DBHelper.GetFilesUnderFolder(string.Empty);
         }
 
-        public void RefreshTagInfos()
+        public void RefreshTags()
         {
             TagInfos = DBHelper.GetTags();
         }
 
-        public IList<TagInfo> GetContainTags(MonitoredFile monitoredFile)
+        public IList<DBTagInfo> GetContainTags(DBFileInfo monitoredFile)
         {
-            IList<TagInfo> tagInfos = new List<TagInfo>();
+            IList<DBTagInfo> tagInfos = new List<DBTagInfo>();
             if (monitoredFile.IsNull())
                 return tagInfos;
 
@@ -100,7 +100,7 @@ namespace MediaCenter.Infrastructure
                 int tagId = -1;
                 if (!Int32.TryParse(array[i], out tagId))
                     continue;
-                TagInfo tagInfo = TagInfos.FirstOrDefault(tag => tag.ID == tagId);
+                DBTagInfo tagInfo = TagInfos.FirstOrDefault(tag => tag.ID == tagId);
                 if (tagInfo.IsNull())
                     continue;
                 tagInfos.Add(tagInfo);

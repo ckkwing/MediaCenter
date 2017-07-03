@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-    public interface IMonitorFolder
+    public interface IDBFolder
     {
         bool InsertFolder(string folderPath);
         //int InsertPatchFolders(IList<string> folders);
-        int InsertPatchFolders(IList<MonitoredFolderInfo> folders);
-        int UpdateFolders(IList<MonitoredFolderInfo> folders);
-        IList<MonitoredFolderInfo> GetMonitoredFolderList();
-        void DeletePatchFolders(IList<MonitoredFolderInfo> folders);
+        int InsertPatchFolders(IList<DBFolderInfo> folders);
+        int UpdateFolders(IList<DBFolderInfo> folders);
+        IList<DBFolderInfo> GetMonitoredFolderList();
+        void DeletePatchFolders(IList<DBFolderInfo> folders);
     }
 }

@@ -11,7 +11,7 @@ namespace MediaCenter.Infrastructure.Core.Runner
     public class UpdateTagsJobRunner : JobRunner
     {
         private UpdateTagsJob updateTagsJob = null;
-        private IList<MonitoredFile> filesToUpdate = new List<MonitoredFile>();
+        private IList<DBFileInfo> filesToUpdate = new List<DBFileInfo>();
         public UpdateTagsJobRunner(Job job) : base(job)
         {
         }
@@ -28,7 +28,7 @@ namespace MediaCenter.Infrastructure.Core.Runner
                 return false;
             if (!string.IsNullOrEmpty(updateTagsJob.FolderPath))
                 filesToUpdate = DBHelper.GetFilesUnderFolder(updateTagsJob.FolderPath);
-            foreach(MonitoredFile monitoredFile in updateTagsJob.Files)
+            foreach(DBFileInfo monitoredFile in updateTagsJob.Files)
             {
                 if (null == monitoredFile)
                     continue;
@@ -47,7 +47,7 @@ namespace MediaCenter.Infrastructure.Core.Runner
         protected override void JobRunning_End(DateTime dtLastRunTime)
         {
             base.JobRunning_End(dtLastRunTime);
-            DataManager.Instance.DBCache.RefreshTagInfos();
+            DataManager.Instance.DBCache.RefreshTags();
         }
     }
 }

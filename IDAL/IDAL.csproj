@@ -47,12 +47,12 @@
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
     <Compile Include="IDBEntity.cs" />
-    <Compile Include="IMonitorFolder.cs" />
-    <Compile Include="IScannedFile.cs" />
-    <Compile Include="ITag.cs" />
-    <Compile Include="Model\MonitoredFile.cs" />
-    <Compile Include="Model\MonitoredFolderInfo.cs" />
-    <Compile Include="Model\TagInfo.cs" />
+    <Compile Include="IDBFolder.cs" />
+    <Compile Include="IDBFile.cs" />
+    <Compile Include="IDBTag.cs" />
+    <Compile Include="Model\DBFileInfo.cs" />
+    <Compile Include="Model\DBFolderInfo.cs" />
+    <Compile Include="Model\DBTagInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

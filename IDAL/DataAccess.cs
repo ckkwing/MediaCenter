@@ -30,22 +30,22 @@ namespace IDAL
             return (IDBEntity)Assembly.Load(path).CreateInstance(className);
         }
         
-        public static IMonitorFolder CreateMonitorFolder()
+        public static IDBFolder CreateMonitorFolder()
         {
-            string className = path + ".MonitorFolder";
-            return (IMonitorFolder)Assembly.Load(path).CreateInstance(className);
+            string className = path + ".DBFolder";
+            return (IDBFolder)Assembly.Load(path).CreateInstance(className);
         }
 
-        public static IScannedFile CreateScannedFile()
+        public static IDBFile CreateScannedFile()
         {
-            string className = path + ".ScannedFile";
-            return (IScannedFile)Assembly.Load(path).CreateInstance(className);
+            string className = path + ".DBFile";
+            return (IDBFile)Assembly.Load(path).CreateInstance(className);
         }
 
-        public static ITag CreateTag()
+        public static IDBTag CreateTag()
         {
-            string className = path + ".Tag";
-            return (ITag)Assembly.Load(path).CreateInstance(className);
+            string className = path + ".DBTag";
+            return (IDBTag)Assembly.Load(path).CreateInstance(className);
         }
     }
 }

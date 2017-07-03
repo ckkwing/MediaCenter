@@ -50,6 +50,8 @@ namespace Utilities.FileScan
             }
         }
 
+        public IList<DirectoryInfo> NewFoldersToMonitor { get; private set; } = new List<DirectoryInfo>();
+
         private bool isInProcess = false;
         public bool IsInProcess
         {
@@ -110,6 +112,7 @@ namespace Utilities.FileScan
         private void Reset()
         {
             FilesInDirectory.Clear();
+            NewFoldersToMonitor.Clear();
             IsCancel = false;
             IsInProcess = false;
         }
@@ -259,6 +262,8 @@ namespace Utilities.FileScan
             if (null == directoryInfo || !directoryInfo.Exists)
                 return;
 
+            NewFoldersToMonitor.Add(directoryInfo);
+
             IList<ScannedFileInfo> fileList = new List<ScannedFileInfo>();
             try
             {
@@ -288,8 +293,6 @@ namespace Utilities.FileScan
                             }
                         }
                     }
-
-                    //NotifyEvent(new FileScannerProcessEventArgs(ProcessType.InProcess, InnerType.OneDirectoryScanned) { CurrentDir = directoryInfo, Files = fileList});
                 }
             }
             catch(Exception e)

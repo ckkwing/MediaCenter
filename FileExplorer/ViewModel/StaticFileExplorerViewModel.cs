@@ -106,7 +106,7 @@ namespace FileExplorer.ViewModel
                     IFolder node = FindInFolder(directory.FullName, parent.Folders);
                     if (node.IsNull())
                     {
-                        LocalFolder currentFolder = new LocalFolder(directory, parent);
+                        StaticLocalFolder currentFolder = new StaticLocalFolder(directory, parent);
                         currentFolder.Folders.Clear();
                         parent.Folders.Add(currentFolder);
                         parent = currentFolder;

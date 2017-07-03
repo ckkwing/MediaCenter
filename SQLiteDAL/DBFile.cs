@@ -15,11 +15,11 @@ using static Utilities.StandardFileExtensions;
 
 namespace SQLiteDAL
 {
-    public class ScannedFile : IScannedFile
+    public class DBFile : IDBFile
     {
         private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_FILE + " SET PATH = @PATH, NAME = @NAME, EXTENSION = @EXTENSION,  TAG = @TAG, PARENTID = @PARENTID WHERE ID = {0};";
 
-        public int InsertPatchFiles(IList<MonitoredFile> files)
+        public int InsertPatchFiles(IList<IDAL.Model.DBFileInfo> files)
         {
             int iSuccessRows = 0;
             if (0 == files.Count)
@@ -44,7 +44,7 @@ namespace SQLiteDAL
             {
                 //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
 
-                foreach (MonitoredFile file in files)
+                foreach (IDAL.Model.DBFileInfo file in files)
                 {
                     parms[0].Value = file.Path;
                     parms[1].Value = file.Name;
@@ -70,9 +70,9 @@ namespace SQLiteDAL
             return iSuccessRows;
         }
 
-        public IList<MonitoredFile> GetFilesByTags(string tags)
+        public IList<IDAL.Model.DBFileInfo> GetFilesByTags(string tags)
         {
-            IList<MonitoredFile> fileList = new List<MonitoredFile>();
+            IList<IDAL.Model.DBFileInfo> fileList = new List<IDAL.Model.DBFileInfo>();
             string sqlSelectFormat = "SELECT * FROM " + DataAccess.TABLE_NAME_FILE + (string.IsNullOrEmpty(tags) ? string.Empty : " WHERE TAG LIKE '%{0}%'");
             string sqlSelect = string.Format(sqlSelectFormat, tags);
             SQLiteDataReader dr = SqliteHelper.ExecuteReader(DataAccess.ConnectionStringProfile, CommandType.Text, sqlSelect, null);
@@ -80,7 +80,7 @@ namespace SQLiteDAL
             {
                 if (dr.IsDBNull(1))
                     continue;
-                MonitoredFile monitoredFile = MonitoredFile.Create();
+                IDAL.Model.DBFileInfo monitoredFile = IDAL.Model.DBFileInfo.Create();
                 monitoredFile.ID = dr.GetInt32(0);
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
@@ -94,9 +94,9 @@ namespace SQLiteDAL
             return fileList;
         }
 
-        public IList<MonitoredFile> GetFilesUnderFolder(string folderPath)
+        public IList<IDAL.Model.DBFileInfo> GetFilesUnderFolder(string folderPath)
         {
-            IList<MonitoredFile> fileList = new List<MonitoredFile>();
+            IList<IDAL.Model.DBFileInfo> fileList = new List<IDAL.Model.DBFileInfo>();
             string sqlSelectFormat = "SELECT * FROM " + DataAccess.TABLE_NAME_FILE + (string.IsNullOrEmpty(folderPath) ? string.Empty : " WHERE PATH LIKE '%{0}%'");
             string sqlSelect = string.Format(sqlSelectFormat, folderPath);
             SQLiteDataReader dr = SqliteHelper.ExecuteReader(DataAccess.ConnectionStringProfile, CommandType.Text, sqlSelect, null);
@@ -104,7 +104,7 @@ namespace SQLiteDAL
             {
                 if (dr.IsDBNull(1))
                     continue;
-                MonitoredFile monitoredFile = MonitoredFile.Create();
+                IDAL.Model.DBFileInfo monitoredFile = IDAL.Model.DBFileInfo.Create();
                 monitoredFile.ID = dr.GetInt32(0);
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
@@ -118,9 +118,9 @@ namespace SQLiteDAL
             return fileList;
         }
 
-        public void GetFilesUnderFolderAsync(string folderPath, Action<IList<MonitoredFile>> callback, ref bool isCancel)
+        public void GetFilesUnderFolderAsync(string folderPath, Action<IList<IDAL.Model.DBFileInfo>> callback, ref bool isCancel)
         {
-            IList<MonitoredFile> fileList = new List<MonitoredFile>();
+            IList<IDAL.Model.DBFileInfo> fileList = new List<IDAL.Model.DBFileInfo>();
             string sqlSelectFormat = "SELECT * FROM " + DataAccess.TABLE_NAME_FILE + (string.IsNullOrEmpty(folderPath) ? string.Empty : " WHERE PATH LIKE '%{0}%'");
             string sqlSelect = string.Format(sqlSelectFormat, folderPath);
             SQLiteDataReader dr = SqliteHelper.ExecuteReader(DataAccess.ConnectionStringProfile, CommandType.Text, sqlSelect, null);
@@ -130,7 +130,7 @@ namespace SQLiteDAL
             {
                 if (dr.IsDBNull(1))
                     continue;
-                MonitoredFile monitoredFile = MonitoredFile.Create();
+                IDAL.Model.DBFileInfo monitoredFile = IDAL.Model.DBFileInfo.Create();
                 monitoredFile.ID = dr.GetInt32(0);
                 monitoredFile.Path = dr.GetString(1);
                 monitoredFile.Name = dr.GetString(2);
@@ -160,7 +160,7 @@ namespace SQLiteDAL
             }
         }
 
-        public bool UpdateFile(MonitoredFile file)
+        public bool UpdateFile(IDAL.Model.DBFileInfo file)
         {
             int iRel = 0;
             string sqlUpdate = string.Format(sqlUpdateFormat, file.ID);
@@ -183,7 +183,7 @@ namespace SQLiteDAL
             return iRel > 0 ? true : false;
         }
 
-        public int UpdateFiles(IList<MonitoredFile> files)
+        public int UpdateFiles(IList<IDAL.Model.DBFileInfo> files)
         {
             int iSuccessRows = 0;
             SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
@@ -200,7 +200,7 @@ namespace SQLiteDAL
 
             try
             {
-                foreach (MonitoredFile file in files)
+                foreach (IDAL.Model.DBFileInfo file in files)
                 {
                     string sqlUpdate = string.Format(sqlUpdateFormat, file.ID);
                     parms[0].Value = file.Path;
@@ -226,7 +226,7 @@ namespace SQLiteDAL
             return iSuccessRows;
         }
 
-        public void DeleteFilesUnderFolders(IList<MonitoredFolderInfo> monitoredFolderInfos)
+        public void DeleteFilesUnderFolders(IList<DBFolderInfo> monitoredFolderInfos)
         {
             if (0 == monitoredFolderInfos.Count)
                 return;
@@ -242,9 +242,43 @@ namespace SQLiteDAL
 
             try
             {
-                foreach (MonitoredFolderInfo monitoredFolderInfo in monitoredFolderInfos)
+                foreach (DBFolderInfo monitoredFolderInfo in monitoredFolderInfos)
                 {
                     parms[0].Value = monitoredFolderInfo.ID;
+                    SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+                }
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public void DeleteFiles(IList<DBFileInfo> files)
+        {
+            if (0 == files.Count)
+                return;
+            string sqlDeleteFormat = "DELETE FROM {0} WHERE ID=@ID";
+            string sqlDelete = string.Format(sqlDeleteFormat, DataAccess.TABLE_NAME_FILE);
+
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@ID", DbType.Int32)
+                    };
+
+            try
+            {
+                foreach (DBFileInfo file in files)
+                {
+                    parms[0].Value = file.ID;
                     SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
                 }
                 trans.Commit();

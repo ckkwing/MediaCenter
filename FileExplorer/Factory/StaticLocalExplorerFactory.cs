@@ -51,10 +51,10 @@ namespace FileExplorer.Factory
                     DirectoryInfo directory = new DirectoryInfo(path);
                     if (directory.IsNull())
                         break;
-                    LocalFolder currentFolder = createdFolders.FirstOrDefault(item => (0 == string.Compare(path, item.FullPath, true))) as LocalFolder;
+                    StaticLocalFolder currentFolder = createdFolders.FirstOrDefault(item => (0 == string.Compare(path, item.FullPath, true))) as StaticLocalFolder;
                     if (currentFolder.IsNull())
                     {
-                        currentFolder = new LocalFolder(directory, parent);
+                        currentFolder = new StaticLocalFolder(directory, parent);
                         currentFolder.Folders.Clear();
                         createdFolders.Add(currentFolder);
                         parent.Folders.Add(currentFolder);

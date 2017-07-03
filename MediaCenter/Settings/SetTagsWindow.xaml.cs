@@ -49,8 +49,8 @@ namespace MediaCenter.Settings
             }
         }
 
-        private ObservableCollection<TagInfo> totalTags = new ObservableCollection<TagInfo>();
-        public ObservableCollection<TagInfo> TotalTags
+        private ObservableCollection<DBTagInfo> totalTags = new ObservableCollection<DBTagInfo>();
+        public ObservableCollection<DBTagInfo> TotalTags
         {
             get
             {
@@ -64,8 +64,8 @@ namespace MediaCenter.Settings
             }
         }
 
-        private ObservableCollection<TagInfo> tags = new ObservableCollection<TagInfo>();
-        public ObservableCollection<TagInfo> Tags
+        private ObservableCollection<DBTagInfo> tags = new ObservableCollection<DBTagInfo>();
+        public ObservableCollection<DBTagInfo> Tags
         {
             get
             {
@@ -98,10 +98,10 @@ namespace MediaCenter.Settings
 
         private void GetExistTags()
         {
-            TotalTags = new ObservableCollection<TagInfo>(DataManager.Instance.DBCache.TagInfos);
-            if (objToAddTags is MonitoredFile)
+            TotalTags = new ObservableCollection<DBTagInfo>(DataManager.Instance.DBCache.TagInfos);
+            if (objToAddTags is DBFileInfo)
             {
-                Tags = new ObservableCollection<TagInfo>(DataManager.Instance.DBCache.GetContainTags(objToAddTags as MonitoredFile));
+                Tags = new ObservableCollection<DBTagInfo>(DataManager.Instance.DBCache.GetContainTags(objToAddTags as DBFileInfo));
             }
         }
 
@@ -112,11 +112,11 @@ namespace MediaCenter.Settings
             {
                 if (string.IsNullOrEmpty(array[i]))
                     continue;
-                TagInfo tagInfo = null;
+                DBTagInfo tagInfo = null;
                 tagInfo = TotalTags.FirstOrDefault(item => (0 == string.Compare(array[i], item.Name)));
                 if (tagInfo.IsNull())
                 {
-                    tagInfo = new TagInfo() { Name = array[i] };
+                    tagInfo = new DBTagInfo() { Name = array[i] };
                     TotalTags.Add(tagInfo);
                 }
 
@@ -132,15 +132,15 @@ namespace MediaCenter.Settings
             string tagToUpdate = string.Empty;
             var newTags = from info in Tags where info.ID == -1 select info;
             DBHelper.InsertTags(newTags.ToList());
-            foreach (TagInfo tagInfo in Tags)
+            foreach (DBTagInfo tagInfo in Tags)
             {
                 tagToUpdate += tagInfo.ID + DataAccess.DB_MARK_SPLIT;
             }
             string folderPath = string.Empty;
-            List<MonitoredFile> files = new List<MonitoredFile>();
-            if (objToAddTags is MonitoredFile)
+            List<DBFileInfo> files = new List<DBFileInfo>();
+            if (objToAddTags is DBFileInfo)
             {
-                files.Add(objToAddTags as MonitoredFile);
+                files.Add(objToAddTags as DBFileInfo);
             }
             else
             {
@@ -159,7 +159,7 @@ namespace MediaCenter.Settings
             ListBoxItem listBoxItem = e.Source as ListBoxItem;
             if (listBoxItem.IsNull())
                 return;
-            TagInfo tagInfo = listBoxItem.DataContext as TagInfo;
+            DBTagInfo tagInfo = listBoxItem.DataContext as DBTagInfo;
             if (tagInfo.IsNull())
                 return;
 
@@ -174,14 +174,14 @@ namespace MediaCenter.Settings
             }
         }
 
-        private void AddTag(TagInfo tagInfo)
+        private void AddTag(DBTagInfo tagInfo)
         {
             if (Tags.Contains(tagInfo))
                 return;
             Tags.Add(tagInfo);
         }
 
-        private void RemoveTag(TagInfo tagInfo)
+        private void RemoveTag(DBTagInfo tagInfo)
         {
             if (Tags.Contains(tagInfo))
                 Tags.Remove(tagInfo);

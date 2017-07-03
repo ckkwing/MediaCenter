@@ -159,7 +159,7 @@ namespace MediaCenter.Modules.Showcase
         {
             if (null == uiFile || null == uiFile.MonitoredFile)
                 return;
-            FileInfo file = new FileInfo(uiFile.MonitoredFile.Path);
+            System.IO.FileInfo file = new System.IO.FileInfo(uiFile.MonitoredFile.Path);
             if (file.IsNull())
                 return;
             Process.Start("explorer.exe", file.DirectoryName);
@@ -187,7 +187,7 @@ namespace MediaCenter.Modules.Showcase
             JobManager.Instance.ForceStart(currentJob);
         }
 
-        private void OnTagSelected(TagInfo tag)
+        private void OnTagSelected(DBTagInfo tag)
         {
             Files.Clear();
             if (!currentJob.IsNull())
@@ -213,7 +213,7 @@ namespace MediaCenter.Modules.Showcase
                         LoadMediasJob loadMediasJob = job as LoadMediasJob;
                         this.eventAggregator.GetEvent<LoadDataCompletedEvent>().Publish(loadMediasJob);
                         RunOnUIThread(() => {
-                            foreach (MonitoredFile file in loadMediasJob.Files)
+                            foreach (IDAL.Model.DBFileInfo file in loadMediasJob.Files)
                             {
                                 Files.Add(new UIFile(file));
                             }

@@ -66,7 +66,7 @@ namespace MediaCenter.Settings.FolderManager
             if (!ViewModel.RootFolder.IsNull() &&
                              ViewModel.RootFolder.IsChecked == false)
             {
-                ViewModel.SetCheckedPaths(DBHelper.GetExistMonitoredFolderStringList());
+                ViewModel.SetCheckedPaths(DBHelper.GetExistFolderStringList());
             }
         }
 

@@ -11,7 +11,7 @@ using Utilities;
 
 namespace IDAL.Model
 {
-    public class MonitoredFile : BindableBase
+    public class DBFileInfo : BindableBase
     {
         protected int id = -1;
         public int ID
@@ -133,17 +133,17 @@ namespace IDAL.Model
             }
         }
 
-        public static MonitoredFile Create()
+        public static DBFileInfo Create()
         {
-            return new MonitoredFile();
+            return new DBFileInfo();
         }
 
-        public static MonitoredFile Convert(ScannedFileInfo scannedFileInfo)
+        public static DBFileInfo Convert(ScannedFileInfo scannedFileInfo)
         {
             if (null == scannedFileInfo || null == scannedFileInfo.File)
                 return Create();
 
-            return new MonitoredFile() { Name = scannedFileInfo.File.Name, Path = scannedFileInfo.File.FullName, Extension = scannedFileInfo.File.Extension, Category = scannedFileInfo.Category };
+            return new DBFileInfo() { Name = scannedFileInfo.File.Name, Path = scannedFileInfo.File.FullName, Extension = scannedFileInfo.File.Extension, Category = scannedFileInfo.Category };
         }
     }
 }

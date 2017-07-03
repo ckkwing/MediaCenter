@@ -24,8 +24,8 @@ namespace MediaCenter.Infrastructure.Core.Model
             }
         }
 
-        private IList<MonitoredFile> files = new List<MonitoredFile>();
-        public IList<MonitoredFile> Files
+        private IList<DBFileInfo> files = new List<DBFileInfo>();
+        public IList<DBFileInfo> Files
         {
             get
             {
@@ -49,14 +49,14 @@ namespace MediaCenter.Infrastructure.Core.Model
         {
         }
 
-        public UpdateTagsJob(string folderPath, IList<MonitoredFile> files)
+        public UpdateTagsJob(string folderPath, IList<DBFileInfo> files)
             : this()
         {
             this.FolderPath = folderPath;
             this.Files = files;
         }
 
-        public static UpdateTagsJob Create(string folderPath, IList<MonitoredFile> files)
+        public static UpdateTagsJob Create(string folderPath, IList<DBFileInfo> files)
         {
             return new UpdateTagsJob(folderPath, files);
         }

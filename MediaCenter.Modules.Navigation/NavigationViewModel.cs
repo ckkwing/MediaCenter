@@ -24,8 +24,8 @@ namespace MediaCenter.Modules.Navigation
     {
         private readonly IEventAggregator eventAggregator;
 
-        private ObservableCollection<TagInfo> tags = new ObservableCollection<TagInfo>();
-        public ObservableCollection<TagInfo> Tags
+        private ObservableCollection<DBTagInfo> tags = new ObservableCollection<DBTagInfo>();
+        public ObservableCollection<DBTagInfo> Tags
         {
             get
             {
@@ -48,7 +48,7 @@ namespace MediaCenter.Modules.Navigation
         public NavigationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            TagSelectedCommand = new DelegateCommand<TagInfo>(OnTagSelected, CanExcute);
+            TagSelectedCommand = new DelegateCommand<DBTagInfo>(OnTagSelected, CanExcute);
             Infrastructure.Core.Core.Instance.JobRunningStateChanged += Instance_JobRunningStateChanged;
             LoadData();
         }
@@ -84,19 +84,19 @@ namespace MediaCenter.Modules.Navigation
             RunOnUIThreadAsync(() =>
             {
                 Tags.Clear();
-                foreach (TagInfo tag in DataManager.Instance.DBCache.TagInfos)
+                foreach (DBTagInfo tag in DataManager.Instance.DBCache.TagInfos)
                 {
                     Tags.Add(tag);
                 }
             });
         }
 
-        private void OnTagSelected(TagInfo tag)
+        private void OnTagSelected(DBTagInfo tag)
         {
             this.eventAggregator.GetEvent<TagChangedEvent>().Publish(tag);
         }
 
-        private void OnMonitoredFolderSelected(MonitoredFolderInfo monitoredFolderInfo)
+        private void OnMonitoredFolderSelected(DBFolderInfo monitoredFolderInfo)
         {
             //this.eventAggregator.GetEvent<TagChangedEvent>().Publish(tag);
         }
@@ -118,7 +118,7 @@ namespace MediaCenter.Modules.Navigation
                     {
                         RunOnUIThreadAsync(() => {
                             this.Tags.Clear();
-                            foreach (TagInfo tagInfo in DataManager.Instance.DBCache.TagInfos)
+                            foreach (DBTagInfo tagInfo in DataManager.Instance.DBCache.TagInfos)
                             {
                                 this.Tags.Add(tagInfo);
                             }

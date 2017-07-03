@@ -38,7 +38,7 @@ namespace MediaCenter.Infrastructure.Core.Runner
         protected override void JobRunning_End(DateTime dtLastRunTime)
         {
             base.JobRunning_End(dtLastRunTime);
-            DataManager.Instance.DBCache.RefreshMonitoredFolders();
+            DataManager.Instance.DBCache.RefreshFolders();
         }
     }
 }
